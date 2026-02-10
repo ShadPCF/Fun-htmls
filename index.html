@@ -11,64 +11,115 @@
   --gold:#ffcc66;
   --bg1:#140b1f;
   --bg2:#2a123f;
+  --card1:rgba(255,255,255,.16);
+  --card2:rgba(255,255,255,.06);
+  --stroke:rgba(255,255,255,.28);
 }
 
 *{box-sizing:border-box}
+html,body{height:100%}
 
 body{
   margin:0;
-  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
   font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
   background:
-    radial-gradient(600px 400px at 30% 10%, rgba(255,77,136,.25), transparent 60%),
+    radial-gradient(700px 460px at 25% 10%, rgba(255,77,136,.28), transparent 60%),
+    radial-gradient(650px 420px at 90% 25%, rgba(255,204,102,.18), transparent 60%),
     linear-gradient(160deg,var(--bg1),var(--bg2));
-  color:white;
+  color:#fff;
+  overflow:hidden;
 }
 
-.card{
+.shell{
   width:92%;
-  max-width:420px;
-  background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
-  border-radius:24px;
+  max-width:440px;
   padding:22px;
-  text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
+  border-radius:26px;
+  background:linear-gradient(180deg,var(--card1),var(--card2));
+  border:1px solid var(--stroke);
+  box-shadow:0 22px 70px rgba(0,0,0,.6);
+  position:relative;
 }
 
-.scene{
-  min-height:300px;
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.hTitle{
+  font-weight:900;
+  letter-spacing:.2px;
+  font-size:18px;
+  margin:0;
+}
+
+.badge{
+  font-size:12px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(0,0,0,.18);
+  color:rgba(255,255,255,.85);
+}
+
+.stage{
+  min-height:340px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   gap:16px;
+  padding:10px 0 0 0;
 }
 
 .comic{
   background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.22);
   padding:12px 18px;
   border-radius:18px;
   font-weight:900;
   transform:rotate(-2deg);
-  animation:pop .3s ease-out;
+  animation:pop .32s ease-out both;
+  position:relative;
+  max-width:94%;
+  text-align:center;
+}
+
+.comic:after{
+  content:"";
+  position:absolute;
+  left:30px;
+  bottom:-12px;
+  border:12px solid transparent;
+  border-top-color:rgba(255,255,255,.18);
+  filter:drop-shadow(0 8px 10px rgba(0,0,0,.25));
 }
 
 @keyframes pop{
-  from{opacity:0;transform:translateY(10px) scale(.95) rotate(-2deg)}
-  to{opacity:1;transform:none}
+  from{opacity:0;transform:translateY(10px) scale(.96) rotate(-2deg)}
+  to{opacity:1;transform:translateY(0) scale(1) rotate(-2deg)}
+}
+
+.doorWrap{
+  width:210px;
+  height:270px;
+  position:relative;
 }
 
 .door{
-  width:200px;
-  height:260px;
+  width:100%;
+  height:100%;
   border-radius:22px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,.08));
+  background:linear-gradient(180deg, rgba(255,255,255,.26), rgba(255,255,255,.08));
   border:1px solid rgba(255,255,255,.35);
+  box-shadow:0 18px 50px rgba(0,0,0,.55);
   position:relative;
+  overflow:hidden;
 }
 
 .panel{
@@ -85,13 +136,11 @@ body{
   background:linear-gradient(180deg,var(--gold),var(--pink));
   position:absolute;
   right:18px;
-  top:50%;
+  top:52%;
+  box-shadow:0 10px 18px rgba(0,0,0,.28);
 }
 
-.shake{
-  animation:shake .45s ease-in-out;
-}
-
+.shake{animation:shake .45s ease-in-out}
 @keyframes shake{
   0%{transform:none}
   20%{transform:translateX(-6px)}
@@ -101,97 +150,438 @@ body{
   100%{transform:none}
 }
 
-.open{
-  animation:openDoor .6s ease forwards;
-}
-
+.open{animation:openDoor .7s ease forwards}
 @keyframes openDoor{
-  to{transform:translateX(-12px) scaleX(.85); opacity:.85}
+  to{transform:translateX(-12px) scaleX(.85); opacity:.92}
 }
 
-.bouquet{
-  font-size:64px;
-  animation:float 1.6s ease-in-out infinite;
+.sparkle{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.0;
+}
+.sparkle.on{animation:sparkle .7s ease-out both}
+@keyframes sparkle{
+  0%{opacity:0;transform:scale(.98)}
+  30%{opacity:1}
+  100%{opacity:0;transform:scale(1.02)}
 }
 
-@keyframes float{
-  50%{transform:translateY(-10px)}
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
 }
 
 button{
-  margin-top:16px;
+  width:100%;
   padding:14px 18px;
   border-radius:16px;
   border:none;
   background:linear-gradient(135deg,var(--pink),var(--gold));
-  font-weight:900;
-  color:#2a0620;
+  font-weight:950;
+  color:#24051b;
   font-size:15px;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.sub{
+  margin:8px 0 0 0;
+  color:rgba(255,255,255,.78);
+  font-size:12px;
+  text-align:center;
+}
+
+.bouquetBox{
+  width:260px;
+  max-width:92%;
+  padding:12px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(0,0,0,.12);
+  box-shadow:0 14px 40px rgba(0,0,0,.35);
+}
+
+.bouquetSvg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+.float{
+  animation:float 1.7s ease-in-out infinite;
+  transform-origin:center;
+}
+@keyframes float{
+  50%{transform:translateY(-10px)}
+}
+
+.cardFlipWrap{
+  width:300px;
+  max-width:92%;
+  perspective:800px;
+}
+
+.cardInner{
+  width:100%;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.18);
+  background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+  box-shadow:0 16px 55px rgba(0,0,0,.5);
+  overflow:hidden;
+  transform:translateY(6px);
+  animation:fadeUp .55s ease-out both;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(18px) scale(.98)}
+  to{opacity:1;transform:translateY(6px) scale(1)}
+}
+
+.cardTop{
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.14);
+}
+
+.cardSeal{
+  width:36px;height:36px;border-radius:999px;
+  background:linear-gradient(135deg, rgba(255,77,136,.95), rgba(255,204,102,.85));
+  box-shadow:0 10px 20px rgba(0,0,0,.35);
+  display:flex;align-items:center;justify-content:center;
+  color:#2a0520;
+  font-weight:950;
+}
+
+.cardBody{
+  padding:16px 16px 18px 16px;
+}
+
+.script{
+  font-family: ui-rounded, "Snell Roundhand", "Bradley Hand", "Segoe Script", "Apple Chancery", cursive;
+  font-weight:700;
+  font-size:28px;
+  line-height:1.1;
+  margin:6px 0 8px 0;
+  color:rgba(255,255,255,.95);
+  text-shadow:0 10px 24px rgba(0,0,0,.35);
+}
+
+.note{
+  margin:0;
+  color:rgba(255,255,255,.82);
+  font-size:14px;
+  line-height:1.45;
+}
+
+.from{
+  margin-top:12px;
+  font-size:14px;
+  color:rgba(255,255,255,.9);
+}
+
+.petals{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  display:none;
+}
+.petals.on{display:block}
+
+.petal{
+  position:absolute;
+  top:-10%;
+  width:14px;
+  height:10px;
+  border-radius:999px 999px 999px 0;
+  background:rgba(255,77,136,.75);
+  filter:drop-shadow(0 10px 12px rgba(0,0,0,.25));
+  animation:fall linear forwards;
+}
+
+@keyframes fall{
+  0%{transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:.0}
+  12%{opacity:.95}
+  100%{transform:translateY(120vh) translateX(40px) rotate(420deg); opacity:.0}
 }
 </style>
 </head>
 
 <body>
-<div class="card">
-  <div id="stage"></div>
-  <button id="btn"></button>
+<div class="petals" id="petals"></div>
+
+<div class="shell">
+  <div class="header">
+    <h1 class="hTitle">Tiny knock knock</h1>
+    <div class="badge" id="badge">Tap to start</div>
+  </div>
+
+  <div class="stage" id="stage"></div>
+
+  <div class="actions">
+    <button id="btn"></button>
+  </div>
+
+  <div class="sub" id="sub">If sound is blocked, tap once then try again</div>
 </div>
 
 <script>
-const stage=document.getElementById("stage")
-const btn=document.getElementById("btn")
-let step=1
+const stage = document.getElementById("stage")
+const btn = document.getElementById("btn")
+const badge = document.getElementById("badge")
+const sub = document.getElementById("sub")
+const petals = document.getElementById("petals")
+
+let step = 1
+let audioReady = false
+let ac = null
 
 render()
 
-btn.onclick=()=>{
-  if(step===1){
-    document.querySelector(".door").classList.add("shake")
-    setTimeout(()=>{step=2;render()},300)
+btn.addEventListener("click", async () => {
+  await ensureAudio()
+  tapHaptic()
+
+  if (step === 1) {
+    knock()
+    const d = document.getElementById("door")
+    const sp = document.getElementById("sparkle")
+    if (d) { d.classList.remove("shake"); void d.offsetWidth; d.classList.add("shake") }
+    if (sp) { sp.classList.remove("on"); void sp.offsetWidth; sp.classList.add("on") }
+    badge.textContent = "Knock knock"
+    setTimeout(() => { step = 2; render() }, 320)
+    return
   }
-  else if(step===2){
-    step=3
+
+  if (step === 2) {
+    badge.textContent = "Who’s there"
+    step = 3
     render()
+    return
   }
-  else{
-    step=1
+
+  if (step === 3) {
+    badge.textContent = "Valen who"
+    step = 4
     render()
+    return
+  }
+
+  step = 1
+  badge.textContent = "Tap to start"
+  stopPetals()
+  render()
+})
+
+function render() {
+  if (step === 1) {
+    stage.innerHTML = `
+      <div class="comic">Knock knock</div>
+
+      <div class="doorWrap">
+        <div class="door" id="door">
+          <div class="panel"></div>
+          <div class="knob"></div>
+          <svg class="sparkle" id="sparkle" viewBox="0 0 200 260" aria-hidden="true">
+            <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2">
+              <path d="M30 60 L40 52 L46 62 L58 64 L48 72 L50 84 L40 78 L30 84 L32 72 L22 64 Z"/>
+              <path d="M150 120 L156 112 L162 122 L174 124 L164 132 L166 144 L156 138 L146 144 L148 132 L138 124 Z"/>
+              <path d="M110 40 L116 32 L122 42 L134 44 L124 52 L126 64 L116 58 L106 64 L108 52 L98 44 Z"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="sub">Turn volume up for the knock</div>
+    `
+    btn.textContent = "Who’s there"
+    sub.textContent = "If sound is blocked, tap once then try again"
+    return
+  }
+
+  if (step === 2) {
+    stage.innerHTML = `
+      <div class="comic">Who’s there</div>
+
+      <div class="doorWrap">
+        <div class="door open" id="door">
+          <div class="panel"></div>
+          <div class="knob"></div>
+        </div>
+      </div>
+    `
+    btn.textContent = "Valen"
+    sub.textContent = "Tap to continue"
+    return
+  }
+
+  if (step === 3) {
+    stage.innerHTML = `
+      <div class="comic">Valen</div>
+
+      <div class="bouquetBox float" aria-label="Bouquet picture">
+        ${bouquetSvg()}
+      </div>
+    `
+    btn.textContent = "Valen who"
+    sub.textContent = "Almost there"
+    return
+  }
+
+  stage.innerHTML = `
+    <div class="cardFlipWrap">
+      <div class="cardInner">
+        <div class="cardTop">
+          <div style="font-weight:950;letter-spacing:.2px">For you</div>
+          <div class="cardSeal">❤</div>
+        </div>
+        <div class="cardBody">
+          <div class="script">Happy Valentine’s Day</div>
+          <p class="note">
+            Here’s a bouquet and a little chaos of petals
+            Hope your day feels warm and lucky
+          </p>
+          <div class="from">💐 from ShadPCF</div>
+        </div>
+      </div>
+    </div>
+  `
+  btn.textContent = "Replay"
+  sub.textContent = "Tap Replay anytime"
+  startPetals()
+  celebrate()
+}
+
+function bouquetSvg() {
+  return `
+  <svg class="bouquetSvg" viewBox="0 0 420 280" role="img" aria-label="Bouquet illustration">
+    <defs>
+      <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="rgba(255,77,136,0.95)"/>
+        <stop offset="1" stop-color="rgba(255,204,102,0.85)"/>
+      </linearGradient>
+      <linearGradient id="wrap" x1="0" x2="1">
+        <stop offset="0" stop-color="rgba(255,255,255,0.18)"/>
+        <stop offset="1" stop-color="rgba(255,255,255,0.06)"/>
+      </linearGradient>
+    </defs>
+
+    <g transform="translate(210 150)">
+      <circle r="86" fill="rgba(255,255,255,0.05)"/>
+      <g opacity="0.98">
+        <circle cx="-55" cy="-10" r="30" fill="rgba(255,77,136,0.9)"/>
+        <circle cx="-25" cy="-48" r="26" fill="rgba(255,204,102,0.88)"/>
+        <circle cx="10" cy="-58" r="28" fill="rgba(255,77,136,0.86)"/>
+        <circle cx="45" cy="-38" r="26" fill="rgba(255,204,102,0.84)"/>
+        <circle cx="60" cy="-2" r="28" fill="rgba(255,77,136,0.84)"/>
+        <circle cx="22" cy="10" r="30" fill="rgba(255,204,102,0.82)"/>
+        <circle cx="-18" cy="18" r="30" fill="rgba(255,77,136,0.82)"/>
+      </g>
+
+      <g stroke="rgba(170,255,210,0.75)" stroke-width="6" stroke-linecap="round">
+        <path d="M-30 30 C-40 62,-20 92, -6 114"/>
+        <path d="M10 28 C 6 62, 24 86, 18 118"/>
+        <path d="M40 22 C 54 56, 44 92, 28 122"/>
+      </g>
+
+      <g transform="translate(0 120)">
+        <path d="M-110 0 L110 0 L70 80 L0 120 L-70 80 Z" fill="url(#wrap)" stroke="rgba(255,255,255,0.18)"/>
+        <path d="M-70 80 L0 120 L70 80" fill="none" stroke="rgba(255,255,255,0.18)"/>
+        <path d="M-35 40 L35 40" stroke="rgba(255,255,255,0.18)"/>
+        <circle cx="0" cy="52" r="14" fill="url(#g1)" opacity="0.95"/>
+      </g>
+    </g>
+  </svg>
+  `
+}
+
+async function ensureAudio() {
+  if (audioReady) return
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext
+    ac = new AudioContext()
+    if (ac.state === "suspended") await ac.resume()
+    audioReady = true
+  } catch (e) {
+    audioReady = false
   }
 }
 
-function render(){
-  if(step===1){
-    stage.innerHTML=`
-      <div class="scene">
-        <div class="comic">Knock knock</div>
-        <div class="door">
-          <div class="panel"></div>
-          <div class="knob"></div>
-        </div>
-      </div>`
-    btn.textContent="Who’s there"
+function knock() {
+  if (!audioReady || !ac) return
+  const now = ac.currentTime
+
+  const thump = (t) => {
+    const o = ac.createOscillator()
+    const g = ac.createGain()
+    o.type = "triangle"
+    o.frequency.setValueAtTime(220, t)
+    o.frequency.exponentialRampToValueAtTime(140, t + 0.06)
+
+    g.gain.setValueAtTime(0.0001, t)
+    g.gain.exponentialRampToValueAtTime(0.5, t + 0.01)
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.10)
+
+    o.connect(g)
+    g.connect(ac.destination)
+    o.start(t)
+    o.stop(t + 0.12)
   }
 
-  else if(step===2){
-    stage.innerHTML=`
-      <div class="scene">
-        <div class="comic">Valen</div>
-        <div class="door open">
-          <div class="panel"></div>
-          <div class="knob"></div>
-        </div>
-      </div>`
-    btn.textContent="Valen who"
-  }
+  thump(now + 0.00)
+  thump(now + 0.12)
+}
 
-  else{
-    stage.innerHTML=`
-      <div class="scene">
-        <div class="bouquet">💐</div>
-        <div class="comic">Happy Valentine’s Day 💖</div>
-      </div>`
-    btn.textContent="Replay"
+function tapHaptic() {
+  try {
+    if (navigator.vibrate) navigator.vibrate(12)
+  } catch (e) {}
+}
+
+function celebrate() {
+  if (!audioReady || !ac) return
+  const now = ac.currentTime
+  const o = ac.createOscillator()
+  const g = ac.createGain()
+  o.type = "sine"
+  o.frequency.setValueAtTime(660, now)
+  o.frequency.setValueAtTime(880, now + 0.08)
+  o.frequency.setValueAtTime(990, now + 0.16)
+  g.gain.setValueAtTime(0.0001, now)
+  g.gain.exponentialRampToValueAtTime(0.25, now + 0.02)
+  g.gain.exponentialRampToValueAtTime(0.0001, now + 0.30)
+  o.connect(g); g.connect(ac.destination)
+  o.start(now)
+  o.stop(now + 0.32)
+}
+
+function startPetals() {
+  petals.innerHTML = ""
+  petals.classList.add("on")
+
+  const count = 18
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement("div")
+    p.className = "petal"
+    p.style.left = (Math.random() * 100) + "%"
+    p.style.animationDuration = (2.2 + Math.random() * 1.8) + "s"
+    p.style.animationDelay = (Math.random() * 0.4) + "s"
+    const size = 10 + Math.random() * 10
+    p.style.width = size + "px"
+    p.style.height = (size * 0.72) + "px"
+    p.style.background = Math.random() > 0.5 ? "rgba(255,77,136,.75)" : "rgba(255,204,102,.65)"
+    petals.appendChild(p)
   }
+}
+
+function stopPetals() {
+  petals.classList.remove("on")
+  petals.innerHTML = ""
 }
 </script>
 </body>
