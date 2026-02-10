@@ -1,116 +1,139 @@
-/* Door scene */
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knock Knock Valentine</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
+  background:linear-gradient(160deg,#0b0b14,#1a0f2e);
+  color:white;
+}
+
+.card{
+  width:90%;
+  max-width:420px;
+  background:rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:22px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
 .scene{
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
-  gap:14px;
-  padding:8px 0 0 0;
+  gap:16px;
 }
 
 .comic{
-  position:relative;
-  padding:12px 14px;
+  padding:12px 16px;
+  background:rgba(255,255,255,.12);
   border-radius:16px;
-  background: rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.18);
-  max-width: 92%;
-  text-align:center;
   font-weight:800;
-  letter-spacing:.2px;
-  animation: captionPop .35s ease-out both;
+  transform:rotate(-1deg);
+  animation:pop .3s ease;
 }
 
-.comic::after{
-  content:"";
-  position:absolute;
-  left:22px;
-  bottom:-10px;
-  width:0;
-  height:0;
-  border-left:10px solid transparent;
-  border-right:10px solid transparent;
-  border-top:10px solid rgba(255,255,255,.16);
-  filter: drop-shadow(0 8px 10px rgba(0,0,0,.25));
-}
-
-.comic::before{
-  content:"";
-  position:absolute;
-  left:22px;
-  bottom:-9px;
-  width:0;
-  height:0;
-  border-left:10px solid transparent;
-  border-right:10px solid transparent;
-  border-top:10px solid rgba(255,255,255,.10);
-}
-
-@keyframes captionPop{
-  from{ transform: translateY(8px) scale(.97); opacity:0 }
-  to{ transform: translateY(0) scale(1); opacity:1 }
-}
-
-.doorWrap{
-  width:min(260px, 80vw);
-  aspect-ratio: 3 / 4;
-  position:relative;
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
+@keyframes pop{
+  from{opacity:0;transform:translateY(8px) scale(.95) rotate(-1deg)}
+  to{opacity:1;transform:none}
 }
 
 .door{
-  width:100%;
-  height:100%;
-  border-radius:20px;
-  background:
-    radial-gradient(80px 80px at 85% 52%, rgba(255,255,255,.10), transparent 65%),
-    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow: 0 18px 45px rgba(0,0,0,.45);
+  width:180px;
+  height:240px;
+  background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,.05));
+  border-radius:18px;
   position:relative;
-  overflow:hidden;
-}
-
-.door::after{
-  content:"";
-  position:absolute;
-  inset:14px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.14);
+  animation:none;
 }
 
 .knob{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:#ffcc66;
   position:absolute;
   right:18px;
-  top:52%;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background: linear-gradient(180deg, rgba(255,204,102,.95), rgba(255,77,136,.65));
-  border:1px solid rgba(255,255,255,.22);
-  box-shadow: 0 10px 18px rgba(0,0,0,.35);
-}
-
-.floor{
-  width:120%;
-  height:24px;
-  margin-top:10px;
-  border-radius:999px;
-  background: rgba(0,0,0,.25);
-  filter: blur(1px);
+  top:50%;
 }
 
 .shake{
-  animation: doorShake .45s ease-in-out;
+  animation:shake .45s ease;
 }
 
-@keyframes doorShake{
-  0%{ transform: translateX(0) rotate(0deg) }
-  18%{ transform: translateX(-6px) rotate(-1deg) }
-  36%{ transform: translateX(6px) rotate(1deg) }
-  54%{ transform: translateX(-4px) rotate(-.6deg) }
-  72%{ transform: translateX(4px) rotate(.6deg) }
-  100%{ transform: translateX(0) rotate(0deg) }
+@keyframes shake{
+  0%{transform:none}
+  20%{transform:translateX(-6px)}
+  40%{transform:translateX(6px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(4px)}
+  100%{transform:none}
 }
+
+button{
+  margin-top:14px;
+  padding:12px 16px;
+  border-radius:14px;
+  border:none;
+  background:linear-gradient(135deg,#ff4d88,#ffcc66);
+  font-weight:800;
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <div id="stage"></div>
+  <button id="btn">Who’s there</button>
+</div>
+
+<script>
+const stage=document.getElementById("stage")
+const btn=document.getElementById("btn")
+let step=1
+
+render()
+
+btn.onclick=()=>{
+  if(step===1){
+    document.querySelector(".door").classList.add("shake")
+    setTimeout(()=>{step=2;render()},300)
+  }else if(step===2){
+    step=3;render()
+  }else{
+    step=1;render()
+  }
+}
+
+function render(){
+  if(step===1){
+    stage.innerHTML=`
+      <div class="scene">
+        <div class="comic">Knock knock</div>
+        <div class="door"><div class="knob"></div></div>
+      </div>`
+    btn.textContent="Who’s there"
+  }
+  else if(step===2){
+    stage.innerHTML=`<div class="comic">Valen</div>`
+    btn.textContent="Valen who"
+  }
+  else{
+    stage.innerHTML=`
+      <div class="comic">💐 Happy Valentine’s Day 💖</div>`
+    btn.textContent="Replay"
+  }
+}
+</script>
+</body>
+</html>
