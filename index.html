@@ -3,9 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Knock Knock Valentine</title>
+<title>Knock Knock 💖</title>
 
 <style>
+:root{
+  --pink:#ff4d88;
+  --gold:#ffcc66;
+  --bg1:#0b0b14;
+  --bg2:#1a0f2e;
+}
+
+*{box-sizing:border-box}
+
 body{
   margin:0;
   min-height:100vh;
@@ -13,18 +22,24 @@ body{
   align-items:center;
   justify-content:center;
   font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
-  background:linear-gradient(160deg,#0b0b14,#1a0f2e);
+  background:
+    radial-gradient(900px 500px at 20% 10%, rgba(255,77,136,.25), transparent 55%),
+    radial-gradient(700px 500px at 80% 20%, rgba(255,204,102,.18), transparent 55%),
+    linear-gradient(160deg,var(--bg1),var(--bg2));
   color:white;
+  overflow:hidden;
 }
 
 .card{
-  width:90%;
+  width:92%;
   max-width:420px;
   background:rgba(255,255,255,.08);
-  border-radius:22px;
+  border-radius:24px;
   padding:22px;
   text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  box-shadow:0 25px 80px rgba(0,0,0,.55);
+  backdrop-filter:blur(10px);
+  position:relative;
 }
 
 .scene{
@@ -32,45 +47,64 @@ body{
   flex-direction:column;
   align-items:center;
   gap:16px;
+  min-height:300px;
 }
 
 .comic{
-  padding:12px 16px;
-  background:rgba(255,255,255,.12);
-  border-radius:16px;
-  font-weight:800;
-  transform:rotate(-1deg);
-  animation:pop .3s ease;
+  background:rgba(255,255,255,.14);
+  padding:12px 18px;
+  border-radius:18px;
+  font-weight:900;
+  transform:rotate(-2deg);
+  animation:pop .35s ease;
+  position:relative;
+}
+
+.comic::after{
+  content:"";
+  position:absolute;
+  left:30px;
+  bottom:-12px;
+  border:12px solid transparent;
+  border-top-color:rgba(255,255,255,.14);
 }
 
 @keyframes pop{
-  from{opacity:0;transform:translateY(8px) scale(.95) rotate(-1deg)}
+  from{opacity:0;transform:translateY(8px) scale(.95) rotate(-2deg)}
   to{opacity:1;transform:none}
 }
 
 .door{
-  width:180px;
-  height:240px;
-  background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,.05));
-  border-radius:18px;
+  width:200px;
+  height:260px;
+  border-radius:22px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.25);
   position:relative;
-  animation:none;
+  box-shadow:0 20px 50px rgba(0,0,0,.6);
+  overflow:hidden;
+}
+
+.door::after{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.18);
 }
 
 .knob{
-  width:16px;
-  height:16px;
+  width:18px;
+  height:18px;
   border-radius:50%;
-  background:#ffcc66;
+  background:linear-gradient(180deg,var(--gold),var(--pink));
   position:absolute;
   right:18px;
   top:50%;
 }
 
-.shake{
-  animation:shake .45s ease;
-}
-
+.shake{ animation:shake .45s ease }
 @keyframes shake{
   0%{transform:none}
   20%{transform:translateX(-6px)}
@@ -80,13 +114,49 @@ body{
   100%{transform:none}
 }
 
+.open{
+  animation:openDoor .7s ease forwards;
+  transform-origin:left center;
+}
+@keyframes openDoor{
+  to{transform:perspective(800px) rotateY(-75deg)}
+}
+
 button{
   margin-top:14px;
-  padding:12px 16px;
-  border-radius:14px;
+  padding:14px 18px;
+  border-radius:16px;
   border:none;
-  background:linear-gradient(135deg,#ff4d88,#ffcc66);
-  font-weight:800;
+  background:linear-gradient(135deg,var(--pink),var(--gold));
+  font-weight:900;
+  color:#1a0612;
+  font-size:15px;
+}
+
+.reveal{
+  animation:fadeUp .6s ease both;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:none}
+}
+
+.bouquet{
+  font-size:64px;
+  animation:float 1.6s ease-in-out infinite;
+}
+@keyframes float{
+  50%{transform:translateY(-12px)}
+}
+
+.hearts span{
+  position:absolute;
+  font-size:20px;
+  animation:heart 2.8s linear infinite;
+}
+@keyframes heart{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-120vh);opacity:0}
 }
 </style>
 </head>
@@ -94,7 +164,7 @@ button{
 <body>
 <div class="card">
   <div id="stage"></div>
-  <button id="btn">Who’s there</button>
+  <button id="btn"></button>
 </div>
 
 <script>
@@ -107,12 +177,11 @@ render()
 btn.onclick=()=>{
   if(step===1){
     document.querySelector(".door").classList.add("shake")
-    setTimeout(()=>{step=2;render()},300)
-  }else if(step===2){
-    step=3;render()
-  }else{
-    step=1;render()
+    setTimeout(()=>{step=2;render()},350)
   }
+  else if(step===2){ step=3; render() }
+  else if(step===3){ step=4; render() }
+  else{ step=1; render() }
 }
 
 function render(){
@@ -124,14 +193,37 @@ function render(){
       </div>`
     btn.textContent="Who’s there"
   }
+
   else if(step===2){
-    stage.innerHTML=`<div class="comic">Valen</div>`
+    stage.innerHTML=`
+      <div class="scene">
+        <div class="comic">Valen</div>
+        <div class="door open"><div class="knob"></div></div>
+      </div>`
     btn.textContent="Valen who"
   }
-  else{
+
+  else if(step===3){
     stage.innerHTML=`
-      <div class="comic">💐 Happy Valentine’s Day 💖</div>`
+      <div class="scene reveal">
+        <div class="bouquet">💐</div>
+        <div class="comic">Happy Valentine’s Day 💖</div>
+      </div>`
+    spawnHearts()
     btn.textContent="Replay"
+  }
+}
+
+function spawnHearts(){
+  for(let i=0;i<18;i++){
+    const h=document.createElement("span")
+    h.textContent="💖"
+    h.style.left=Math.random()*100+"%"
+    h.style.bottom="-40px"
+    h.style.animationDelay=Math.random()*1.5+"s"
+    h.className="hearts"
+    document.body.appendChild(h)
+    setTimeout(()=>h.remove(),3000)
   }
 }
 </script>
