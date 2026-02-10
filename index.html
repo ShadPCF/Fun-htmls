@@ -1,242 +1,265 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Knock Knock</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Knock Knock</title>
 
-<style>
-:root{
-  --bg1:#140b1f;
-  --bg2:#2a123f;
-  --pink:#ff4d88;
-  --gold:#ffcc66;
-  --text:rgba(255,255,255,.95);
-  --muted:rgba(255,255,255,.7);
-  --stroke:rgba(255,255,255,.18);
-}
+  <style>
+    :root{
+      --bg1:#140b1f;
+      --bg2:#2a123f;
+      --pink:#ff4d88;
+      --gold:#ffcc66;
+      --text:rgba(255,255,255,.95);
+      --muted:rgba(255,255,255,.70);
+      --stroke:rgba(255,255,255,.18);
+    }
 
-*{box-sizing:border-box}
-html,body{height:100%}
+    *{box-sizing:border-box}
+    html,body{height:100%}
 
-body{
-  margin:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
-  color:var(--text);
-  background:
-    radial-gradient(800px 500px at 20% 10%, rgba(255,77,136,.28), transparent 60%),
-    radial-gradient(700px 500px at 85% 30%, rgba(255,204,102,.18), transparent 60%),
-    linear-gradient(160deg,var(--bg1),var(--bg2));
-}
+    body{
+      margin:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      overflow:hidden;
+      background:
+        radial-gradient(900px 600px at 20% 10%, rgba(255,77,136,.28), transparent 60%),
+        radial-gradient(800px 520px at 85% 30%, rgba(255,204,102,.18), transparent 62%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+    }
 
-.card{
-  width:92%;
-  max-width:460px;
-  padding:18px;
-  border-radius:28px;
-  border:1px solid var(--stroke);
-  background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
-  box-shadow:0 26px 90px rgba(0,0,0,.6);
-}
+    .card{
+      width:92%;
+      max-width:460px;
+      padding:18px;
+      border-radius:28px;
+      border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+      box-shadow:0 26px 90px rgba(0,0,0,.60);
+    }
 
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
+    .header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+      gap:10px;
+    }
 
-.title{
-  margin:0;
-  font-size:18px;
-  font-weight:900;
-}
+    .title{
+      margin:0;
+      font-size:18px;
+      font-weight:950;
+      letter-spacing:.2px;
+    }
 
-.step{
-  font-size:12px;
-  padding:8px 12px;
-  border-radius:999px;
-  border:1px solid var(--stroke);
-  background:rgba(0,0,0,.2);
-}
+    .step{
+      font-size:12px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.20);
+      color:rgba(255,255,255,.85);
+      font-weight:800;
+      white-space:nowrap;
+    }
 
-.stage{
-  min-height:420px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+    .stage{
+      min-height:420px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-.scene{
-  width:100%;
-  border-radius:22px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.16);
-  background:#000;
-}
+    .scene{
+      width:100%;
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.16);
+      background:#000;
+      box-shadow:0 18px 60px rgba(0,0,0,.38);
+    }
 
-.doorWrap{
-  position:relative;
-  width:100%;
-  aspect-ratio:4/3;
-}
+    .doorWrap{
+      position:relative;
+      width:100%;
+      aspect-ratio:4/3;
+      background:#000;
+    }
 
-.doorImg{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+    .doorImg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transform:scale(1.02);
+      filter:saturate(1.05) contrast(1.03);
+    }
 
-.vignette{
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(70% 60% at 50% 30%, rgba(255,255,255,.10), transparent 60%),
-    radial-gradient(120% 100% at 50% 100%, rgba(0,0,0,.45), transparent 55%);
-}
+    .vignette{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(70% 60% at 50% 30%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(120% 100% at 50% 100%, rgba(0,0,0,.45), transparent 55%);
+      pointer-events:none;
+    }
 
-.knock{
-  position:absolute;
-  left:8%;
-  top:6%;
-  width:52%;
-  max-width:240px;
-  transform-origin:30% 60%;
-  filter:drop-shadow(0 16px 24px rgba(0,0,0,.45));
-  animation:wiggle 1.2s ease-in-out infinite;
-}
+    .knock{
+      position:absolute;
+      left:50%;
+      top:46%;
+      width:min(260px, 64%);
+      transform-origin:50% 55%;
+      transform:translate(-50%,-50%) rotate(-6deg);
+      filter:drop-shadow(0 18px 26px rgba(0,0,0,.45));
+      animation:wiggle 1.1s ease-in-out infinite;
+      pointer-events:none;
+      user-select:none;
+    }
 
-@keyframes wiggle{
-  0%{transform:translate(0,0) rotate(-2deg)}
-  25%{transform:translate(2px,-1px) rotate(2deg)}
-  50%{transform:translate(-2px,1px) rotate(-1deg)}
-  75%{transform:translate(1px,1px) rotate(2deg)}
-  100%{transform:translate(0,0) rotate(-2deg)}
-}
+    @keyframes wiggle{
+      0%{transform:translate(-50%,-50%) rotate(-6deg) scale(1)}
+      25%{transform:translate(-49%,-51%) rotate(2deg) scale(1.01)}
+      50%{transform:translate(-51%,-49%) rotate(-2deg) scale(1)}
+      75%{transform:translate(-49.5%,-50%) rotate(3deg) scale(1.01)}
+      100%{transform:translate(-50%,-50%) rotate(-6deg) scale(1)}
+    }
 
-.actions{
-  margin-top:14px;
-}
+    .actions{
+      margin-top:14px;
+    }
 
-button{
-  width:100%;
-  padding:14px 18px;
-  border-radius:18px;
-  border:none;
-  font-size:15px;
-  font-weight:900;
-  color:#24051b;
-  background:linear-gradient(135deg,var(--pink),var(--gold));
-  -webkit-tap-highlight-color:transparent;
-}
+    button{
+      width:100%;
+      padding:14px 18px;
+      border-radius:18px;
+      border:none;
+      font-size:15px;
+      font-weight:950;
+      color:#24051b;
+      background:linear-gradient(135deg, var(--pink), var(--gold));
+      -webkit-tap-highlight-color:transparent;
+      box-shadow:0 14px 30px rgba(255,77,136,.18);
+    }
 
-.note{
-  margin-top:10px;
-  font-size:12px;
-  text-align:center;
-  color:var(--muted);
-}
-</style>
+    .note{
+      margin-top:10px;
+      font-size:12px;
+      text-align:center;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    .reveal{
+      padding:28px 18px 30px 18px;
+      text-align:center;
+      background:
+        radial-gradient(260px 180px at 50% 10%, rgba(255,204,102,.20), transparent 62%),
+        linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.08));
+    }
+
+    .big{
+      font-size:22px;
+      font-weight:950;
+      letter-spacing:.2px;
+      margin-top:8px;
+    }
+
+    .sub{
+      margin-top:8px;
+      color:rgba(255,255,255,.78);
+      font-size:14px;
+      line-height:1.45;
+    }
+  </style>
 </head>
 
 <body>
-<div class="card">
-  <div class="header">
-    <h1 class="title">Knock knock</h1>
-    <div class="step" id="step">Step 1</div>
-  </div>
-
-  <div class="stage" id="stage"></div>
-
-  <div class="actions">
-    <button id="btn"></button>
-  </div>
-
-  <div class="note" id="note"></div>
-</div>
-
-<script>
-const stage = document.getElementById("stage")
-const btn = document.getElementById("btn")
-const stepEl = document.getElementById("step")
-const note = document.getElementById("note")
-
-let step = 1
-render()
-
-btn.onclick = () => {
-  if(step === 1){ step = 2 }
-  else if(step === 2){ step = 3 }
-  else if(step === 3){ step = 4 }
-  else{ step = 1 }
-  render()
-}
-
-function render(){
-  stepEl.textContent = "Step " + step
-
-  if(step === 1){
-    stage.innerHTML = `
-      <div class="scene">
-        <div class="doorWrap">
-          <img class="doorImg" src="door.jpeg" alt="door">
-          <div class="vignette"></div>
-          <img class="knock" src="knock.png" alt="knock knock">
-        </div>
-      </div>
-    `
-    btn.textContent = "Who’s there"
-    note.textContent = "tap the button"
-    return
-  }
-
-  if(step === 2){
-    stage.innerHTML = `
-      <div class="scene">
-        <div class="doorWrap">
-          <img class="doorImg" src="door.jpeg" alt="door">
-          <div class="vignette"></div>
-        </div>
-      </div>
-    `
-    btn.textContent = "Valen"
-    note.textContent = "Who’s there?"
-    return
-  }
-
-  if(step === 3){
-    stage.innerHTML = `
-      <div class="scene">
-        <div class="doorWrap">
-          <img class="doorImg" src="door.jpeg" alt="door">
-          <div class="vignette"></div>
-        </div>
-      </div>
-    `
-    btn.textContent = "Valen who"
-    note.textContent = "almost there"
-    return
-  }
-
-  stage.innerHTML = `
-    <div class="scene" style="text-align:center;padding:30px">
-      <div style="font-size:56px">💐</div>
-      <div style="font-size:22px;font-weight:900;margin-top:6px">
-        Happy Valentine’s Day
-      </div>
-      <div style="font-size:14px;color:rgba(255,255,255,.75);margin-top:8px">
-        sending you love
-      </div>
+  <div class="card">
+    <div class="header">
+      <h1 class="title">Knock knock</h1>
+      <div class="step" id="step">Step 1</div>
     </div>
-  `
-  btn.textContent = "Replay"
-  note.textContent = "share the link 💖"
-}
-</script>
+
+    <div class="stage" id="stage"></div>
+
+    <div class="actions">
+      <button id="btn"></button>
+    </div>
+
+    <div class="note" id="note"></div>
+  </div>
+
+  <script>
+    const stage = document.getElementById("stage")
+    const btn = document.getElementById("btn")
+    const stepEl = document.getElementById("step")
+    const note = document.getElementById("note")
+
+    let step = 1
+    render()
+
+    btn.onclick = () => {
+      if (step === 1) step = 2
+      else if (step === 2) step = 3
+      else if (step === 3) step = 4
+      else step = 1
+      render()
+    }
+
+    function doorScene(includeKnock){
+      return `
+        <div class="scene">
+          <div class="doorWrap">
+            <img class="doorImg" src="door.jpeg" alt="door">
+            <div class="vignette"></div>
+            ${includeKnock ? `<img class="knock" src="IMG_0143.png" alt="knock knock">` : ``}
+          </div>
+        </div>
+      `
+    }
+
+    function render(){
+      stepEl.textContent = "Step " + step
+
+      if(step === 1){
+        stage.innerHTML = doorScene(true)
+        btn.textContent = "Who’s there"
+        note.textContent = "tap the button"
+        return
+      }
+
+      if(step === 2){
+        stage.innerHTML = doorScene(false)
+        btn.textContent = "Valen"
+        note.textContent = "who’s there"
+        return
+      }
+
+      if(step === 3){
+        stage.innerHTML = doorScene(false)
+        btn.textContent = "Valen who"
+        note.textContent = "almost there"
+        return
+      }
+
+      stage.innerHTML = `
+        <div class="scene reveal">
+          <div style="font-size:56px">💐</div>
+          <div class="big">Happy Valentine’s Day</div>
+          <div class="sub">sending you love and good vibes</div>
+        </div>
+      `
+      btn.textContent = "Replay"
+      note.textContent = "share the link"
+    }
+  </script>
 </body>
 </html>
