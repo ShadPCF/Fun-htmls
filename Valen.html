@@ -1,318 +1,116 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Valentine</title>
-  <style>
-    :root{
-      --bg1:#0b0b14;
-      --bg2:#1a0f2e;
-      --card: rgba(255,255,255,.08);
-      --card2: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.70);
-      --accent:#ff4d88;
-      --accent2:#ffcc66;
-    }
+/* Door scene */
+.scene{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  padding:8px 0 0 0;
+}
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100svh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 20% 10%, rgba(255,77,136,.25), transparent 55%),
-        radial-gradient(900px 600px at 90% 30%, rgba(255,204,102,.18), transparent 55%),
-        linear-gradient(160deg, var(--bg1), var(--bg2));
-      overflow:hidden;
-    }
+.comic{
+  position:relative;
+  padding:12px 14px;
+  border-radius:16px;
+  background: rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.18);
+  max-width: 92%;
+  text-align:center;
+  font-weight:800;
+  letter-spacing:.2px;
+  animation: captionPop .35s ease-out both;
+}
 
-    .wrap{
-      width:min(560px, 100%);
-      position:relative;
-    }
+.comic::after{
+  content:"";
+  position:absolute;
+  left:22px;
+  bottom:-10px;
+  width:0;
+  height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-top:10px solid rgba(255,255,255,.16);
+  filter: drop-shadow(0 8px 10px rgba(0,0,0,.25));
+}
 
-    .card{
-      background:linear-gradient(180deg, var(--card), rgba(255,255,255,.04));
-      border:1px solid rgba(255,255,255,.14);
-      border-radius:22px;
-      padding:22px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.45);
-      backdrop-filter: blur(10px);
-    }
+.comic::before{
+  content:"";
+  position:absolute;
+  left:22px;
+  bottom:-9px;
+  width:0;
+  height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-top:10px solid rgba(255,255,255,.10);
+}
 
-    .title{
-      font-size:20px;
-      font-weight:700;
-      letter-spacing:.2px;
-      margin:0 0 10px 0;
-    }
+@keyframes captionPop{
+  from{ transform: translateY(8px) scale(.97); opacity:0 }
+  to{ transform: translateY(0) scale(1); opacity:1 }
+}
 
-    .subtitle{
-      margin:0 0 18px 0;
-      color:var(--muted);
-      line-height:1.4;
-      font-size:14px;
-    }
+.doorWrap{
+  width:min(260px, 80vw);
+  aspect-ratio: 3 / 4;
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
 
-    .stage{
-      min-height:210px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      gap:14px;
-      padding:10px 2px 4px 2px;
-    }
+.door{
+  width:100%;
+  height:100%;
+  border-radius:20px;
+  background:
+    radial-gradient(80px 80px at 85% 52%, rgba(255,255,255,.10), transparent 65%),
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow: 0 18px 45px rgba(0,0,0,.45);
+  position:relative;
+  overflow:hidden;
+}
 
-    .bubble{
-      width:fit-content;
-      max-width:100%;
-      padding:14px 14px;
-      border-radius:16px;
-      background:rgba(255,255,255,.09);
-      border:1px solid rgba(255,255,255,.14);
-      line-height:1.35;
-      font-size:16px;
-      animation: pop .28s ease-out both;
-    }
+.door::after{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+}
 
-    .bubble.you{
-      margin-left:auto;
-      background: rgba(255,77,136,.16);
-      border:1px solid rgba(255,77,136,.35);
-    }
+.knob{
+  position:absolute;
+  right:18px;
+  top:52%;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background: linear-gradient(180deg, rgba(255,204,102,.95), rgba(255,77,136,.65));
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow: 0 10px 18px rgba(0,0,0,.35);
+}
 
-    @keyframes pop{
-      from{ transform: translateY(8px) scale(.98); opacity:0 }
-      to{ transform: translateY(0) scale(1); opacity:1 }
-    }
+.floor{
+  width:120%;
+  height:24px;
+  margin-top:10px;
+  border-radius:999px;
+  background: rgba(0,0,0,.25);
+  filter: blur(1px);
+}
 
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
+.shake{
+  animation: doorShake .45s ease-in-out;
+}
 
-    button{
-      border:0;
-      border-radius:14px;
-      padding:12px 14px;
-      font-weight:700;
-      color:var(--text);
-      background: rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.16);
-      cursor:pointer;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .2s ease, border-color .2s ease;
-      flex:1 1 160px;
-    }
-    button:active{ transform: scale(.98) }
-    button.primary{
-      background: linear-gradient(135deg, rgba(255,77,136,.85), rgba(255,204,102,.65));
-      border-color: rgba(255,255,255,.18);
-      color:#160914;
-    }
-
-    .footer{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-      align-items:center;
-      justify-content:space-between;
-      color:var(--muted);
-      font-size:12px;
-    }
-
-    .confetti{
-      position:absolute;
-      inset:-30px;
-      pointer-events:none;
-      overflow:hidden;
-      display:none;
-    }
-    .confetti.on{ display:block; }
-
-    .piece{
-      position:absolute;
-      top:-10%;
-      width:10px;
-      height:18px;
-      border-radius:4px;
-      opacity:.9;
-      animation: fall 1.6s linear forwards;
-      filter: drop-shadow(0 10px 10px rgba(0,0,0,.25));
-    }
-    @keyframes fall{
-      0%{ transform: translateY(-20vh) rotate(0deg) }
-      100%{ transform: translateY(140vh) rotate(540deg) }
-    }
-
-    .reveal{
-      text-align:center;
-      padding:10px 6px 0 6px;
-    }
-    .big{
-      font-size:26px;
-      font-weight:900;
-      margin:8px 0 0 0;
-      letter-spacing:.2px;
-      animation: glow 1.2s ease-in-out infinite alternate;
-    }
-    @keyframes glow{
-      from{ text-shadow: 0 0 10px rgba(255,77,136,.20) }
-      to{ text-shadow: 0 0 22px rgba(255,77,136,.55) }
-    }
-
-    .bouquet{
-      font-size:56px;
-      margin:12px 0 2px 0;
-      animation: float 1.6s ease-in-out infinite;
-      transform-origin:center;
-    }
-    @keyframes float{
-      0%,100%{ transform: translateY(0) rotate(-2deg) }
-      50%{ transform: translateY(-10px) rotate(2deg) }
-    }
-
-    .note{
-      color:var(--muted);
-      font-size:14px;
-      margin:8px 0 0 0;
-      line-height:1.45;
-    }
-
-    .hidden{ display:none; }
-  </style>
-</head>
-
-<body>
-  <div class="wrap">
-    <div class="confetti" id="confetti"></div>
-
-    <div class="card">
-      <h1 class="title">Tiny knock knock</h1>
-      <p class="subtitle">Tap the buttons to go through the steps</p>
-
-      <div class="stage" id="stage"></div>
-
-      <div class="actions" id="actions"></div>
-
-      <div class="footer">
-        <span id="stepText">Step 1 of 4</span>
-        <button id="resetBtn" class="hidden">Reset</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const stage = document.getElementById("stage")
-    const actions = document.getElementById("actions")
-    const stepText = document.getElementById("stepText")
-    const resetBtn = document.getElementById("resetBtn")
-    const confetti = document.getElementById("confetti")
-
-    let step = 1
-
-    const render = () => {
-      stage.innerHTML = ""
-      actions.innerHTML = ""
-      confetti.classList.remove("on")
-      confetti.innerHTML = ""
-      resetBtn.classList.add("hidden")
-
-      if (step === 1) {
-        stepText.textContent = "Step 1 of 4"
-        addBubble("Knock knock", false)
-
-        addAction("Who’s there", true, () => { step = 2; render() })
-
-      } else if (step === 2) {
-        stepText.textContent = "Step 2 of 4"
-        addBubble("Knock knock", false)
-        addBubble("Who’s there", true)
-        addBubble("Valen", false)
-
-        addAction("Valen who", true, () => { step = 3; render() })
-
-      } else if (step === 3) {
-        stepText.textContent = "Step 3 of 4"
-        addBubble("Knock knock", false)
-        addBubble("Who’s there", true)
-        addBubble("Valen", false)
-        addBubble("Valen who", true)
-
-        addAction("Tell me", true, () => { step = 4; render() })
-
-      } else if (step === 4) {
-        stepText.textContent = "Step 4 of 4"
-        resetBtn.classList.remove("hidden")
-
-        stage.innerHTML = `
-          <div class="reveal">
-            <div class="bouquet">💐</div>
-            <div class="big">Happy Valentine’s Day</div>
-            <p class="note">
-              Sending you love, good vibes, and a bouquet the internet can deliver instantly
-            </p>
-            <p class="note">🌹 🍫 ✨</p>
-          </div>
-        `
-
-        fireConfetti(26)
-
-        addAction("Replay", true, () => { step = 1; render() })
-      }
-    }
-
-    const addBubble = (text, isYou) => {
-      const div = document.createElement("div")
-      div.className = "bubble" + (isYou ? " you" : "")
-      div.textContent = text
-      stage.appendChild(div)
-    }
-
-    const addAction = (label, primary, onClick) => {
-      const btn = document.createElement("button")
-      btn.textContent = label
-      btn.className = primary ? "primary" : ""
-      btn.addEventListener("click", onClick)
-      actions.appendChild(btn)
-    }
-
-    const fireConfetti = (count) => {
-      confetti.classList.add("on")
-
-      const colors = [
-        "rgba(255,77,136,.95)",
-        "rgba(255,204,102,.95)",
-        "rgba(170,255,230,.95)",
-        "rgba(255,255,255,.90)"
-      ]
-
-      for (let i = 0; i < count; i++) {
-        const p = document.createElement("div")
-        p.className = "piece"
-        p.style.left = Math.random() * 100 + "%"
-        p.style.width = (8 + Math.random() * 10) + "px"
-        p.style.height = (12 + Math.random() * 16) + "px"
-        p.style.background = colors[Math.floor(Math.random() * colors.length)]
-        p.style.animationDuration = (1.2 + Math.random() * 1.2) + "s"
-        p.style.animationDelay = (Math.random() * 0.15) + "s"
-        confetti.appendChild(p)
-      }
-    }
-
-    resetBtn.addEventListener("click", () => { step = 1; render() })
-
-    render()
-  </script>
-</body>
-</html>
+@keyframes doorShake{
+  0%{ transform: translateX(0) rotate(0deg) }
+  18%{ transform: translateX(-6px) rotate(-1deg) }
+  36%{ transform: translateX(6px) rotate(1deg) }
+  54%{ transform: translateX(-4px) rotate(-.6deg) }
+  72%{ transform: translateX(4px) rotate(.6deg) }
+  100%{ transform: translateX(0) rotate(0deg) }
+}
