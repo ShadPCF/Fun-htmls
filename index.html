@@ -7,12 +7,12 @@
 
 <style>
 :root{
-  --bg1:#120818;
-  --bg2:#2a0f3b;
+  --bg1:#140b1f;
+  --bg2:#2a123f;
   --pink:#ff4d88;
   --gold:#ffcc66;
-  --w:rgba(255,255,255,.92);
-  --w2:rgba(255,255,255,.72);
+  --text:rgba(255,255,255,.95);
+  --muted:rgba(255,255,255,.7);
   --stroke:rgba(255,255,255,.18);
 }
 
@@ -24,83 +24,64 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  color:var(--w);
   font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
-  overflow:hidden;
+  color:var(--text);
   background:
-    radial-gradient(900px 600px at 20% 10%, rgba(255,77,136,.28), transparent 60%),
-    radial-gradient(800px 520px at 90% 30%, rgba(255,204,102,.18), transparent 62%),
-    linear-gradient(160deg, var(--bg1), var(--bg2));
+    radial-gradient(800px 500px at 20% 10%, rgba(255,77,136,.28), transparent 60%),
+    radial-gradient(700px 500px at 85% 30%, rgba(255,204,102,.18), transparent 60%),
+    linear-gradient(160deg,var(--bg1),var(--bg2));
 }
 
-.shell{
+.card{
   width:92%;
   max-width:460px;
-  border-radius:28px;
   padding:18px;
+  border-radius:28px;
   border:1px solid var(--stroke);
-  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
-  box-shadow: 0 26px 90px rgba(0,0,0,.62);
+  background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+  box-shadow:0 26px 90px rgba(0,0,0,.6);
 }
 
-.topbar{
+.header{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:12px;
-  padding:2px 4px 10px 4px;
+  align-items:center;
+  margin-bottom:12px;
 }
 
-.h1{
+.title{
   margin:0;
-  font-weight:950;
-  letter-spacing:.2px;
   font-size:18px;
+  font-weight:900;
 }
 
-.h2{
-  margin:0;
-  color:var(--w2);
+.step{
   font-size:12px;
-}
-
-.stepPill{
   padding:8px 12px;
   border-radius:999px;
-  border:1px solid rgba(255,255,255,.18);
-  background: rgba(0,0,0,.18);
-  color:rgba(255,255,255,.82);
-  font-size:12px;
-  font-weight:800;
+  border:1px solid var(--stroke);
+  background:rgba(0,0,0,.2);
 }
 
 .stage{
   min-height:420px;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:14px;
-  padding:8px 8px 0 8px;
 }
 
-.sceneCard{
-  width:min(380px, 96%);
-  border-radius:26px;
+.scene{
+  width:100%;
+  border-radius:22px;
+  overflow:hidden;
   border:1px solid rgba(255,255,255,.16);
-  background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.08));
-  box-shadow: 0 18px 60px rgba(0,0,0,.42);
-  padding:14px;
+  background:#000;
 }
 
-.doorFrame{
+.doorWrap{
   position:relative;
   width:100%;
-  aspect-ratio: 4 / 3;
-  border-radius:20px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.18);
-  background:#000;
+  aspect-ratio:4/3;
 }
 
 .doorImg{
@@ -109,230 +90,152 @@ body{
   width:100%;
   height:100%;
   object-fit:cover;
-  transform:scale(1.02);
-  filter:saturate(1.05) contrast(1.03);
 }
 
 .vignette{
   position:absolute;
   inset:0;
   background:
-    radial-gradient(70% 70% at 50% 35%, rgba(255,255,255,.10), transparent 60%),
+    radial-gradient(70% 60% at 50% 30%, rgba(255,255,255,.10), transparent 60%),
     radial-gradient(120% 100% at 50% 100%, rgba(0,0,0,.45), transparent 55%);
-  pointer-events:none;
 }
 
-.knockOverlay{
+.knock{
   position:absolute;
-  left:10%;
+  left:8%;
   top:6%;
-  width:48%;
-  max-width:220px;
-  transform-origin: 30% 60%;
-  filter: drop-shadow(0 16px 20px rgba(0,0,0,.45));
-}
-
-.knockWiggle{
-  animation: wiggle 1.15s ease-in-out infinite;
+  width:52%;
+  max-width:240px;
+  transform-origin:30% 60%;
+  filter:drop-shadow(0 16px 24px rgba(0,0,0,.45));
+  animation:wiggle 1.2s ease-in-out infinite;
 }
 
 @keyframes wiggle{
-  0%{ transform: translate(0,0) rotate(-2deg) scale(1) }
-  20%{ transform: translate(2px,-1px) rotate(2deg) scale(1.01) }
-  40%{ transform: translate(-2px,1px) rotate(-1deg) scale(1.00) }
-  60%{ transform: translate(2px,1px) rotate(2deg) scale(1.01) }
-  80%{ transform: translate(-1px,-1px) rotate(-2deg) scale(1.00) }
-  100%{ transform: translate(0,0) rotate(-2deg) scale(1) }
-}
-
-.flash{
-  animation: flash 380ms ease-out both;
-}
-
-@keyframes flash{
-  0%{ opacity: .0 }
-  25%{ opacity: .9 }
-  100%{ opacity: .0 }
-}
-
-.metaRow{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  padding-top:10px;
-  color:var(--w2);
-  font-size:12px;
-  font-weight:700;
+  0%{transform:translate(0,0) rotate(-2deg)}
+  25%{transform:translate(2px,-1px) rotate(2deg)}
+  50%{transform:translate(-2px,1px) rotate(-1deg)}
+  75%{transform:translate(1px,1px) rotate(2deg)}
+  100%{transform:translate(0,0) rotate(-2deg)}
 }
 
 .actions{
-  display:flex;
-  gap:10px;
   margin-top:14px;
-  padding:0 4px;
 }
 
-.btn{
+button{
   width:100%;
-  padding:14px 16px;
-  border:none;
+  padding:14px 18px;
   border-radius:18px;
-  font-weight:950;
+  border:none;
   font-size:15px;
-  color:#250517;
-  background: linear-gradient(135deg, var(--pink), var(--gold));
-  box-shadow: 0 14px 30px rgba(255,77,136,.18);
+  font-weight:900;
+  color:#24051b;
+  background:linear-gradient(135deg,var(--pink),var(--gold));
   -webkit-tap-highlight-color:transparent;
 }
 
-.small{
-  margin:10px 0 0 0;
-  text-align:center;
-  color:var(--w2);
+.note{
+  margin-top:10px;
   font-size:12px;
+  text-align:center;
+  color:var(--muted);
 }
 </style>
 </head>
 
 <body>
-<div class="shell">
-  <div class="topbar">
-    <div>
-      <p class="h1">Knock knock</p>
-      <p class="h2">tap through the tiny story</p>
-    </div>
-    <div class="stepPill" id="stepPill">Step 1</div>
+<div class="card">
+  <div class="header">
+    <h1 class="title">Knock knock</h1>
+    <div class="step" id="step">Step 1</div>
   </div>
 
   <div class="stage" id="stage"></div>
 
   <div class="actions">
-    <button class="btn" id="btn"></button>
+    <button id="btn"></button>
   </div>
 
-  <p class="small" id="hint">sound needs one tap on iPhone</p>
+  <div class="note" id="note"></div>
 </div>
 
 <script>
 const stage = document.getElementById("stage")
 const btn = document.getElementById("btn")
-const stepPill = document.getElementById("stepPill")
-const hint = document.getElementById("hint")
+const stepEl = document.getElementById("step")
+const note = document.getElementById("note")
 
 let step = 1
-
 render()
 
-btn.addEventListener("click", () => {
-  if (step === 1) {
-    const k = document.getElementById("knock")
-    const f = document.getElementById("flash")
-    if (k) {
-      k.classList.remove("knockWiggle")
-      void k.offsetWidth
-      k.classList.add("knockWiggle")
-    }
-    if (f) {
-      f.classList.remove("flash")
-      void f.offsetWidth
-      f.classList.add("flash")
-    }
-    setTimeout(() => { step = 2; render() }, 260)
-    return
-  }
-
-  if (step === 2) {
-    step = 3
-    render()
-    return
-  }
-
-  if (step === 3) {
-    step = 4
-    render()
-    return
-  }
-
-  step = 1
+btn.onclick = () => {
+  if(step === 1){ step = 2 }
+  else if(step === 2){ step = 3 }
+  else if(step === 3){ step = 4 }
+  else{ step = 1 }
   render()
-})
+}
 
 function render(){
-  stepPill.textContent = "Step " + step
+  stepEl.textContent = "Step " + step
 
-  if (step === 1) {
+  if(step === 1){
     stage.innerHTML = `
-      <div class="sceneCard">
-        <div class="doorFrame">
-          <img class="doorImg" src="door.jpg" alt="door">
+      <div class="scene">
+        <div class="doorWrap">
+          <img class="doorImg" src="door.jpeg" alt="door">
           <div class="vignette"></div>
-
-          <img class="knockOverlay knockWiggle" id="knock" src="knock.png" alt="knock knock">
-          <div class="vignette flash" id="flash"></div>
-        </div>
-
-        <div class="metaRow">
-          <div>tap to answer</div>
-          <div>knock wiggles</div>
+          <img class="knock" src="knock.png" alt="knock knock">
         </div>
       </div>
     `
     btn.textContent = "Who’s there"
-    hint.textContent = "if image not showing, check file names door.jpg and knock.png"
+    note.textContent = "tap the button"
     return
   }
 
-  if (step === 2) {
+  if(step === 2){
     stage.innerHTML = `
-      <div class="sceneCard">
-        <div class="metaRow" style="padding:0 0 10px 0">
-          <div style="font-weight:950;color:rgba(255,255,255,.90)">Who’s there</div>
-        </div>
-        <div class="doorFrame">
-          <img class="doorImg" src="door.jpg" alt="door">
+      <div class="scene">
+        <div class="doorWrap">
+          <img class="doorImg" src="door.jpeg" alt="door">
           <div class="vignette"></div>
-        </div>
-        <div class="metaRow">
-          <div>next name</div>
         </div>
       </div>
     `
     btn.textContent = "Valen"
-    hint.textContent = "tap to continue"
+    note.textContent = "Who’s there?"
     return
   }
 
-  if (step === 3) {
+  if(step === 3){
     stage.innerHTML = `
-      <div class="sceneCard">
-        <div class="metaRow" style="padding:0 0 10px 0">
-          <div style="font-weight:950;color:rgba(255,255,255,.90)">Valen</div>
-        </div>
-        <div class="doorFrame">
-          <img class="doorImg" src="door.jpg" alt="door">
+      <div class="scene">
+        <div class="doorWrap">
+          <img class="doorImg" src="door.jpeg" alt="door">
           <div class="vignette"></div>
-        </div>
-        <div class="metaRow">
-          <div>final line</div>
         </div>
       </div>
     `
     btn.textContent = "Valen who"
-    hint.textContent = "tap for reveal"
+    note.textContent = "almost there"
     return
   }
 
   stage.innerHTML = `
-    <div class="sceneCard" style="text-align:center">
-      <div style="font-size:54px;margin:6px 0 2px 0">💐</div>
-      <div style="font-weight:950;font-size:22px;letter-spacing:.2px">Happy Valentine’s Day</div>
-      <div style="color:rgba(255,255,255,.78);margin-top:8px;font-size:14px;line-height:1.45">
-        sending you love and good vibes
+    <div class="scene" style="text-align:center;padding:30px">
+      <div style="font-size:56px">💐</div>
+      <div style="font-size:22px;font-weight:900;margin-top:6px">
+        Happy Valentine’s Day
+      </div>
+      <div style="font-size:14px;color:rgba(255,255,255,.75);margin-top:8px">
+        sending you love
       </div>
     </div>
   `
   btn.textContent = "Replay"
-  hint.textContent = "share the link when ready"
+  note.textContent = "share the link 💖"
 }
 </script>
 </body>
