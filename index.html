@@ -1,19 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang=en>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Knock Knock 💖</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Knock Knock Valentine</title>
 
 <style>
 :root{
+  --bg1:#120818;
+  --bg2:#2a0f3b;
   --pink:#ff4d88;
+  --rose:#ff2f6d;
   --gold:#ffcc66;
-  --bg1:#140b1f;
-  --bg2:#2a123f;
-  --card1:rgba(255,255,255,.16);
-  --card2:rgba(255,255,255,.06);
-  --stroke:rgba(255,255,255,.28);
+  --mint:#9dffd9;
+  --w:rgba(255,255,255,.92);
+  --w2:rgba(255,255,255,.72);
+  --stroke:rgba(255,255,255,.18);
 }
 
 *{box-sizing:border-box}
@@ -24,251 +26,316 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
+  color:var(--w);
   font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
-  background:
-    radial-gradient(700px 460px at 25% 10%, rgba(255,77,136,.28), transparent 60%),
-    radial-gradient(650px 420px at 90% 25%, rgba(255,204,102,.18), transparent 60%),
-    linear-gradient(160deg,var(--bg1),var(--bg2));
-  color:#fff;
   overflow:hidden;
+  background:
+    radial-gradient(900px 600px at 20% 10%, rgba(255,77,136,.28), transparent 60%),
+    radial-gradient(800px 520px at 90% 30%, rgba(255,204,102,.18), transparent 62%),
+    radial-gradient(900px 700px at 50% 120%, rgba(157,255,217,.10), transparent 60%),
+    linear-gradient(160deg, var(--bg1), var(--bg2));
+}
+
+.ambient{
+  position:fixed;
+  inset:-60px;
+  pointer-events:none;
+  background:
+    radial-gradient(28px 28px at 12% 24%, rgba(255,255,255,.20), transparent 60%),
+    radial-gradient(22px 22px at 78% 30%, rgba(255,255,255,.14), transparent 60%),
+    radial-gradient(26px 26px at 60% 70%, rgba(255,255,255,.12), transparent 60%),
+    radial-gradient(18px 18px at 28% 76%, rgba(255,255,255,.10), transparent 60%),
+    radial-gradient(24px 24px at 88% 78%, rgba(255,255,255,.12), transparent 60%);
+  filter: blur(1px);
+  opacity:.55;
+  animation: drift 10s ease-in-out infinite alternate;
+}
+
+@keyframes drift{
+  from{transform:translateY(0) translateX(0) scale(1)}
+  to{transform:translateY(-18px) translateX(12px) scale(1.02)}
 }
 
 .shell{
   width:92%;
-  max-width:440px;
-  padding:22px;
-  border-radius:26px;
-  background:linear-gradient(180deg,var(--card1),var(--card2));
+  max-width:460px;
+  border-radius:28px;
+  padding:18px;
   border:1px solid var(--stroke);
-  box-shadow:0 22px 70px rgba(0,0,0,.6);
+  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+  box-shadow: 0 26px 90px rgba(0,0,0,.62);
   position:relative;
 }
 
-.header{
+.topbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:10px;
+  gap:12px;
+  padding:2px 4px 10px 4px;
 }
 
-.hTitle{
-  font-weight:900;
+.brand{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.h1{
+  margin:0;
+  font-weight:950;
   letter-spacing:.2px;
   font-size:18px;
-  margin:0;
 }
 
-.badge{
+.h2{
+  margin:0;
+  color:var(--w2);
   font-size:12px;
-  padding:8px 10px;
+}
+
+.stepPill{
+  padding:8px 12px;
   border-radius:999px;
-  border:1px solid rgba(255,255,255,.22);
-  background:rgba(0,0,0,.18);
-  color:rgba(255,255,255,.85);
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.18);
+  color:rgba(255,255,255,.82);
+  font-size:12px;
+  font-weight:800;
 }
 
 .stage{
-  min-height:340px;
+  min-height:380px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   gap:16px;
-  padding:10px 0 0 0;
+  padding:8px 8px 0 8px;
 }
 
 .comic{
-  background:rgba(255,255,255,.18);
-  border:1px solid rgba(255,255,255,.22);
-  padding:12px 18px;
-  border-radius:18px;
-  font-weight:900;
-  transform:rotate(-2deg);
-  animation:pop .32s ease-out both;
   position:relative;
-  max-width:94%;
+  padding:12px 16px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.20);
+  background: rgba(255,255,255,.14);
+  font-weight:950;
+  letter-spacing:.2px;
+  transform: rotate(-2deg);
+  animation: pop .32s ease-out both;
   text-align:center;
+  max-width:96%;
 }
 
 .comic:after{
   content:"";
   position:absolute;
-  left:30px;
+  left:34px;
   bottom:-12px;
   border:12px solid transparent;
-  border-top-color:rgba(255,255,255,.18);
-  filter:drop-shadow(0 8px 10px rgba(0,0,0,.25));
+  border-top-color: rgba(255,255,255,.14);
+  filter: drop-shadow(0 10px 16px rgba(0,0,0,.22));
 }
 
 @keyframes pop{
-  from{opacity:0;transform:translateY(10px) scale(.96) rotate(-2deg)}
+  from{opacity:0;transform:translateY(10px) scale(.97) rotate(-2deg)}
   to{opacity:1;transform:translateY(0) scale(1) rotate(-2deg)}
 }
 
+.sceneCard{
+  width:min(340px, 92%);
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.16);
+  background:
+    radial-gradient(280px 220px at 60% 10%, rgba(255,77,136,.20), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,.16), rgba(0,0,0,.06));
+  box-shadow: 0 18px 60px rgba(0,0,0,.42);
+  padding:16px;
+}
+
 .doorWrap{
-  width:210px;
-  height:270px;
-  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 0 2px 0;
 }
 
 .door{
-  width:100%;
-  height:100%;
+  width:220px;
+  height:280px;
   border-radius:22px;
-  background:linear-gradient(180deg, rgba(255,255,255,.26), rgba(255,255,255,.08));
-  border:1px solid rgba(255,255,255,.35);
-  box-shadow:0 18px 50px rgba(0,0,0,.55);
   position:relative;
+  border:1px solid rgba(255,255,255,.22);
+  background:
+    radial-gradient(90px 90px at 80% 45%, rgba(255,255,255,.10), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.06));
+  box-shadow: 0 20px 55px rgba(0,0,0,.55);
   overflow:hidden;
 }
 
-.panel{
+.door:before{
+  content:"";
   position:absolute;
   inset:16px;
   border-radius:16px;
-  border:1px solid rgba(255,255,255,.25);
+  border:1px solid rgba(255,255,255,.18);
+}
+
+.door:after{
+  content:"";
+  position:absolute;
+  left:14px;
+  right:14px;
+  top:42%;
+  height:1px;
+  background: rgba(255,255,255,.12);
 }
 
 .knob{
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:linear-gradient(180deg,var(--gold),var(--pink));
   position:absolute;
   right:18px;
   top:52%;
-  box-shadow:0 10px 18px rgba(0,0,0,.28);
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background: linear-gradient(180deg, var(--gold), var(--rose));
+  box-shadow: 0 10px 18px rgba(0,0,0,.28);
 }
 
-.shake{animation:shake .45s ease-in-out}
+.shake{animation: shake .45s ease-in-out}
 @keyframes shake{
   0%{transform:none}
-  20%{transform:translateX(-6px)}
-  40%{transform:translateX(6px)}
-  60%{transform:translateX(-4px)}
-  80%{transform:translateX(4px)}
+  18%{transform:translateX(-6px)}
+  36%{transform:translateX(6px)}
+  54%{transform:translateX(-4px)}
+  72%{transform:translateX(4px)}
   100%{transform:none}
 }
 
-.open{animation:openDoor .7s ease forwards}
-@keyframes openDoor{
-  to{transform:translateX(-12px) scaleX(.85); opacity:.92}
+.open{
+  animation: open2d .7s ease forwards;
+}
+@keyframes open2d{
+  to{transform:translateX(-10px) scaleX(.86); opacity:.94}
 }
 
-.sparkle{
+.spark{
   position:absolute;
-  inset:0;
+  inset:-10px;
   pointer-events:none;
-  opacity:.0;
+  opacity:0;
 }
-.sparkle.on{animation:sparkle .7s ease-out both}
-@keyframes sparkle{
+.spark.on{animation: spark 650ms ease-out both}
+@keyframes spark{
   0%{opacity:0;transform:scale(.98)}
-  30%{opacity:1}
+  22%{opacity:1}
   100%{opacity:0;transform:scale(1.02)}
+}
+
+.metaRow{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  padding-top:10px;
+  color:var(--w2);
+  font-size:12px;
+  font-weight:700;
 }
 
 .actions{
   display:flex;
   gap:10px;
-  flex-wrap:wrap;
   margin-top:14px;
+  padding:0 4px;
 }
 
-button{
+.btn{
   width:100%;
-  padding:14px 18px;
-  border-radius:16px;
+  padding:14px 16px;
   border:none;
-  background:linear-gradient(135deg,var(--pink),var(--gold));
+  border-radius:18px;
   font-weight:950;
-  color:#24051b;
   font-size:15px;
+  color:#250517;
+  background: linear-gradient(135deg, var(--pink), var(--gold));
+  box-shadow: 0 14px 30px rgba(255,77,136,.18);
   -webkit-tap-highlight-color:transparent;
 }
 
-.sub{
-  margin:8px 0 0 0;
-  color:rgba(255,255,255,.78);
-  font-size:12px;
+.small{
+  margin:10px 0 0 0;
   text-align:center;
+  color:var(--w2);
+  font-size:12px;
 }
 
 .bouquetBox{
-  width:260px;
-  max-width:92%;
-  padding:12px;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.18);
-  background:rgba(0,0,0,.12);
-  box-shadow:0 14px 40px rgba(0,0,0,.35);
+  width:min(340px, 92%);
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.16);
+  background:
+    radial-gradient(260px 180px at 50% 10%, rgba(255,204,102,.20), transparent 62%),
+    linear-gradient(180deg, rgba(0,0,0,.14), rgba(0,0,0,.06));
+  box-shadow: 0 18px 60px rgba(0,0,0,.42);
+  padding:16px;
+  animation: fadeUp .55s ease-out both;
 }
 
-.bouquetSvg{
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.bouquet{
   width:100%;
   height:auto;
   display:block;
 }
 
 .float{
-  animation:float 1.7s ease-in-out infinite;
-  transform-origin:center;
+  animation: float 1.7s ease-in-out infinite;
 }
 @keyframes float{
   50%{transform:translateY(-10px)}
 }
 
-.cardFlipWrap{
-  width:300px;
-  max-width:92%;
-  perspective:800px;
+.cardNote{
+  width:min(340px, 92%);
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.16);
+  background:
+    radial-gradient(240px 160px at 60% 10%, rgba(255,77,136,.22), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+  box-shadow: 0 18px 60px rgba(0,0,0,.46);
+  padding:16px;
+  animation: fadeUp .55s ease-out both;
 }
 
-.cardInner{
-  width:100%;
-  border-radius:22px;
-  border:1px solid rgba(255,255,255,.18);
-  background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
-  box-shadow:0 16px 55px rgba(0,0,0,.5);
-  overflow:hidden;
-  transform:translateY(6px);
-  animation:fadeUp .55s ease-out both;
-}
-
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(18px) scale(.98)}
-  to{opacity:1;transform:translateY(6px) scale(1)}
-}
-
-.cardTop{
-  padding:14px 16px;
+.sealRow{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  padding-bottom:10px;
   border-bottom:1px solid rgba(255,255,255,.14);
 }
 
-.cardSeal{
-  width:36px;height:36px;border-radius:999px;
-  background:linear-gradient(135deg, rgba(255,77,136,.95), rgba(255,204,102,.85));
-  box-shadow:0 10px 20px rgba(0,0,0,.35);
+.seal{
+  width:34px;height:34px;border-radius:999px;
   display:flex;align-items:center;justify-content:center;
-  color:#2a0520;
+  background: linear-gradient(135deg, rgba(255,77,136,.95), rgba(255,204,102,.85));
+  color:#24051b;
   font-weight:950;
-}
-
-.cardBody{
-  padding:16px 16px 18px 16px;
+  box-shadow: 0 12px 26px rgba(0,0,0,.35);
 }
 
 .script{
   font-family: ui-rounded, "Snell Roundhand", "Bradley Hand", "Segoe Script", "Apple Chancery", cursive;
-  font-weight:700;
-  font-size:28px;
-  line-height:1.1;
-  margin:6px 0 8px 0;
-  color:rgba(255,255,255,.95);
-  text-shadow:0 10px 24px rgba(0,0,0,.35);
+  font-size:30px;
+  font-weight:800;
+  margin:10px 0 8px 0;
+  line-height:1.05;
+  text-shadow: 0 14px 30px rgba(0,0,0,.30);
 }
 
 .note{
@@ -280,8 +347,9 @@ button{
 
 .from{
   margin-top:12px;
+  color:rgba(255,255,255,.90);
   font-size:14px;
-  color:rgba(255,255,255,.9);
+  font-weight:800;
 }
 
 .petals{
@@ -299,47 +367,50 @@ button{
   width:14px;
   height:10px;
   border-radius:999px 999px 999px 0;
-  background:rgba(255,77,136,.75);
-  filter:drop-shadow(0 10px 12px rgba(0,0,0,.25));
-  animation:fall linear forwards;
+  filter: drop-shadow(0 10px 12px rgba(0,0,0,.22));
+  animation: fall linear forwards;
 }
 
 @keyframes fall{
-  0%{transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:.0}
+  0%{transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:0}
   12%{opacity:.95}
-  100%{transform:translateY(120vh) translateX(40px) rotate(420deg); opacity:.0}
+  100%{transform:translateY(120vh) translateX(36px) rotate(420deg); opacity:0}
 }
 </style>
 </head>
 
 <body>
-<div class="petals" id="petals"></div>
+<div class=ambient></div>
+<div class=petals id=petals></div>
 
-<div class="shell">
-  <div class="header">
-    <h1 class="hTitle">Tiny knock knock</h1>
-    <div class="badge" id="badge">Tap to start</div>
+<div class=shell>
+  <div class=topbar>
+    <div class=brand>
+      <p class=h1>Knock knock</p>
+      <p class=h2>Tap through the tiny story</p>
+    </div>
+    <div class=stepPill id=stepPill>Step 1</div>
   </div>
 
-  <div class="stage" id="stage"></div>
+  <div class=stage id=stage></div>
 
-  <div class="actions">
-    <button id="btn"></button>
+  <div class=actions>
+    <button class=btn id=btn></button>
   </div>
 
-  <div class="sub" id="sub">If sound is blocked, tap once then try again</div>
+  <p class=small id=hint>Sound needs one tap on iPhone</p>
 </div>
 
 <script>
 const stage = document.getElementById("stage")
 const btn = document.getElementById("btn")
-const badge = document.getElementById("badge")
-const sub = document.getElementById("sub")
+const stepPill = document.getElementById("stepPill")
+const hint = document.getElementById("hint")
 const petals = document.getElementById("petals")
 
 let step = 1
-let audioReady = false
 let ac = null
+let audioReady = false
 
 render()
 
@@ -350,200 +421,202 @@ btn.addEventListener("click", async () => {
   if (step === 1) {
     knock()
     const d = document.getElementById("door")
-    const sp = document.getElementById("sparkle")
+    const s = document.getElementById("spark")
     if (d) { d.classList.remove("shake"); void d.offsetWidth; d.classList.add("shake") }
-    if (sp) { sp.classList.remove("on"); void sp.offsetWidth; sp.classList.add("on") }
-    badge.textContent = "Knock knock"
+    if (s) { s.classList.remove("on"); void s.offsetWidth; s.classList.add("on") }
     setTimeout(() => { step = 2; render() }, 320)
     return
   }
 
   if (step === 2) {
-    badge.textContent = "Who’s there"
     step = 3
     render()
     return
   }
 
   if (step === 3) {
-    badge.textContent = "Valen who"
     step = 4
     render()
     return
   }
 
   step = 1
-  badge.textContent = "Tap to start"
   stopPetals()
   render()
 })
 
 function render() {
+  stepPill.textContent = "Step " + step
+
   if (step === 1) {
     stage.innerHTML = `
-      <div class="comic">Knock knock</div>
+      <div class=comic>Knock knock</div>
 
-      <div class="doorWrap">
-        <div class="door" id="door">
-          <div class="panel"></div>
-          <div class="knob"></div>
-          <svg class="sparkle" id="sparkle" viewBox="0 0 200 260" aria-hidden="true">
-            <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2">
-              <path d="M30 60 L40 52 L46 62 L58 64 L48 72 L50 84 L40 78 L30 84 L32 72 L22 64 Z"/>
-              <path d="M150 120 L156 112 L162 122 L174 124 L164 132 L166 144 L156 138 L146 144 L148 132 L138 124 Z"/>
-              <path d="M110 40 L116 32 L122 42 L134 44 L124 52 L126 64 L116 58 L106 64 L108 52 L98 44 Z"/>
-            </g>
-          </svg>
+      <div class=sceneCard>
+        <div class=doorWrap>
+          <div class=door id=door>
+            <div class=knob></div>
+            <svg class=spark id=spark viewBox="0 0 240 300" aria-hidden=true>
+              <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2">
+                <path d="M46 78 L56 70 L62 80 L74 82 L64 90 L66 102 L56 96 L46 102 L48 90 L38 82 Z"/>
+                <path d="M172 128 L182 120 L188 130 L200 132 L190 140 L192 152 L182 146 L172 152 L174 140 L164 132 Z"/>
+                <path d="M128 54 L138 46 L144 56 L156 58 L146 66 L148 78 L138 72 L128 78 L130 66 L120 58 Z"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class=metaRow>
+          <div>tap button to answer</div>
+          <div>volume up for knock</div>
         </div>
       </div>
-
-      <div class="sub">Turn volume up for the knock</div>
     `
     btn.textContent = "Who’s there"
-    sub.textContent = "If sound is blocked, tap once then try again"
+    hint.textContent = "Sound needs one tap on iPhone"
     return
   }
 
   if (step === 2) {
     stage.innerHTML = `
-      <div class="comic">Who’s there</div>
+      <div class=comic>Who’s there</div>
 
-      <div class="doorWrap">
-        <div class="door open" id="door">
-          <div class="panel"></div>
-          <div class="knob"></div>
+      <div class=sceneCard>
+        <div class=doorWrap>
+          <div class="door open" id=door>
+            <div class=knob></div>
+          </div>
+        </div>
+
+        <div class=metaRow>
+          <div>the door opens</div>
+          <div>one more</div>
         </div>
       </div>
     `
     btn.textContent = "Valen"
-    sub.textContent = "Tap to continue"
+    hint.textContent = "Tap to continue"
     return
   }
 
   if (step === 3) {
     stage.innerHTML = `
-      <div class="comic">Valen</div>
+      <div class=comic>Valen</div>
 
-      <div class="bouquetBox float" aria-label="Bouquet picture">
+      <div class="bouquetBox float">
         ${bouquetSvg()}
+        <div class=metaRow>
+          <div>almost there</div>
+          <div>final line</div>
+        </div>
       </div>
     `
     btn.textContent = "Valen who"
-    sub.textContent = "Almost there"
+    hint.textContent = "Tap for the reveal"
     return
   }
 
   stage.innerHTML = `
-    <div class="cardFlipWrap">
-      <div class="cardInner">
-        <div class="cardTop">
-          <div style="font-weight:950;letter-spacing:.2px">For you</div>
-          <div class="cardSeal">❤</div>
-        </div>
-        <div class="cardBody">
-          <div class="script">Happy Valentine’s Day</div>
-          <p class="note">
-            Here’s a bouquet and a little chaos of petals
-            Hope your day feels warm and lucky
-          </p>
-          <div class="from">💐 from ShadPCF</div>
-        </div>
+    <div class=cardNote>
+      <div class=sealRow>
+        <div style="font-weight:950;letter-spacing:.2px">For you</div>
+        <div class=seal>❤</div>
       </div>
+
+      <div class=script>Happy Valentine’s Day</div>
+      <p class=note>
+        a bouquet just for you
+        hope today feels warm and lucky
+      </p>
+
+      <div class=from>💐 from ShadPCF</div>
     </div>
   `
   btn.textContent = "Replay"
-  sub.textContent = "Tap Replay anytime"
+  hint.textContent = "petals incoming"
   startPetals()
   celebrate()
 }
 
-function bouquetSvg() {
+function bouquetSvg(){
   return `
-  <svg class="bouquetSvg" viewBox="0 0 420 280" role="img" aria-label="Bouquet illustration">
+  <svg class=bouquet viewBox="0 0 420 280" role=img aria-label="bouquet">
     <defs>
-      <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
-        <stop offset="0" stop-color="rgba(255,77,136,0.95)"/>
-        <stop offset="1" stop-color="rgba(255,204,102,0.85)"/>
+      <linearGradient id=g1 x1=0 x2=0 y1=0 y2=1>
+        <stop offset=0 stop-color="rgba(255,77,136,.95)"/>
+        <stop offset=1 stop-color="rgba(255,204,102,.85)"/>
       </linearGradient>
-      <linearGradient id="wrap" x1="0" x2="1">
-        <stop offset="0" stop-color="rgba(255,255,255,0.18)"/>
-        <stop offset="1" stop-color="rgba(255,255,255,0.06)"/>
+      <linearGradient id=wrap x1=0 x2=1>
+        <stop offset=0 stop-color="rgba(255,255,255,.18)"/>
+        <stop offset=1 stop-color="rgba(255,255,255,.06)"/>
       </linearGradient>
     </defs>
 
-    <g transform="translate(210 150)">
-      <circle r="86" fill="rgba(255,255,255,0.05)"/>
-      <g opacity="0.98">
-        <circle cx="-55" cy="-10" r="30" fill="rgba(255,77,136,0.9)"/>
-        <circle cx="-25" cy="-48" r="26" fill="rgba(255,204,102,0.88)"/>
-        <circle cx="10" cy="-58" r="28" fill="rgba(255,77,136,0.86)"/>
-        <circle cx="45" cy="-38" r="26" fill="rgba(255,204,102,0.84)"/>
-        <circle cx="60" cy="-2" r="28" fill="rgba(255,77,136,0.84)"/>
-        <circle cx="22" cy="10" r="30" fill="rgba(255,204,102,0.82)"/>
-        <circle cx="-18" cy="18" r="30" fill="rgba(255,77,136,0.82)"/>
+    <g transform="translate(210 140)">
+      <circle r=92 fill="rgba(255,255,255,.05)"/>
+
+      <g opacity=.98>
+        <circle cx=-62 cy=-6 r=30 fill="rgba(255,77,136,.92)"/>
+        <circle cx=-28 cy=-54 r=26 fill="rgba(255,204,102,.88)"/>
+        <circle cx=10 cy=-64 r=30 fill="rgba(255,77,136,.88)"/>
+        <circle cx=48 cy=-40 r=26 fill="rgba(255,204,102,.84)"/>
+        <circle cx=66 cy=-2 r=28 fill="rgba(255,77,136,.84)"/>
+        <circle cx=26 cy=10 r=32 fill="rgba(255,204,102,.82)"/>
+        <circle cx=-20 cy=18 r=32 fill="rgba(255,77,136,.82)"/>
       </g>
 
-      <g stroke="rgba(170,255,210,0.75)" stroke-width="6" stroke-linecap="round">
-        <path d="M-30 30 C-40 62,-20 92, -6 114"/>
-        <path d="M10 28 C 6 62, 24 86, 18 118"/>
-        <path d="M40 22 C 54 56, 44 92, 28 122"/>
+      <g stroke="rgba(157,255,217,.70)" stroke-width=6 stroke-linecap=round>
+        <path d="M-34 34 C-46 68,-26 96,-10 122"/>
+        <path d="M10 32 C 8 68, 30 92, 22 128"/>
+        <path d="M44 24 C 62 58, 52 96, 32 132"/>
       </g>
 
-      <g transform="translate(0 120)">
-        <path d="M-110 0 L110 0 L70 80 L0 120 L-70 80 Z" fill="url(#wrap)" stroke="rgba(255,255,255,0.18)"/>
-        <path d="M-70 80 L0 120 L70 80" fill="none" stroke="rgba(255,255,255,0.18)"/>
-        <path d="M-35 40 L35 40" stroke="rgba(255,255,255,0.18)"/>
-        <circle cx="0" cy="52" r="14" fill="url(#g1)" opacity="0.95"/>
+      <g transform="translate(0 128)">
+        <path d="M-118 0 L118 0 L76 86 L0 128 L-76 86 Z" fill="url(#wrap)" stroke="rgba(255,255,255,.18)"/>
+        <path d="M-76 86 L0 128 L76 86" fill="none" stroke="rgba(255,255,255,.18)"/>
+        <circle cx=0 cy=54 r=14 fill="url(#g1)" opacity=.95/>
       </g>
     </g>
   </svg>
   `
 }
 
-async function ensureAudio() {
+async function ensureAudio(){
   if (audioReady) return
-  try {
+  try{
     const AudioContext = window.AudioContext || window.webkitAudioContext
     ac = new AudioContext()
     if (ac.state === "suspended") await ac.resume()
     audioReady = true
-  } catch (e) {
+  }catch(e){
     audioReady = false
   }
 }
 
-function knock() {
+function knock(){
   if (!audioReady || !ac) return
   const now = ac.currentTime
 
-  const thump = (t) => {
+  const hit = (t) => {
     const o = ac.createOscillator()
     const g = ac.createGain()
     o.type = "triangle"
-    o.frequency.setValueAtTime(220, t)
-    o.frequency.exponentialRampToValueAtTime(140, t + 0.06)
-
+    o.frequency.setValueAtTime(230, t)
+    o.frequency.exponentialRampToValueAtTime(145, t + 0.06)
     g.gain.setValueAtTime(0.0001, t)
-    g.gain.exponentialRampToValueAtTime(0.5, t + 0.01)
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.10)
-
+    g.gain.exponentialRampToValueAtTime(0.55, t + 0.01)
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.11)
     o.connect(g)
     g.connect(ac.destination)
     o.start(t)
-    o.stop(t + 0.12)
+    o.stop(t + 0.13)
   }
 
-  thump(now + 0.00)
-  thump(now + 0.12)
+  hit(now + 0.00)
+  hit(now + 0.12)
 }
 
-function tapHaptic() {
-  try {
-    if (navigator.vibrate) navigator.vibrate(12)
-  } catch (e) {}
-}
-
-function celebrate() {
+function celebrate(){
   if (!audioReady || !ac) return
   const now = ac.currentTime
   const o = ac.createOscillator()
@@ -553,33 +626,40 @@ function celebrate() {
   o.frequency.setValueAtTime(880, now + 0.08)
   o.frequency.setValueAtTime(990, now + 0.16)
   g.gain.setValueAtTime(0.0001, now)
-  g.gain.exponentialRampToValueAtTime(0.25, now + 0.02)
+  g.gain.exponentialRampToValueAtTime(0.22, now + 0.02)
   g.gain.exponentialRampToValueAtTime(0.0001, now + 0.30)
-  o.connect(g); g.connect(ac.destination)
+  o.connect(g)
+  g.connect(ac.destination)
   o.start(now)
   o.stop(now + 0.32)
 }
 
-function startPetals() {
+function tapHaptic(){
+  try{
+    if (navigator.vibrate) navigator.vibrate(12)
+  }catch(e){}
+}
+
+function startPetals(){
   petals.innerHTML = ""
   petals.classList.add("on")
 
-  const count = 18
-  for (let i = 0; i < count; i++) {
+  const count = 16
+  for (let i = 0; i < count; i++){
     const p = document.createElement("div")
     p.className = "petal"
     p.style.left = (Math.random() * 100) + "%"
-    p.style.animationDuration = (2.2 + Math.random() * 1.8) + "s"
-    p.style.animationDelay = (Math.random() * 0.4) + "s"
+    p.style.animationDuration = (2.3 + Math.random() * 1.8) + "s"
+    p.style.animationDelay = (Math.random() * 0.45) + "s"
     const size = 10 + Math.random() * 10
     p.style.width = size + "px"
     p.style.height = (size * 0.72) + "px"
-    p.style.background = Math.random() > 0.5 ? "rgba(255,77,136,.75)" : "rgba(255,204,102,.65)"
+    p.style.background = Math.random() > 0.5 ? "rgba(255,77,136,.74)" : "rgba(255,204,102,.62)"
     petals.appendChild(p)
   }
 }
 
-function stopPetals() {
+function stopPetals(){
   petals.classList.remove("on")
   petals.innerHTML = ""
 }
