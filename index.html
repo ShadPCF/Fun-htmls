@@ -7,30 +7,76 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Knock Knock</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg0:#06040a;
-      --bg1:#12081e;
-      --bg2:#2b0f3f;
-
-      --pink:#ff3d8e;
-      --gold:#ffd06b;
-
-      --text:rgba(255,255,255,.95);
-      --muted:rgba(255,255,255,.72);
-      --stroke:rgba(255,255,255,.16);
-
-      --shadow:0 26px 110px rgba(0,0,0,.65);
-      --radius:28px;
-
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
       --safeL: env(safe-area-inset-left, 0px);
       --safeR: env(safe-area-inset-right, 0px);
+
+      --radius: 28px;
+      --radius2: 22px;
+
+      --dur1: 160ms;
+      --dur2: 260ms;
+      --dur3: 420ms;
+      --dur4: 720ms;
+
+      --easeOut: cubic-bezier(.16, 1, .3, 1);
+      --easeInOut: cubic-bezier(.4, 0, .2, 1);
+
+      --fontUI: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
+      --fontTitle: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
     }
 
-    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-    html,body{ height:100%; }
+    body.theme-luxe{
+      --bg0:#06040a;
+      --bg1:#12081e;
+      --bg2:#2b0f3f;
+      --accent1:#ff3d8e;
+      --accent2:#ffd06b;
+      --surfaceA: rgba(255,255,255,.12);
+      --surfaceB: rgba(255,255,255,.05);
+      --stroke: rgba(255,255,255,.16);
+      --text: rgba(255,255,255,.95);
+      --muted: rgba(255,255,255,.72);
+      --shadow: 0 26px 110px rgba(0,0,0,.65);
+    }
+
+    body.theme-night{
+      --bg0:#03060d;
+      --bg1:#071426;
+      --bg2:#102a4a;
+      --accent1:#7cf3ff;
+      --accent2:#b4ff8d;
+      --surfaceA: rgba(255,255,255,.10);
+      --surfaceB: rgba(255,255,255,.04);
+      --stroke: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.94);
+      --muted: rgba(255,255,255,.70);
+      --shadow: 0 30px 130px rgba(0,0,0,.72);
+    }
+
+    body.theme-comic{
+      --bg0:#0a0612;
+      --bg1:#130a24;
+      --bg2:#2a0f3a;
+      --accent1:#ff4de3;
+      --accent2:#6bffde;
+      --surfaceA: rgba(255,255,255,.10);
+      --surfaceB: rgba(255,255,255,.04);
+      --stroke: rgba(255,255,255,.16);
+      --text: rgba(255,255,255,.96);
+      --muted: rgba(255,255,255,.74);
+      --shadow: 0 26px 110px rgba(0,0,0,.68);
+    }
+
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    html, body{ height:100%; }
 
     body{
       margin:0;
@@ -41,50 +87,72 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
-      color:var(--text);
       overflow:hidden;
+      font-family: var(--fontUI);
+      color: var(--text);
       background:
-        radial-gradient(1200px 800px at 10% 10%, rgba(255,61,142,.24), transparent 60%),
-        radial-gradient(900px 620px at 90% 20%, rgba(255,208,107,.16), transparent 62%),
+        radial-gradient(1200px 800px at 10% 10%, color-mix(in srgb, var(--accent1) 28%, transparent), transparent 60%),
+        radial-gradient(900px 620px at 90% 20%, color-mix(in srgb, var(--accent2) 18%, transparent), transparent 62%),
         linear-gradient(160deg, var(--bg0), var(--bg1) 40%, var(--bg2));
+      transform: translateZ(0);
     }
 
-    .aurora{
+    .bg-aurora{
       position:fixed;
-      inset:-20%;
-      z-index:-2;
-      filter: blur(28px) saturate(1.1);
+      inset:-25%;
+      z-index:-3;
       opacity:.9;
+      filter: blur(26px) saturate(1.12);
       background:
-        radial-gradient(600px 420px at 20% 30%, rgba(255,61,142,.35), transparent 60%),
-        radial-gradient(520px 420px at 75% 35%, rgba(255,208,107,.22), transparent 62%),
+        radial-gradient(620px 420px at 20% 30%, color-mix(in srgb, var(--accent1) 36%, transparent), transparent 60%),
+        radial-gradient(560px 420px at 75% 35%, color-mix(in srgb, var(--accent2) 26%, transparent), transparent 62%),
         radial-gradient(520px 460px at 55% 75%, rgba(255,255,255,.06), transparent 62%);
-      animation: drift 14s ease-in-out infinite;
+      animation: auroraDrift 16s var(--easeInOut) infinite;
       transform: translate3d(0,0,0);
+      will-change: transform;
     }
-    @keyframes drift{
+    @keyframes auroraDrift{
       0%{ transform: translate3d(-1.5%, -1.2%, 0) scale(1.02) rotate(-1deg); }
-      50%{ transform: translate3d(1.3%, 1.0%, 0) scale(1.05) rotate(1deg); }
+      50%{ transform: translate3d(1.4%, 1.1%, 0) scale(1.06) rotate(1deg); }
       100%{ transform: translate3d(-1.5%, -1.2%, 0) scale(1.02) rotate(-1deg); }
     }
 
-    .stars{
+    .bg-stars{
       position:fixed;
       inset:0;
-      z-index:-1;
+      z-index:-2;
+      opacity:.65;
       background-image:
         radial-gradient(2px 2px at 12% 22%, rgba(255,255,255,.28) 50%, transparent 52%),
         radial-gradient(1.5px 1.5px at 65% 18%, rgba(255,255,255,.22) 50%, transparent 52%),
         radial-gradient(1.8px 1.8px at 82% 44%, rgba(255,255,255,.18) 50%, transparent 52%),
         radial-gradient(1.2px 1.2px at 22% 76%, rgba(255,255,255,.18) 50%, transparent 52%),
         radial-gradient(1.6px 1.6px at 48% 64%, rgba(255,255,255,.14) 50%, transparent 52%);
-      opacity:.7;
       animation: twinkle 7s linear infinite;
     }
     @keyframes twinkle{
-      0%,100%{ opacity:.55; filter: blur(0px); }
-      50%{ opacity:.85; filter: blur(.2px); }
+      0%,100%{ opacity:.50; filter: blur(0px); }
+      50%{ opacity:.80; filter: blur(.25px); }
+    }
+
+    .bg-grain{
+      position:fixed;
+      inset:-20%;
+      z-index:-1;
+      pointer-events:none;
+      opacity:.10;
+      mix-blend-mode: overlay;
+      background:
+        repeating-radial-gradient(circle at 20% 30%, rgba(255,255,255,.14) 0 1px, transparent 1px 5px),
+        repeating-radial-gradient(circle at 70% 60%, rgba(0,0,0,.16) 0 1px, transparent 1px 6px);
+      filter: blur(.25px);
+      animation: grain 2.6s steps(2) infinite;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes grain{
+      0%{ transform: translate3d(-1%, -1%, 0); }
+      50%{ transform: translate3d(1%, 1%, 0); }
+      100%{ transform: translate3d(-1%, -1%, 0); }
     }
 
     .floaters{
@@ -100,7 +168,6 @@
       top: 110%;
       font-size: var(--s);
       opacity: 0;
-      transform: translate3d(0,0,0);
       filter: drop-shadow(0 14px 18px rgba(0,0,0,.28));
       animation: floatUp var(--d) linear infinite;
       will-change: transform, opacity;
@@ -118,18 +185,19 @@
       z-index:3;
     }
 
-    .wrap{ width: min(520px, 94vw); }
+    .wrap{ width: min(560px, 94vw); }
 
     .card{
       border-radius: var(--radius);
       border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+      background: linear-gradient(180deg, var(--surfaceA), var(--surfaceB));
       box-shadow: var(--shadow);
       overflow:hidden;
       position:relative;
       transform: translate3d(0,0,0);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      outline: 1px solid rgba(255,255,255,.04);
     }
 
     .top{
@@ -150,8 +218,8 @@
     .badge{
       width:34px; height:34px;
       border-radius:12px;
-      background: linear-gradient(135deg, rgba(255,61,142,.85), rgba(255,208,107,.8));
-      box-shadow: 0 12px 28px rgba(255,61,142,.18);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent1) 90%, white 10%), color-mix(in srgb, var(--accent2) 85%, white 15%));
+      box-shadow: 0 12px 28px color-mix(in srgb, var(--accent1) 18%, transparent);
       position:relative;
       overflow:hidden;
       flex:0 0 auto;
@@ -162,20 +230,29 @@
       inset:-40%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
       transform: rotate(25deg);
-      animation: shine 2.2s ease-in-out infinite;
-      opacity:.65;
+      opacity:.55;
+      animation: shine 2.2s var(--easeInOut) infinite;
     }
     @keyframes shine{
-      0%{ transform: translateX(-30%) rotate(25deg); }
-      50%{ transform: translateX(30%) rotate(25deg); }
-      100%{ transform: translateX(-30%) rotate(25deg); }
+      0%{ transform: translateX(-35%) rotate(25deg); }
+      50%{ transform: translateX(35%) rotate(25deg); }
+      100%{ transform: translateX(-35%) rotate(25deg); }
     }
 
-    h1{
+    .title{
       margin:0;
       font-size:16px;
-      font-weight:950;
+      font-weight:900;
       letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .subtitle{
+      margin-top:2px;
+      font-size:12px;
+      font-weight:800;
+      color: rgba(255,255,255,.68);
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -199,42 +276,170 @@
       white-space:nowrap;
     }
 
-    .dots{ display:flex; gap:6px; padding-right:2px; }
+    .stepper{
+      display:flex;
+      gap:6px;
+      padding-right:2px;
+      align-items:center;
+    }
     .dot{
       width:7px; height:7px;
       border-radius:999px;
       background: rgba(255,255,255,.18);
       border:1px solid rgba(255,255,255,.14);
+      transition: transform var(--dur2) var(--easeOut), background var(--dur2) var(--easeOut);
     }
     .dot.on{
-      background: linear-gradient(135deg, rgba(255,61,142,.95), rgba(255,208,107,.92));
-      box-shadow: 0 10px 18px rgba(255,61,142,.18);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent1) 92%, white 8%), color-mix(in srgb, var(--accent2) 92%, white 8%));
+      box-shadow: 0 10px 18px color-mix(in srgb, var(--accent1) 16%, transparent);
+      transform: scale(1.12);
     }
 
-    .stage{ padding: 12px 14px 12px 14px; }
+    .themeToggle{
+      display:flex;
+      gap:6px;
+      margin-left: 6px;
+    }
+    .chip{
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.20);
+      color: rgba(255,255,255,.88);
+      font-weight:900;
+      font-size:11px;
+      padding:7px 10px;
+      border-radius:999px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip.on{
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent1) 65%, black 35%), color-mix(in srgb, var(--accent2) 55%, black 45%));
+      border-color: rgba(255,255,255,.18);
+    }
 
-    .scene{
-      border-radius: 22px;
+    .stage{
+      padding: 12px 14px 12px 14px;
+    }
+
+    .sceneShell{
+      border-radius: var(--radius2);
       overflow:hidden;
       border:1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.55);
       box-shadow: 0 18px 70px rgba(0,0,0,.35);
       position:relative;
       transform: translate3d(0,0,0);
+      height: clamp(360px, 52vh, 460px);
     }
+
+    .view{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transform: translate3d(0, 10px, 0) scale(.995);
+      pointer-events:none;
+      transition:
+        opacity var(--dur3) var(--easeOut),
+        transform var(--dur3) var(--easeOut);
+      will-change: opacity, transform;
+    }
+    .view.active{
+      opacity:1;
+      transform: translate3d(0, 0, 0) scale(1);
+      pointer-events:auto;
+    }
+
+    .bottom{
+      padding: 12px 14px 16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .btn{
+      width:100%;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border:none;
+      cursor:pointer;
+      color:#12040c;
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing:.2px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent1) 100%, white 0%), color-mix(in srgb, var(--accent2) 100%, white 0%));
+      box-shadow: 0 16px 38px color-mix(in srgb, var(--accent1) 18%, transparent);
+      position:relative;
+      overflow:hidden;
+      transform: translate3d(0,0,0);
+    }
+    .btn:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: rotate(25deg);
+      opacity:.55;
+      animation: btnShine 1.9s var(--easeInOut) infinite;
+    }
+    @keyframes btnShine{
+      0%{ transform: translateX(-35%) rotate(25deg); }
+      50%{ transform: translateX(35%) rotate(25deg); }
+      100%{ transform: translateX(-35%) rotate(25deg); }
+    }
+    .btn:active{ transform: translate3d(0,1px,0) scale(.99); }
+
+    .btnGhost{
+      width:100%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.92);
+      font-weight: 950;
+      letter-spacing: .2px;
+      cursor:pointer;
+      transform: translate3d(0,0,0);
+    }
+    .btnGhost:active{ transform: translate3d(0,1px,0) scale(.99); }
+
+    .btnRow{
+      display:flex;
+      gap:10px;
+    }
+    .btnRow .btnGhost{ width:40%; }
+    .btnRow .btn{ width:60%; }
+
+    .note{
+      text-align:center;
+      font-size:12px;
+      color: var(--muted);
+      line-height: 1.45;
+      padding: 0 8px;
+    }
+
+    .topBack{
+      position:absolute;
+      left: 10px;
+      top: 10px;
+      z-index: 5;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.22);
+      color: rgba(255,255,255,.92);
+      font-weight: 950;
+      cursor:pointer;
+      user-select:none;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transform: translate3d(0,0,0);
+    }
+    .topBack:active{ transform: translate3d(0,1px,0) scale(.99); }
+    .topBack.hidden{ display:none; }
 
     .doorArea{
-      position:relative;
-      width:100%;
-      padding-top: 75%;
-      background: #000;
-      overflow:hidden;
-    }
-    @supports (aspect-ratio: 4 / 3){
-      .doorArea{ padding-top:0; aspect-ratio:4 / 3; }
-    }
-
-    .doorStage{
       position:absolute;
       inset:0;
       display:flex;
@@ -243,16 +448,17 @@
       background:
         radial-gradient(80% 70% at 50% 30%, rgba(255,255,255,.10), transparent 60%),
         radial-gradient(120% 100% at 50% 100%, rgba(0,0,0,.52), transparent 55%),
-        radial-gradient(140% 120% at 10% 90%, rgba(255,61,142,.14), transparent 60%),
-        radial-gradient(120% 120% at 95% 10%, rgba(255,208,107,.12), transparent 62%);
+        radial-gradient(140% 120% at 10% 90%, color-mix(in srgb, var(--accent1) 14%, transparent), transparent 60%),
+        radial-gradient(120% 120% at 95% 10%, color-mix(in srgb, var(--accent2) 12%, transparent), transparent 62%);
     }
 
     .persp{
       width: 92%;
       height: 92%;
-      perspective: 980px;
-      transform: translate3d(0,0,0);
+      perspective: 1000px;
       position:relative;
+      transform: translate3d(0,0,0);
+      will-change: transform;
     }
 
     .doorFrame{
@@ -261,7 +467,24 @@
       border-radius: 18px;
       overflow:hidden;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .fog{
+      position:absolute;
+      inset:-20%;
+      background:
+        radial-gradient(600px 380px at 25% 40%, color-mix(in srgb, var(--accent1) 10%, transparent), transparent 62%),
+        radial-gradient(520px 420px at 80% 55%, color-mix(in srgb, var(--accent2) 9%, transparent), transparent 62%);
+      filter: blur(18px);
+      opacity:.65;
+      animation: fog 9s var(--easeInOut) infinite;
+      pointer-events:none;
       transform: translate3d(0,0,0);
+    }
+    @keyframes fog{
+      0%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
+      50%{ transform: translate3d(2%, 1%, 0) scale(1.06); }
+      100%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
     }
 
     .doorPanel{
@@ -269,9 +492,11 @@
       inset:0;
       transform-style: preserve-3d;
       transform-origin: 0% 50%;
-      transform: rotateY(0deg) translate3d(0,0,0);
-      transition: transform 520ms cubic-bezier(.2,.9,.2,1), filter 520ms ease;
+      transform: rotateY(0deg);
+      transition: transform var(--dur3) var(--easeOut), filter var(--dur3) var(--easeOut);
       will-change: transform;
+      backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;
     }
 
     .doorImg{
@@ -293,52 +518,11 @@
       inset:0;
       pointer-events:none;
       background:
-        linear-gradient(90deg, rgba(255,61,142,.18), transparent 20%),
-        radial-gradient(90% 120% at 5% 50%, rgba(255,208,107,.18), transparent 55%);
+        linear-gradient(90deg, color-mix(in srgb, var(--accent1) 18%, transparent), transparent 20%),
+        radial-gradient(90% 120% at 5% 50%, color-mix(in srgb, var(--accent2) 18%, transparent), transparent 55%);
       mix-blend-mode: screen;
       opacity:.65;
       transform: translate3d(0,0,2px);
-    }
-
-    .fog{
-      position:absolute;
-      inset:-20%;
-      background:
-        radial-gradient(600px 380px at 25% 40%, rgba(255,61,142,.10), transparent 62%),
-        radial-gradient(520px 420px at 80% 55%, rgba(255,208,107,.09), transparent 62%);
-      filter: blur(18px);
-      opacity:.65;
-      animation: fog 9s ease-in-out infinite;
-      pointer-events:none;
-      transform: translate3d(0,0,0);
-    }
-    @keyframes fog{
-      0%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
-      50%{ transform: translate3d(2%, 1%, 0) scale(1.06); }
-      100%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
-    }
-
-    .knockImg{
-      position:absolute;
-      left:50%;
-      top:46%;
-      width: min(270px, 68%);
-      transform-origin: 50% 55%;
-      transform: translate3d(-50%,-50%,6px) rotate(-6deg);
-      filter: drop-shadow(0 18px 26px rgba(0,0,0,.48));
-      animation: knockWiggle 1.05s ease-in-out infinite;
-      pointer-events:none;
-      user-select:none;
-      -webkit-user-drag:none;
-      background: transparent;
-      will-change: transform;
-    }
-    @keyframes knockWiggle{
-      0%{ transform: translate3d(-50%,-50%,6px) rotate(-6deg) scale(1); }
-      25%{ transform: translate3d(-49%,-51%,6px) rotate(2deg) scale(1.01); }
-      50%{ transform: translate3d(-51%,-49%,6px) rotate(-2deg) scale(1); }
-      75%{ transform: translate3d(-49.5%,-50%,6px) rotate(3deg) scale(1.01); }
-      100%{ transform: translate3d(-50%,-50%,6px) rotate(-6deg) scale(1); }
     }
 
     .hint{
@@ -356,37 +540,8 @@
       -webkit-backdrop-filter: blur(10px);
       box-shadow: 0 16px 50px rgba(0,0,0,.25);
       pointer-events:none;
+      transition: opacity var(--dur2) var(--easeOut);
     }
-
-    .ripple{
-      position:absolute;
-      left:50%;
-      top:52%;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      border: 2px solid rgba(255,255,255,.45);
-      transform: translate3d(-50%,-50%,10px) scale(.2);
-      opacity: 0;
-      pointer-events:none;
-    }
-    .ripple.go{ animation: ripple 520ms ease-out forwards; }
-    @keyframes ripple{
-      0%{ opacity:.85; transform: translate3d(-50%,-50%,10px) scale(.2); }
-      100%{ opacity:0; transform: translate3d(-50%,-50%,10px) scale(8); }
-    }
-
-    .shake{ animation: shake 460ms cubic-bezier(.2,.9,.2,1); }
-    @keyframes shake{
-      0%{ transform: translate3d(0,0,0); }
-      20%{ transform: translate3d(-2px, 0, 0); }
-      40%{ transform: translate3d(2px, -1px, 0); }
-      60%{ transform: translate3d(-1px, 1px, 0); }
-      80%{ transform: translate3d(1px, 0, 0); }
-      100%{ transform: translate3d(0,0,0); }
-    }
-
-    .openPeek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
 
     .caption{
       position:absolute;
@@ -402,7 +557,6 @@
       background: rgba(255,255,255,.92);
       border: 1px solid rgba(0,0,0,.10);
       box-shadow: 0 18px 46px rgba(0,0,0,.30);
-      pointer-events:none;
       user-select:none;
       text-align:center;
       min-width: 140px;
@@ -420,115 +574,117 @@
       border-bottom: 1px solid rgba(0,0,0,.08);
       border-bottom-right-radius: 4px;
     }
-    .captionPop{ animation: captionPop 520ms cubic-bezier(.2,.9,.2,1) both; }
+    .captionPop{ animation: captionPop var(--dur3) var(--easeOut) both; }
     @keyframes captionPop{
       0%{ opacity:0; transform: translate3d(-50%,-40%,12px) scale(.92); }
       100%{ opacity:1; transform: translate3d(-50%,-50%,12px) scale(1); }
     }
 
-    .bottom{
-      padding: 12px 14px 16px 14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .btn{
-      width:100%;
-      padding: 14px 16px;
-      border-radius: 18px;
-      border:none;
-      cursor:pointer;
-      color:#1a0612;
-      font-size: 15px;
-      font-weight: 950;
-      letter-spacing:.2px;
-      background: linear-gradient(135deg, var(--pink), var(--gold));
-      box-shadow: 0 16px 38px rgba(255,61,142,.18);
-      position:relative;
-      overflow:hidden;
-      transform: translate3d(0,0,0);
-    }
-    .btn:before{
-      content:"";
+    .knockImg{
       position:absolute;
-      inset:-40%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
-      transform: rotate(25deg);
-      opacity:.55;
-      animation: btnShine 1.8s ease-in-out infinite;
+      left:50%;
+      top:46%;
+      width: min(270px, 68%);
+      transform-origin: 50% 55%;
+      transform: translate3d(-50%,-50%,6px) rotate(-6deg);
+      filter: drop-shadow(0 18px 26px rgba(0,0,0,.48));
+      animation: knockWiggle 1.05s var(--easeInOut) infinite;
+      pointer-events:none;
+      user-select:none;
+      -webkit-user-drag:none;
+      background: transparent;
+      will-change: transform;
     }
-    @keyframes btnShine{
-      0%{ transform: translateX(-35%) rotate(25deg); }
-      50%{ transform: translateX(35%) rotate(25deg); }
-      100%{ transform: translateX(-35%) rotate(25deg); }
-    }
-    .btn:active{ transform: translate3d(0,1px,0) scale(.99); }
-
-    .btnGhost{
-      width:100%;
-      padding: 12px 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.18);
-      color: rgba(255,255,255,.92);
-      font-weight: 950;
-      letter-spacing: .2px;
-      cursor:pointer;
-    }
-    .btnGhost:active{ transform: translate3d(0,1px,0) scale(.99); }
-
-    .note{
-      text-align:center;
-      font-size:12px;
-      color: var(--muted);
-      line-height: 1.45;
-      padding: 0 8px;
+    @keyframes knockWiggle{
+      0%{ transform: translate3d(-50%,-50%,6px) rotate(-6deg) scale(1); }
+      25%{ transform: translate3d(-49%,-51%,6px) rotate(2deg) scale(1.01); }
+      50%{ transform: translate3d(-51%,-49%,6px) rotate(-2deg) scale(1); }
+      75%{ transform: translate3d(-49.5%,-50%,6px) rotate(3deg) scale(1.01); }
+      100%{ transform: translate3d(-50%,-50%,6px) rotate(-6deg) scale(1); }
     }
 
-    .reveal{
-      padding: 26px 18px 22px 18px;
-      min-height: 360px;
+    .ripple{
+      position:absolute;
+      left:50%;
+      top:52%;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,.45);
+      transform: translate3d(-50%,-50%,10px) scale(.2);
+      opacity: 0;
+      pointer-events:none;
+    }
+    .ripple.go{ animation: ripple var(--dur3) var(--easeOut) forwards; }
+    @keyframes ripple{
+      0%{ opacity:.85; transform: translate3d(-50%,-50%,10px) scale(.2); }
+      100%{ opacity:0; transform: translate3d(-50%,-50%,10px) scale(8); }
+    }
+
+    .shake{ animation: shake 460ms var(--easeOut); }
+    @keyframes shake{
+      0%{ transform: translate3d(0,0,0); }
+      20%{ transform: translate3d(-2px, 0, 0); }
+      40%{ transform: translate3d(2px, -1px, 0); }
+      60%{ transform: translate3d(-1px, 1px, 0); }
+      80%{ transform: translate3d(1px, 0, 0); }
+      100%{ transform: translate3d(0,0,0); }
+    }
+
+    .peek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
+    .wideOpen .doorPanel{ transform: rotateY(-28deg) translate3d(-2.2%,0,0); }
+
+    .goldLight{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:0;
+      transition: opacity var(--dur3) var(--easeOut);
+      background:
+        radial-gradient(60% 70% at 18% 50%, color-mix(in srgb, var(--accent2) 26%, transparent), transparent 65%),
+        linear-gradient(90deg, color-mix(in srgb, var(--accent2) 16%, transparent), transparent 40%);
+      mix-blend-mode: screen;
+      transform: translate3d(0,0,3px);
+    }
+    .wideOpen .goldLight{ opacity:.85; }
+
+    .center{
+      position:absolute;
+      inset:0;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
-      position:relative;
-      overflow:hidden;
+      padding: 24px 18px;
       background:
-        radial-gradient(300px 220px at 50% 12%, rgba(255,208,107,.22), transparent 62%),
-        radial-gradient(420px 260px at 10% 80%, rgba(255,61,142,.16), transparent 60%),
+        radial-gradient(300px 220px at 50% 12%, color-mix(in srgb, var(--accent2) 22%, transparent), transparent 62%),
+        radial-gradient(420px 260px at 10% 80%, color-mix(in srgb, var(--accent1) 16%, transparent), transparent 60%),
         radial-gradient(420px 260px at 90% 75%, rgba(255,255,255,.06), transparent 60%),
         linear-gradient(180deg, rgba(0,0,0,.14), rgba(0,0,0,.06));
     }
 
-    .gift{
-      width: min(410px, 96%);
+    .panel{
+      width: min(420px, 96%);
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,.14);
       background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
       box-shadow: 0 20px 80px rgba(0,0,0,.35);
       padding: 18px 16px 18px 16px;
       position:relative;
-      transform: translate3d(0,0,0);
     }
 
-    .emoji{
-      font-size: 58px;
-      filter: drop-shadow(0 18px 26px rgba(0,0,0,.35));
-      animation: pop 900ms cubic-bezier(.2,.9,.2,1) both;
-    }
-    @keyframes pop{
-      0%{ transform: translate3d(0,16px,0) scale(.85); opacity:0; }
-      100%{ transform: translate3d(0,0,0) scale(1); opacity:1; }
-    }
-
-    .big{
-      margin-top: 10px;
-      font-size: 22px;
-      font-weight: 1000;
+    .headline{
+      font-family: var(--fontTitle);
+      font-weight: 800;
       letter-spacing: .2px;
-      line-height:1.15;
+      font-size: 28px;
+      line-height: 1.05;
+      margin: 6px 0 0 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.95), color-mix(in srgb, var(--accent2) 55%, white 45%));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 18px 46px rgba(0,0,0,.18);
     }
 
     .sub{
@@ -536,20 +692,18 @@
       font-size: 14px;
       color: rgba(255,255,255,.80);
       line-height: 1.45;
+      font-weight: 600;
     }
 
-    .type{ display:inline-block; position:relative; padding-right: 8px; }
-    .caret{
-      display:inline-block;
-      width: 10px;
-      height: 18px;
-      margin-left: 4px;
-      border-radius: 4px;
-      background: rgba(255,255,255,.75);
-      vertical-align: -3px;
-      animation: blink 900ms step-end infinite;
+    .emoji{
+      font-size: 58px;
+      filter: drop-shadow(0 18px 26px rgba(0,0,0,.35));
+      animation: pop 900ms var(--easeOut) both;
     }
-    @keyframes blink{ 50%{ opacity:0; } }
+    @keyframes pop{
+      0%{ transform: translate3d(0,16px,0) scale(.85); opacity:0; }
+      100%{ transform: translate3d(0,0,0) scale(1); opacity:1; }
+    }
 
     .stack{
       display:flex;
@@ -558,49 +712,116 @@
       margin-top: 14px;
     }
 
-    .gifWrap{
+    .choiceGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .fieldHint{
+      font-size: 12px;
+      color: rgba(255,255,255,.78);
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    .media{
       margin-top: 12px;
       border-radius: 18px;
       overflow:hidden;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.18);
       box-shadow: 0 18px 60px rgba(0,0,0,.30);
+      position:relative;
+      aspect-ratio: 1 / 1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-    .gifWrap img{
-      display:block;
+    .media img{
       width:100%;
-      height:auto;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      opacity:0;
+      transform: scale(1.01);
+      transition: opacity var(--dur3) var(--easeOut);
+    }
+    .media.loaded img{ opacity:1; }
+    .skeleton{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(110deg, rgba(255,255,255,.07) 8%, rgba(255,255,255,.14) 18%, rgba(255,255,255,.07) 33%);
+      background-size: 200% 100%;
+      animation: shimmer 1.1s linear infinite;
+      opacity:.9;
+    }
+    @keyframes shimmer{
+      0%{ background-position: 200% 0; }
+      100%{ background-position: -200% 0; }
+    }
+    .media.loaded .skeleton{ display:none; }
+    .mediaError{
+      padding: 14px;
+      text-align:center;
+      font-weight: 900;
+      color: rgba(255,255,255,.86);
+      line-height:1.3;
+    }
+    .mediaError a{
+      color: rgba(255,255,255,.92);
     }
 
-    .packetClick{
+    .packetButton{
       width:100%;
       border:none;
-      padding:0;
       background:transparent;
+      padding:0;
       cursor:pointer;
-      display:block;
     }
 
-    .fadeIn{ animation: fadeIn 420ms ease both; }
-    @keyframes fadeIn{
-      from{ opacity:0; transform: translate3d(0,8px,0) scale(.995); }
-      to{ opacity:1; transform: translate3d(0,0,0) scale(1); }
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom: calc(18px + var(--safeB));
+      transform: translate3d(-50%, 20px, 0);
+      opacity:0;
+      z-index: 10;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.26);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: rgba(255,255,255,.92);
+      font-weight: 900;
+      transition: opacity var(--dur2) var(--easeOut), transform var(--dur2) var(--easeOut);
+      pointer-events:none;
+      max-width: 90vw;
+      text-align:center;
+    }
+    .toast.show{
+      opacity:1;
+      transform: translate3d(-50%, 0, 0);
     }
 
     @media (prefers-reduced-motion: reduce){
-      .aurora, .stars, .fog, .knockImg, .floater, .btn:before { animation:none !important; }
-      .doorPanel{ transition:none !important; }
-      .fadeIn{ animation:none !important; }
+      .bg-aurora, .bg-stars, .bg-grain, .fog, .knockImg, .floater, .btn:before, .skeleton { animation:none !important; }
+      .doorPanel, .view{ transition:none !important; }
     }
   </style>
 </head>
 
-<body>
-  <div class="aurora"></div>
-  <div class="stars"></div>
+<body class="theme-luxe">
+  <div class="bg-aurora"></div>
+  <div class="bg-stars"></div>
+  <div class="bg-grain"></div>
 
   <div class="floaters" id="floaters" aria-hidden="true"></div>
   <canvas id="confetti" aria-hidden="true"></canvas>
+  <div class="toast" id="toast"></div>
 
   <div class="wrap">
     <div class="card" id="card">
@@ -608,348 +829,563 @@
         <div class="brand">
           <div class="badge"></div>
           <div style="min-width:0">
-            <h1>Knock knock</h1>
-            <div style="font-size:12px;color:rgba(255,255,255,.68);font-weight:800;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-              tap the door for extra drama
-            </div>
+            <div class="title">Knock knock</div>
+            <div class="subtitle" id="subtitle">tap the door for extra drama</div>
           </div>
         </div>
 
         <div class="meta">
-          <div class="dots" id="dots" aria-hidden="true">
-            <div class="dot on"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+          <div class="stepper" id="stepper" aria-hidden="true">
+            <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           </div>
-          <div class="pill" id="stepPill">Step 1</div>
+          <div class="pill" id="pill">Step 1</div>
+          <div class="themeToggle" title="theme">
+            <div class="chip on" id="tLuxe">Luxe</div>
+            <div class="chip" id="tNight">Night</div>
+            <div class="chip" id="tComic">Comic</div>
+          </div>
         </div>
       </div>
 
-      <div class="stage" id="stage"></div>
-      <div class="bottom" id="bottom"></div>
+      <div class="stage">
+        <div class="sceneShell" id="shell">
+          <div class="topBack hidden" id="topBack">← Back</div>
+
+          <!-- View 1 Door with knock -->
+          <section class="view active" id="v1">
+            <div class="doorArea">
+              <div class="persp" id="persp1">
+                <div class="doorFrame">
+                  <div class="fog"></div>
+                  <div class="doorPanel" id="doorPanel1">
+                    <img class="doorImg" src="door.jpeg" alt="door" />
+                    <div class="edgeGlow"></div>
+                  </div>
+                  <div class="goldLight"></div>
+                </div>
+
+                <img class="knockImg" id="knockImg" src="IMG_0143.png" alt="knock knock" />
+                <div class="ripple" id="ripple1"></div>
+                <div class="hint" id="hint1">tap the door</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- View 2 Door with Valen caption and choices -->
+          <section class="view" id="v2">
+            <div class="doorArea">
+              <div class="persp peek" id="persp2">
+                <div class="doorFrame">
+                  <div class="fog"></div>
+                  <div class="doorPanel" id="doorPanel2">
+                    <img class="doorImg" src="door.jpeg" alt="door" />
+                    <div class="edgeGlow"></div>
+                  </div>
+                  <div class="goldLight"></div>
+                </div>
+
+                <div class="caption captionPop" id="valenCap">Valen</div>
+                <div class="ripple" id="ripple2"></div>
+                <div class="hint" id="hint2">pick the right one</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- View 3 Valentine reveal -->
+          <section class="view" id="v3">
+            <div class="center" id="revealTap">
+              <div class="panel">
+                <div class="emoji">💐</div>
+                <div class="headline" id="headline">Happy Valentine’s Day</div>
+                <div class="sub" id="sub3">sending you love and good vibes<br>tap anywhere for confetti</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- View 4 Test your love -->
+          <section class="view" id="v4">
+            <div class="center">
+              <div class="panel">
+                <div class="headline" style="font-size:26px">Test your love</div>
+                <div class="sub">pick one</div>
+                <div class="stack">
+                  <button class="btnGhost" id="love1">I love shad</button>
+                  <button class="btnGhost" id="love2">I love shad heaps</button>
+                  <button class="btn" id="love3">I love shad the most</button>
+                </div>
+                <div class="fieldHint">you can always go back</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- View 5 Result -->
+          <section class="view" id="v5">
+            <div class="center" id="resultTap">
+              <div class="panel">
+                <div class="headline" id="resultTitle" style="font-size:26px">internet hug!</div>
+                <div class="sub" id="resultSub">tap for confetti</div>
+
+                <div class="media" id="resultMedia" style="aspect-ratio: 1 / 1">
+                  <div class="skeleton"></div>
+                  <img id="resultImg" alt="result gif" loading="lazy" decoding="async">
+                </div>
+
+                <div class="fieldHint">back to test any time</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- View 6 Lucky packet -->
+          <section class="view" id="v6">
+            <div class="center">
+              <div class="panel">
+                <div class="headline" style="font-size:26px">LUCKY!</div>
+                <div class="sub">tap the red packet</div>
+
+                <button class="packetButton" id="packetBtn" aria-label="red packet">
+                  <div class="media" id="packetMedia" style="aspect-ratio: 1 / 1">
+                    <div class="skeleton"></div>
+                    <img id="packetImg" alt="red packet gif" loading="lazy" decoding="async">
+                  </div>
+                </button>
+
+                <div class="fieldHint">this one is special</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- View 7 Letter -->
+          <section class="view" id="v7">
+            <div class="center">
+              <div class="panel">
+                <div class="emoji" style="font-size:42px">💌</div>
+                <div class="headline" style="font-size:22px; margin-top:10px">for you</div>
+                <div class="sub" style="text-align:left">
+                  I love you so much, kindest soul to ever to come in my life. I miss you have a blast and come back to my arms quick<br><br>
+                  Love Yours,<br>
+                  Shad<br><br>
+                  <b>P.S Happy Early Chinese new Year. Click the button</b>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- View 8 Final -->
+          <section class="view" id="v8">
+            <div class="center">
+              <div class="panel">
+                <div class="emoji">🧧</div>
+                <div class="headline" style="font-size:26px">Check your account for red packets!</div>
+                <div class="sub">happy early chinese new year</div>
+                <div class="fieldHint">share it if you want</div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+      <div class="bottom" id="bottom">
+        <div class="btnRow" id="row">
+          <button class="btnGhost" id="backBtn" style="display:none">Back</button>
+          <button class="btn" id="nextBtn">Who’s there</button>
+        </div>
+        <div class="note" id="note">tap the button</div>
+      </div>
     </div>
   </div>
 
   <script>
-    const stage = document.getElementById("stage")
-    const bottom = document.getElementById("bottom")
-    const stepPill = document.getElementById("stepPill")
-    const dots = document.getElementById("dots")
-    const card = document.getElementById("card")
-
-    let step = 1
-    let autoKnockTimer = null
-    let audioReady = false
-    let ctx = null
-
-    let lastResult = null
-
+    // assets
     const DOOR_SRC = "door.jpeg"
     const KNOCK_SRC = "IMG_0143.png"
 
-    // direct media URLs (no tenor script needed)
+    // media urls
     const GIF_HUG = "https://media1.tenor.com/m/zIacwDB2Mr0AAAAd/huhhh.gif"
     const GIF_KISS = "https://media1.tenor.com/m/5H7rmBUfr5AAAAAd/love-you.gif"
     const GIF_PACKET = "https://media1.tenor.com/m/T_DRG_1RTIUAAAAd/cny2020-chinese-new-year.gif"
 
+    // dom
+    const body = document.body
+    const pill = document.getElementById("pill")
+    const subtitle = document.getElementById("subtitle")
+    const stepper = document.getElementById("stepper")
+    const dots = stepper.querySelectorAll(".dot")
+
+    const topBack = document.getElementById("topBack")
+
+    const views = Array.from(document.querySelectorAll(".view"))
+    const bottom = document.getElementById("bottom")
+    const nextBtn = document.getElementById("nextBtn")
+    const backBtn = document.getElementById("backBtn")
+    const note = document.getElementById("note")
+    const row = document.getElementById("row")
+
+    const card = document.getElementById("card")
+    const toast = document.getElementById("toast")
+
+    // door view 1
+    const persp1 = document.getElementById("persp1")
+    const doorPanel1 = document.getElementById("doorPanel1")
+    const ripple1 = document.getElementById("ripple1")
+    const hint1 = document.getElementById("hint1")
+    const knockImg = document.getElementById("knockImg")
+
+    // door view 2
+    const persp2 = document.getElementById("persp2")
+    const doorPanel2 = document.getElementById("doorPanel2")
+    const ripple2 = document.getElementById("ripple2")
+    const hint2 = document.getElementById("hint2")
+
+    // reveal tap
+    const revealTap = document.getElementById("revealTap")
+
+    // love buttons
+    const love1 = document.getElementById("love1")
+    const love2 = document.getElementById("love2")
+    const love3 = document.getElementById("love3")
+
+    // result
+    const resultTap = document.getElementById("resultTap")
+    const resultTitle = document.getElementById("resultTitle")
+    const resultImg = document.getElementById("resultImg")
+    const resultMedia = document.getElementById("resultMedia")
+
+    // packet
+    const packetBtn = document.getElementById("packetBtn")
+    const packetImg = document.getElementById("packetImg")
+    const packetMedia = document.getElementById("packetMedia")
+
+    // theme
+    const tLuxe = document.getElementById("tLuxe")
+    const tNight = document.getElementById("tNight")
+    const tComic = document.getElementById("tComic")
+
+    // state
+    let step = 1
+    let historyStack = [1]
+    let lastLove = null // "hug" | "kisses"
+    let autoKnockTimer = null
+    let knockTimes = []
+    let audioReady = false
+    let ctx = null
+
+    // init
     preload([DOOR_SRC, KNOCK_SRC, GIF_HUG, GIF_KISS, GIF_PACKET])
-    render()
+    makeWhiteTransparent(knockImg)
+    stabilizeKnock(knockImg)
+    setupTheme()
+    setupDoors()
+    setupConfetti()
+    setupUI()
+    setStep(1, false)
 
-    function setDots(){
-      const all = dots.querySelectorAll(".dot")
-      all.forEach((el, i) => el.classList.toggle("on", i === (step-1)))
+    function setupTheme(){
+      const set = (name) => {
+        body.classList.remove("theme-luxe","theme-night","theme-comic")
+        body.classList.add(name)
+
+        ;[tLuxe,tNight,tComic].forEach(x => x.classList.remove("on"))
+        if (name === "theme-luxe") tLuxe.classList.add("on")
+        if (name === "theme-night") tNight.classList.add("on")
+        if (name === "theme-comic") tComic.classList.add("on")
+
+        popToast("theme changed")
+      }
+
+      tLuxe.onclick = () => set("theme-luxe")
+      tNight.onclick = () => set("theme-night")
+      tComic.onclick = () => set("theme-comic")
     }
 
-    function doorScene(includeKnock, captionText){
-      const cap = captionText ? `<div class="caption captionPop">${captionText}</div>` : ``
-      return `
-        <div class="scene fadeIn">
-          <div class="doorArea">
-            <div class="doorStage">
-              <div class="persp" id="persp">
-                <div class="doorFrame">
-                  <div class="fog"></div>
-                  <div class="doorPanel" id="doorPanel">
-                    <img class="doorImg" src="${DOOR_SRC}" alt="door" />
-                    <div class="edgeGlow"></div>
-                  </div>
-                </div>
+    function setupUI(){
+      nextBtn.onclick = () => onNext()
+      backBtn.onclick = () => onBack()
+      topBack.onclick = () => onBack()
 
-                ${cap}
-                ${includeKnock ? `<img class="knockImg" id="knockImg" src="${KNOCK_SRC}" alt="knock knock" />` : ``}
-                <div class="ripple" id="ripple"></div>
-              </div>
+      revealTap.addEventListener("click", () => {
+        sparkleSound()
+        confettiBurst(130)
+        spawnFloaters(10)
+      }, { passive:true })
 
-              <div class="hint" id="hint">tap the door</div>
-            </div>
-          </div>
-        </div>
-      `
+      resultTap.addEventListener("click", () => {
+        sparkleSound()
+        confettiBurst(90)
+        spawnFloaters(8)
+      }, { passive:true })
+
+      // valen choices are handled inside step 2 via buttons in bottom
+      love1.onclick = () => { lastLove = "hug"; setStep(5) }
+      love2.onclick = () => { lastLove = "kisses"; setStep(5) }
+      love3.onclick = () => { setStep(6) }
+
+      packetBtn.onclick = () => setStep(7)
+
+      // prime audio on first user interaction for iOS
+      window.addEventListener("pointerdown", () => { ensureAudio() }, { passive:true, once:true })
     }
 
-    function revealScene(){
-      return `
-        <div class="scene reveal fadeIn" id="reveal">
-          <div class="gift">
-            <div class="emoji">💐</div>
-            <div class="big"><span class="type" id="typeText"></span><span class="caret"></span></div>
-            <div class="sub">sending you love and good vibes<br/>tap anywhere for confetti</div>
-          </div>
-        </div>
-      `
+    function onNext(){
+      if (step === 1) return setStep(2)
+      if (step === 3) return setStep(4)
+      if (step === 5) return setStep(4)
+      if (step === 7) return setStep(8)
+      if (step === 8) return copyLink()
     }
 
-    function testScene(){
-      return `
-        <div class="scene reveal fadeIn">
-          <div class="gift">
-            <div class="big">Test your love</div>
-            <div class="sub">pick one</div>
-            <div class="stack">
-              <button class="btnGhost" id="b1">I love shad</button>
-              <button class="btnGhost" id="b2">I love shad heaps</button>
-              <button class="btn" id="b3">I love shad the most</button>
-            </div>
-          </div>
-        </div>
-      `
+    function onBack(){
+      if (historyStack.length <= 1) return
+      historyStack.pop()
+      const prev = historyStack[historyStack.length - 1]
+      setStep(prev, false)
     }
 
-    function gifEmbed(url, alt){
-      return `
-        <div class="gifWrap">
-          <img src="${url}" alt="${alt}" loading="lazy" decoding="async"
-               onerror="this.closest('.gifWrap').innerHTML='<div style=&quot;padding:14px;color:rgba(255,255,255,.8);font-weight:900;text-align:center&quot;>gif failed to load<br><a style=&quot;color:rgba(255,255,255,.92)&quot; href=&quot;${url}&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>open gif</a></div>'" />
-        </div>
-      `
+    function pushHistory(s){
+      if (historyStack[historyStack.length - 1] !== s) historyStack.push(s)
     }
 
-    function resultScene(kind){
-      const title = kind === "hug" ? "internet hug!" : "Virtual Kisses"
-      const embed = kind === "hug"
-        ? gifEmbed(GIF_HUG, "hug")
-        : gifEmbed(GIF_KISS, "kiss")
+    function setStep(s, push=true){
+      step = s
+      if (push) pushHistory(s)
 
-      return `
-        <div class="scene reveal fadeIn" id="resultTap">
-          <div class="gift">
-            <div class="big">${title}</div>
-            <div class="sub">tap for confetti</div>
-            ${embed}
-          </div>
-        </div>
-      `
-    }
+      // stepper and pill
+      pill.textContent = "Step " + step
+      dots.forEach((d, i) => d.classList.toggle("on", i === (step - 1)))
 
-    function packetScene(){
-      return `
-        <div class="scene reveal fadeIn">
-          <div class="gift">
-            <div class="big">LUCKY!</div>
-            <div class="sub">tap the red packet</div>
+      // back visibility
+      const canBack = historyStack.length > 1
+      backBtn.style.display = canBack ? "" : "none"
+      topBack.classList.toggle("hidden", !canBack)
 
-            <button class="packetClick" id="packet" aria-label="red packet">
-              ${gifEmbed(GIF_PACKET, "red packet")}
-            </button>
-          </div>
-        </div>
-      `
-    }
+      // views
+      views.forEach(v => v.classList.remove("active"))
+      const v = document.getElementById("v" + step)
+      if (v) v.classList.add("active")
 
-    function letterScene(){
-      return `
-        <div class="scene reveal fadeIn">
-          <div class="gift">
-            <div class="big" style="font-size:18px">💌</div>
-            <div class="sub" style="text-align:left;margin-top:12px">
-              I love you so much, kindest soul to ever to come in my life. I miss you have a blast and come back to my arms quick.<br/><br/>
-              Love Yours,<br/>
-              Shad<br/><br/>
-              <b>P.S Happy Early Chinese new Year. Click the button</b>
-            </div>
-
-            <div class="stack">
-              <button class="btn" id="toFinal">Click the button</button>
-            </div>
-          </div>
-        </div>
-      `
-    }
-
-    function finalScene(){
-      return `
-        <div class="scene reveal fadeIn">
-          <div class="gift">
-            <div class="emoji">🧧</div>
-            <div class="big">Check your account for red packets!</div>
-            <div class="sub">happy early chinese new year</div>
-          </div>
-        </div>
-      `
-    }
-
-    function controlsHTML(opts){
-      const backBtn = opts.back ? `<button class="btnGhost" id="backBtn">Back</button>` : ``
-      const primary = opts.primaryText ? `<button class="btn" id="${opts.primaryId || "primaryBtn"}">${opts.primaryText}</button>` : ``
-      const note = `<div class="note">${opts.note || ""}</div>`
-      return `${primary}${backBtn}${note}`
-    }
-
-    function render(){
-      stepPill.textContent = "Step " + step
-      setDots()
+      // cleanup
       clearAutoKnock()
 
+      // per step config
       if (step === 1){
-        stage.innerHTML = doorScene(true, "")
-        bottom.innerHTML = controlsHTML({
-          primaryText: "Who’s there",
-          primaryId: "nextBtn",
-          note: "bonus points if you tap the door"
-        })
+        subtitle.textContent = "tap the door for extra drama"
+        nextBtn.textContent = "Who’s there"
+        note.textContent = "tap the button"
+        row.style.display = "flex"
+        backBtn.style.display = "none"
+        topBack.classList.add("hidden")
 
-        wireDoorInteractions({ autoKnock:true, peek:false })
-        const k = document.getElementById("knockImg")
-        makeWhiteTransparent(k)
-        stabilizeKnock(k)
-
-        document.getElementById("nextBtn").onclick = () => { step = 2; render() }
+        startAutoKnock()
+        setDoorMode(persp1, doorPanel1, "normal")
         return
       }
 
       if (step === 2){
-        stage.innerHTML = doorScene(false, "Valen")
-        bottom.innerHTML = controlsHTML({
-          primaryText: "Valen who",
-          primaryId: "nextBtn",
-          note: "tap the door for a cheeky peek",
-          back: true
-        })
+        subtitle.textContent = "pick the right one"
+        note.textContent = "only one is correct"
+        row.style.display = "flex"
 
-        wireDoorInteractions({ autoKnock:false, peek:true })
+        // bottom becomes choice buttons for this step
+        nextBtn.textContent = "Valen who"
+        backBtn.style.display = historyStack.length > 1 ? "" : "none"
+        setDoorMode(persp2, doorPanel2, "peek")
 
-        document.getElementById("nextBtn").onclick = () => { step = 3; render() }
-        document.getElementById("backBtn").onclick = () => { step = 1; render() }
+        // override next to validate selection vibe
+        nextBtn.onclick = () => {
+          // correct
+          sparkleSound()
+          confettiBurst(110)
+          spawnFloaters(10)
+          setStep(3)
+        }
+
+        // add 2 fake options by swapping row inner buttons without rebuilding the whole app
+        row.innerHTML = `
+          <button class="btnGhost" id="w1">Valen what</button>
+          <button class="btnGhost" id="w2">Valen where</button>
+          <button class="btn" id="right">Valen who</button>
+        `
+        const w1 = document.getElementById("w1")
+        const w2 = document.getElementById("w2")
+        const right = document.getElementById("right")
+
+        const wrong = () => {
+          bumpCard()
+          hint2.style.opacity = "1"
+          hint2.textContent = "nah try again"
+          knockSound()
+          shakeEl(persp2)
+          popToast("wrong one")
+        }
+
+        w1.onclick = wrong
+        w2.onclick = wrong
+        right.onclick = () => {
+          sparkleSound()
+          confettiBurst(110)
+          spawnFloaters(10)
+          setStep(3)
+        }
+
+        // top back needs to work
+        topBack.onclick = () => onBack()
+
         return
       }
 
+      // restore row layout after step 2
+      row.innerHTML = `
+        <button class="btnGhost" id="backBtn">Back</button>
+        <button class="btn" id="nextBtn">Next</button>
+      `
+      // rebind dom refs after row swap
+      const backBtn2 = document.getElementById("backBtn")
+      const nextBtn2 = document.getElementById("nextBtn")
+      backBtn2.onclick = () => onBack()
+      nextBtn2.onclick = () => onNext()
+
+      // update global references used by other logic
+      // keep variables in sync
+      window.__backBtn = backBtn2
+      window.__nextBtn = nextBtn2
+
       if (step === 3){
-        stage.innerHTML = revealScene()
-        bottom.innerHTML = controlsHTML({
-          primaryText: "Click to Test your love",
-          primaryId: "toTest",
-          note: "tap the card for confetti",
-          back: true
-        })
-
-        typewriter(document.getElementById("typeText"), "Happy Valentine’s Day", 28)
-        startConfettiBurst(160)
+        subtitle.textContent = "valentine reveal"
+        nextBtn2.textContent = "Click to Test your love"
+        note.textContent = "tap the card for confetti"
+        confettiBurst(160)
+        sparkleSound()
         spawnFloaters(12)
-
-        document.getElementById("reveal").addEventListener("click", () => {
-          startConfettiBurst(120)
-          spawnFloaters(10)
-        }, { passive:true })
-
-        document.getElementById("toTest").onclick = () => { step = 4; render() }
-        document.getElementById("backBtn").onclick = () => { step = 2; render() }
         return
       }
 
       if (step === 4){
-        stage.innerHTML = testScene()
-        bottom.innerHTML = controlsHTML({
-          primaryText: "",
-          note: "you can always go back",
-          back: true
-        })
+        subtitle.textContent = "choose your answer"
+        nextBtn2.style.display = "none"
+        backBtn2.style.display = historyStack.length > 1 ? "" : "none"
+        note.textContent = "pick one of the three buttons"
 
-        document.getElementById("b1").onclick = () => { lastResult = "hug"; step = 5; render() }
-        document.getElementById("b2").onclick = () => { lastResult = "kisses"; step = 5; render() }
-        document.getElementById("b3").onclick = () => { step = 6; render() }
-        document.getElementById("backBtn").onclick = () => { step = 3; render() }
+        // show only back in the row
+        row.style.display = "flex"
+        backBtn2.style.width = "100%"
         return
       }
 
       if (step === 5){
-        stage.innerHTML = resultScene(lastResult || "hug")
-        bottom.innerHTML = controlsHTML({
-          primaryText: "Back to test",
-          primaryId: "backToTest",
-          note: "tap anywhere for confetti",
-          back: true
-        })
+        subtitle.textContent = "result"
+        nextBtn2.style.display = ""
+        backBtn2.style.display = ""
+        nextBtn2.textContent = "Back to test"
+        note.textContent = "tap anywhere for confetti"
 
-        document.getElementById("resultTap").addEventListener("click", () => {
-          startConfettiBurst(80)
-          spawnFloaters(8)
-        }, { passive:true })
+        const kind = lastLove || "hug"
+        const title = kind === "hug" ? "internet hug!" : "Virtual Kisses"
+        const src = kind === "hug" ? GIF_HUG : GIF_KISS
 
-        document.getElementById("backToTest").onclick = () => { step = 4; render() }
-        document.getElementById("backBtn").onclick = () => { step = 4; render() }
+        resultTitle.textContent = title
+        loadMedia(resultMedia, resultImg, src)
+
+        // highlight selection on test view when back
+        if (kind === "hug"){
+          love1.style.borderColor = "rgba(255,255,255,.28)"
+          love2.style.borderColor = "rgba(255,255,255,.18)"
+        } else {
+          love2.style.borderColor = "rgba(255,255,255,.28)"
+          love1.style.borderColor = "rgba(255,255,255,.18)"
+        }
+
+        // next goes back to test
+        nextBtn2.onclick = () => setStep(4)
         return
       }
 
       if (step === 6){
-        stage.innerHTML = packetScene()
-        bottom.innerHTML = controlsHTML({
-          primaryText: "Back to test",
-          primaryId: "backToTest",
-          note: "tap the packet",
-          back: true
-        })
+        subtitle.textContent = "lucky path"
+        nextBtn2.style.display = "none"
+        backBtn2.style.display = ""
+        backBtn2.style.width = "100%"
+        note.textContent = "tap the packet gif"
 
-        document.getElementById("packet").onclick = () => { step = 7; render() }
-        document.getElementById("backToTest").onclick = () => { step = 4; render() }
-        document.getElementById("backBtn").onclick = () => { step = 4; render() }
+        loadMedia(packetMedia, packetImg, GIF_PACKET)
         return
       }
 
       if (step === 7){
-        stage.innerHTML = letterScene()
-        bottom.innerHTML = controlsHTML({
-          primaryText: "Back",
-          primaryId: "backToPacket",
-          note: "almost there",
-          back: false
-        })
+        subtitle.textContent = "message"
+        nextBtn2.style.display = ""
+        backBtn2.style.display = ""
+        nextBtn2.textContent = "Click the button"
+        note.textContent = "almost there"
+        confettiBurst(90)
+        sparkleSound()
+        spawnFloaters(8)
 
-        document.getElementById("toFinal").onclick = () => { step = 8; render() }
-        document.getElementById("backToPacket").onclick = () => { step = 6; render() }
+        nextBtn2.onclick = () => setStep(8)
         return
       }
 
-      stage.innerHTML = finalScene()
-      bottom.innerHTML = controlsHTML({
-        primaryText: "Back to test",
-        primaryId: "backToTest",
-        note: "done ✅",
-        back: true
-      })
+      if (step === 8){
+        subtitle.textContent = "final"
+        nextBtn2.style.display = ""
+        backBtn2.style.display = ""
+        nextBtn2.textContent = "Copy link"
+        note.textContent = "tap to copy the link"
 
-      startConfettiBurst(160)
-      spawnFloaters(14)
+        confettiBurst(170)
+        sparkleSound()
+        spawnFloaters(14)
 
-      document.getElementById("backToTest").onclick = () => { step = 4; render() }
-      document.getElementById("backBtn").onclick = () => { step = 4; render() }
+        nextBtn2.onclick = () => copyLink()
+        return
+      }
     }
 
-    function wireDoorInteractions(opts){
-      const persp = document.getElementById("persp")
-      const doorPanel = document.getElementById("doorPanel")
-      const ripple = document.getElementById("ripple")
-      const hint = document.getElementById("hint")
+    function copyLink(){
+      const url = location.href
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(() => popToast("link copied")).catch(() => popToast("copy failed"))
+        return
+      }
 
+      // fallback
+      const ta = document.createElement("textarea")
+      ta.value = url
+      ta.style.position = "fixed"
+      ta.style.left = "-9999px"
+      document.body.appendChild(ta)
+      ta.select()
+      try{
+        document.execCommand("copy")
+        popToast("link copied")
+      }catch(e){
+        popToast("copy failed")
+      }
+      ta.remove()
+    }
+
+    function popToast(text){
+      toast.textContent = text
+      toast.classList.add("show")
+      clearTimeout(toast.__t)
+      toast.__t = setTimeout(() => toast.classList.remove("show"), 1200)
+    }
+
+    function setupDoors(){
+      // view 1
+      bindDoor(persp1, doorPanel1, ripple1, hint1, true)
+
+      // view 2
+      bindDoor(persp2, doorPanel2, ripple2, hint2, false)
+    }
+
+    function bindDoor(persp, panel, ripple, hint, allowAuto){
       if (!persp) return
-      if (opts.peek) persp.classList.add("openPeek")
 
       const doKnock = () => {
         if (hint) hint.style.opacity = "0"
+        bumpCard()
+        knockSound()
 
         if (ripple){
           ripple.classList.remove("go")
@@ -957,14 +1393,26 @@
           ripple.classList.add("go")
         }
 
-        if (doorPanel){
-          doorPanel.classList.remove("shake")
-          void doorPanel.offsetWidth
-          doorPanel.classList.add("shake")
+        if (panel){
+          panel.classList.remove("shake")
+          void panel.offsetWidth
+          panel.classList.add("shake")
         }
 
-        bumpCard()
-        knockSound()
+        // triple knock easter egg
+        const now = Date.now()
+        knockTimes = knockTimes.filter(t => now - t < 900)
+        knockTimes.push(now)
+        if (knockTimes.length >= 3){
+          knockTimes = []
+          persp.classList.add("wideOpen")
+          sparkleSound()
+          confettiBurst(140)
+          spawnFloaters(12)
+          popToast("door opens")
+          setTimeout(() => persp.classList.remove("wideOpen"), 1200)
+        }
+
         spawnFloaters(2)
       }
 
@@ -992,20 +1440,48 @@
         if (!t) return
         onMove(t.clientX, t.clientY, rect())
       }, { passive:true })
-      persp.addEventListener("mouseleave", () => { persp.style.transform = "translate3d(0,0,0)" }, { passive:true })
-      persp.addEventListener("touchend", () => { persp.style.transform = "translate3d(0,0,0)" }, { passive:true })
 
-      if (opts.autoKnock){
-        autoKnockTimer = setInterval(() => doKnock(), 2100)
+      const reset = () => { persp.style.transform = "translate3d(0,0,0)" }
+      persp.addEventListener("mouseleave", reset, { passive:true })
+      persp.addEventListener("touchend", reset, { passive:true })
+
+      if (allowAuto){
+        // started per step
+      }
+    }
+
+    function setDoorMode(persp, panel, mode){
+      if (!persp) return
+      persp.classList.remove("peek","wideOpen")
+      if (mode === "peek") persp.classList.add("peek")
+    }
+
+    function startAutoKnock(){
+      autoKnockTimer = setInterval(() => {
+        // only if still on step 1
+        if (step !== 1) return
+        bumpCard()
+        knockSound()
+        ripple1.classList.remove("go")
+        void ripple1.offsetWidth
+        ripple1.classList.add("go")
+        doorPanel1.classList.remove("shake")
+        void doorPanel1.offsetWidth
+        doorPanel1.classList.add("shake")
+        spawnFloaters(2)
+      }, 2200)
+    }
+
+    function clearAutoKnock(){
+      if (autoKnockTimer){
+        clearInterval(autoKnockTimer)
+        autoKnockTimer = null
       }
     }
 
     function stabilizeKnock(imgEl){
       if (!imgEl) return
-      const lock = () => {
-        imgEl.style.left = "50%"
-        imgEl.style.top = "46%"
-      }
+      const lock = () => { imgEl.style.left = "50%"; imgEl.style.top = "46%" }
       lock()
       window.addEventListener("resize", lock, { passive:true })
       window.addEventListener("orientationchange", lock, { passive:true })
@@ -1020,22 +1496,20 @@
       card.classList.add("shake")
     }
 
-    function clearAutoKnock(){
-      if (autoKnockTimer){
-        clearInterval(autoKnockTimer)
-        autoKnockTimer = null
-      }
+    function shakeEl(el){
+      if (!el) return
+      el.classList.remove("shake")
+      void el.offsetWidth
+      el.classList.add("shake")
     }
 
     function clamp(v, a, b){ return Math.max(a, Math.min(b, v)) }
 
     function preload(urls){
-      urls.forEach(src => {
-        const img = new Image()
-        img.src = src
-      })
+      urls.forEach(src => { const img = new Image(); img.src = src })
     }
 
+    // white background removal for knock image
     function makeWhiteTransparent(imgEl){
       if (!imgEl || imgEl.dataset.transparentDone) return
       imgEl.dataset.transparentDone = "1"
@@ -1076,65 +1550,33 @@
       else imgEl.addEventListener("load", run, { once:true })
     }
 
-    function ensureAudio(){
-      if (audioReady) return
-      try{
-        ctx = new (window.AudioContext || window.webkitAudioContext)()
-        audioReady = true
-      }catch(e){
-        audioReady = false
+    // media component loader
+    function loadMedia(mediaEl, imgEl, src){
+      if (!mediaEl || !imgEl) return
+
+      mediaEl.classList.remove("loaded")
+      imgEl.style.opacity = "0"
+      imgEl.removeAttribute("src")
+
+      const onLoad = () => {
+        mediaEl.classList.add("loaded")
       }
+
+      const onError = () => {
+        mediaEl.innerHTML = `
+          <div class="mediaError">
+            gif failed to load<br>
+            <a href="${src}" target="_blank" rel="noopener">open gif</a>
+          </div>
+        `
+      }
+
+      imgEl.onload = onLoad
+      imgEl.onerror = onError
+      imgEl.src = src
     }
 
-    function knockSound(){
-      ensureAudio()
-      if (!audioReady || !ctx) return
-      if (ctx.state === "suspended"){
-        ctx.resume().catch(() => {})
-      }
-
-      const now = ctx.currentTime
-
-      const makeHit = (t, freq, dur, gain) => {
-        const o = ctx.createOscillator()
-        const g = ctx.createGain()
-        const f = ctx.createBiquadFilter()
-
-        o.type = "triangle"
-        o.frequency.setValueAtTime(freq, t)
-
-        f.type = "lowpass"
-        f.frequency.setValueAtTime(980, t)
-        f.Q.setValueAtTime(0.8, t)
-
-        g.gain.setValueAtTime(0.0001, t)
-        g.gain.exponentialRampToValueAtTime(gain, t + 0.01)
-        g.gain.exponentialRampToValueAtTime(0.0001, t + dur)
-
-        o.connect(f)
-        f.connect(g)
-        g.connect(ctx.destination)
-
-        o.start(t)
-        o.stop(t + dur + 0.02)
-      }
-
-      makeHit(now + 0.00, 210, 0.09, 0.10)
-      makeHit(now + 0.07, 180, 0.11, 0.08)
-    }
-
-    function typewriter(el, text, speed){
-      if (!el) return
-      el.textContent = ""
-      let i = 0
-      const tick = () => {
-        i++
-        el.textContent = text.slice(0, i)
-        if (i < text.length) setTimeout(tick, speed)
-      }
-      tick()
-    }
-
+    // floaters
     function spawnFloaters(count){
       const box = document.getElementById("floaters")
       if (!box) return
@@ -1162,7 +1604,84 @@
       }
     }
 
-    const confetti = (() => {
+    // sound
+    function ensureAudio(){
+      if (audioReady) return
+      try{
+        ctx = new (window.AudioContext || window.webkitAudioContext)()
+        audioReady = true
+      }catch(e){
+        audioReady = false
+      }
+    }
+
+    function knockSound(){
+      ensureAudio()
+      if (!audioReady || !ctx) return
+      if (ctx.state === "suspended") ctx.resume().catch(() => {})
+
+      const now = ctx.currentTime
+      const hit = (t, freq, dur, gain) => {
+        const o = ctx.createOscillator()
+        const g = ctx.createGain()
+        const f = ctx.createBiquadFilter()
+
+        o.type = "triangle"
+        o.frequency.setValueAtTime(freq, t)
+
+        f.type = "lowpass"
+        f.frequency.setValueAtTime(980, t)
+        f.Q.setValueAtTime(0.8, t)
+
+        g.gain.setValueAtTime(0.0001, t)
+        g.gain.exponentialRampToValueAtTime(gain, t + 0.01)
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur)
+
+        o.connect(f)
+        f.connect(g)
+        g.connect(ctx.destination)
+
+        o.start(t)
+        o.stop(t + dur + 0.03)
+      }
+
+      hit(now + 0.00, 210, 0.09, 0.09)
+      hit(now + 0.07, 180, 0.11, 0.07)
+    }
+
+    function sparkleSound(){
+      ensureAudio()
+      if (!audioReady || !ctx) return
+      if (ctx.state === "suspended") ctx.resume().catch(() => {})
+
+      const now = ctx.currentTime
+      const o = ctx.createOscillator()
+      const g = ctx.createGain()
+      const f = ctx.createBiquadFilter()
+
+      o.type = "sine"
+      o.frequency.setValueAtTime(740, now)
+      o.frequency.exponentialRampToValueAtTime(1180, now + 0.08)
+
+      f.type = "highpass"
+      f.frequency.setValueAtTime(480, now)
+      f.Q.setValueAtTime(0.7, now)
+
+      g.gain.setValueAtTime(0.0001, now)
+      g.gain.exponentialRampToValueAtTime(0.06, now + 0.01)
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.12)
+
+      o.connect(f)
+      f.connect(g)
+      g.connect(ctx.destination)
+
+      o.start(now)
+      o.stop(now + 0.14)
+    }
+
+    // confetti
+    let confettiAPI = null
+    function setupConfetti(){
       const canvas = document.getElementById("confetti")
       const c = canvas.getContext("2d")
       let W = 0, H = 0
@@ -1182,7 +1701,7 @@
 
       const add = (n) => {
         const cx = W * 0.5
-        const cy = H * 0.35
+        const cy = H * 0.34
         for (let i = 0; i < n; i++){
           const t = Math.random() * Math.PI * 2
           const sp = 2 + Math.random() * 6
@@ -1190,7 +1709,7 @@
             x: cx + (Math.random() * 18 - 9),
             y: cy + (Math.random() * 18 - 9),
             vx: Math.cos(t) * sp,
-            vy: Math.sin(t) * sp - 1.5,
+            vy: Math.sin(t) * sp - 1.6,
             g: 0.12 + Math.random() * 0.10,
             r: 2 + Math.random() * 4,
             a: 1,
@@ -1201,11 +1720,12 @@
         }
       }
 
-      const drawHeart = (x, y, s, rot) => {
+      const drawHeart = (x, y, s, rot, alpha) => {
         c.save()
         c.translate(x, y)
         c.rotate(rot)
         c.scale(s, s)
+        c.globalAlpha = alpha
         c.beginPath()
         c.moveTo(0, 0.35)
         c.bezierCurveTo(-0.5, -0.15, -0.55, -0.55, 0, -0.25)
@@ -1213,6 +1733,7 @@
         c.closePath()
         c.fill()
         c.restore()
+        c.globalAlpha = 1
       }
 
       const tick = () => {
@@ -1233,12 +1754,13 @@
           }
 
           const grad = c.createLinearGradient(p.x - 10, p.y - 10, p.x + 10, p.y + 10)
-          grad.addColorStop(0, "rgba(255,61,142," + (0.85 * p.a) + ")")
-          grad.addColorStop(1, "rgba(255,208,107," + (0.85 * p.a) + ")")
+          grad.addColorStop(0, "rgba(255,255,255," + (0.18 * p.a) + ")")
+          grad.addColorStop(0.2, "rgba(255,61,142," + (0.72 * p.a) + ")")
+          grad.addColorStop(1, "rgba(255,208,107," + (0.72 * p.a) + ")")
           c.fillStyle = grad
 
           if (p.kind === "heart"){
-            drawHeart(p.x, p.y, p.r, p.rot)
+            drawHeart(p.x, p.y, p.r, p.rot, p.a)
           } else {
             c.globalAlpha = p.a
             c.beginPath()
@@ -1258,22 +1780,20 @@
       window.addEventListener("resize", resize, { passive:true })
       resize()
 
-      return {
+      confettiAPI = {
         burst(n){
-          add(n)
+          add(n || 120)
           if (!running){
             running = true
             requestAnimationFrame(tick)
           }
         }
       }
-    })()
-
-    function startConfettiBurst(n){
-      confetti.burst(n || 120)
     }
 
-    window.addEventListener("pointerdown", () => { ensureAudio() }, { passive:true, once:true })
+    function confettiBurst(n){
+      if (confettiAPI) confettiAPI.burst(n)
+    }
   </script>
 </body>
 </html>
