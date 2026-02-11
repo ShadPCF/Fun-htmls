@@ -1,95 +1,267 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Knock Knock</title>
 
   <style>
     :root{
-      --bg1:#140b1f;
-      --bg2:#2a123f;
-      --pink:#ff4d88;
-      --gold:#ffcc66;
+      --bg0:#06040a;
+      --bg1:#12081e;
+      --bg2:#2b0f3f;
+
+      --pink:#ff3d8e;
+      --hot:#ff2e63;
+      --gold:#ffd06b;
+      --ice:#7afcff;
+      --mint:#53ffb6;
+
       --text:rgba(255,255,255,.95);
-      --muted:rgba(255,255,255,.70);
-      --stroke:rgba(255,255,255,.18);
+      --muted:rgba(255,255,255,.72);
+      --stroke:rgba(255,255,255,.16);
+
+      --card:rgba(255,255,255,.08);
+      --card2:rgba(255,255,255,.04);
+
+      --shadow:0 26px 110px rgba(0,0,0,.65);
+      --radius:28px;
+
+      --safeT: env(safe-area-inset-top, 0px);
+      --safeB: env(safe-area-inset-bottom, 0px);
+      --safeL: env(safe-area-inset-left, 0px);
+      --safeR: env(safe-area-inset-right, 0px);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    html,body{ height:100%; }
 
     body{
       margin:0;
+      padding: calc(14px + var(--safeT)) calc(14px + var(--safeR)) calc(16px + var(--safeB)) calc(14px + var(--safeL));
+      min-height:100vh;
+      min-height:100svh;
+      min-height:100dvh;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
       color:var(--text);
       overflow:hidden;
       background:
-        radial-gradient(900px 600px at 20% 10%, rgba(255,77,136,.28), transparent 60%),
-        radial-gradient(800px 520px at 85% 30%, rgba(255,204,102,.18), transparent 62%),
-        linear-gradient(160deg, var(--bg1), var(--bg2));
+        radial-gradient(1200px 800px at 10% 10%, rgba(255,61,142,.24), transparent 60%),
+        radial-gradient(900px 620px at 90% 20%, rgba(255,208,107,.16), transparent 62%),
+        radial-gradient(800px 700px at 60% 90%, rgba(122,252,255,.10), transparent 60%),
+        linear-gradient(160deg, var(--bg0), var(--bg1) 40%, var(--bg2));
+    }
+
+    /* animated aurora */
+    .aurora{
+      position:fixed;
+      inset:-20%;
+      z-index:-2;
+      filter: blur(28px) saturate(1.1);
+      opacity:.9;
+      background:
+        radial-gradient(600px 420px at 20% 30%, rgba(255,61,142,.35), transparent 60%),
+        radial-gradient(520px 420px at 75% 35%, rgba(255,208,107,.22), transparent 62%),
+        radial-gradient(520px 460px at 55% 75%, rgba(83,255,182,.14), transparent 62%),
+        radial-gradient(520px 520px at 35% 80%, rgba(122,252,255,.12), transparent 60%);
+      animation: drift 14s ease-in-out infinite;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes drift{
+      0%{ transform: translate3d(-1.5%, -1.2%, 0) scale(1.02) rotate(-1deg); }
+      50%{ transform: translate3d(1.3%, 1.0%, 0) scale(1.05) rotate(1deg); }
+      100%{ transform: translate3d(-1.5%, -1.2%, 0) scale(1.02) rotate(-1deg); }
+    }
+
+    /* tiny stars */
+    .stars{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background-image:
+        radial-gradient(2px 2px at 12% 22%, rgba(255,255,255,.28) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 65% 18%, rgba(255,255,255,.22) 50%, transparent 52%),
+        radial-gradient(1.8px 1.8px at 82% 44%, rgba(255,255,255,.18) 50%, transparent 52%),
+        radial-gradient(1.2px 1.2px at 22% 76%, rgba(255,255,255,.18) 50%, transparent 52%),
+        radial-gradient(1.6px 1.6px at 48% 64%, rgba(255,255,255,.14) 50%, transparent 52%),
+        radial-gradient(1.4px 1.4px at 92% 78%, rgba(255,255,255,.18) 50%, transparent 52%);
+      opacity:.7;
+      animation: twinkle 7s linear infinite;
+    }
+    @keyframes twinkle{
+      0%,100%{ opacity:.55; filter: blur(0px); }
+      50%{ opacity:.85; filter: blur(.2px); }
+    }
+
+    .wrap{
+      width: min(520px, 94vw);
     }
 
     .card{
-      width:92%;
-      max-width:460px;
-      padding:18px;
-      border-radius:28px;
+      border-radius: var(--radius);
       border:1px solid var(--stroke);
-      background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
-      box-shadow:0 26px 90px rgba(0,0,0,.60);
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+      transform: translate3d(0,0,0);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
-    .header{
+    .top{
+      padding: 16px 16px 10px 16px;
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      margin-bottom:12px;
-      gap:10px;
+      justify-content:space-between;
+      gap:12px;
     }
 
-    .title{
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .badge{
+      width:34px; height:34px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,61,142,.85), rgba(255,208,107,.8));
+      box-shadow: 0 12px 28px rgba(255,61,142,.18);
+      position:relative;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .badge:after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: rotate(25deg);
+      animation: shine 2.2s ease-in-out infinite;
+      opacity:.65;
+    }
+    @keyframes shine{
+      0%{ transform: translateX(-30%) rotate(25deg); }
+      50%{ transform: translateX(30%) rotate(25deg); }
+      100%{ transform: translateX(-30%) rotate(25deg); }
+    }
+
+    h1{
       margin:0;
-      font-size:18px;
+      font-size:16px;
       font-weight:950;
       letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
-    .step{
+    .meta{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
+    }
+
+    .pill{
       font-size:12px;
+      font-weight:900;
       padding:8px 12px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.20);
-      color:rgba(255,255,255,.85);
-      font-weight:800;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.24);
+      color: rgba(255,255,255,.88);
       white-space:nowrap;
     }
 
-    .stage{
-      min-height:420px;
+    .dots{
       display:flex;
-      align-items:center;
-      justify-content:center;
+      gap:6px;
+      padding-right:2px;
+    }
+    .dot{
+      width:7px; height:7px;
+      border-radius:999px;
+      background: rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .dot.on{
+      background: linear-gradient(135deg, rgba(255,61,142,.95), rgba(255,208,107,.92));
+      box-shadow: 0 10px 18px rgba(255,61,142,.18);
+    }
+
+    .stage{
+      padding: 12px 14px 12px 14px;
     }
 
     .scene{
-      width:100%;
-      border-radius:22px;
+      border-radius: 22px;
       overflow:hidden;
-      border:1px solid rgba(255,255,255,.16);
-      background:#000;
-      box-shadow:0 18px 60px rgba(0,0,0,.38);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.55);
+      box-shadow: 0 18px 70px rgba(0,0,0,.35);
+      position:relative;
+      transform: translate3d(0,0,0);
     }
 
-    .doorWrap{
+    /* door area */
+    .doorArea{
       position:relative;
       width:100%;
-      aspect-ratio:4/3;
-      background:#000;
+      /* fallback for older safari */
+      padding-top: 75%;
+      background: #000;
+      overflow:hidden;
+    }
+    @supports (aspect-ratio: 4 / 3){
+      .doorArea{ padding-top:0; aspect-ratio:4 / 3; }
+    }
+
+    .doorStage{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(80% 70% at 50% 30%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(120% 100% at 50% 100%, rgba(0,0,0,.52), transparent 55%),
+        radial-gradient(140% 120% at 10% 90%, rgba(255,61,142,.14), transparent 60%),
+        radial-gradient(120% 120% at 95% 10%, rgba(255,208,107,.12), transparent 62%);
+    }
+
+    .persp{
+      width: 92%;
+      height: 92%;
+      perspective: 980px;
+      transform: translate3d(0,0,0);
+      position:relative;
+    }
+
+    .doorFrame{
+      position:absolute;
+      inset:0;
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+      transform: translate3d(0,0,0);
+    }
+
+    .doorPanel{
+      position:absolute;
+      inset:0;
+      transform-style: preserve-3d;
+      transform-origin: 0% 50%;
+      transform: rotateY(0deg) translate3d(0,0,0);
+      transition: transform 520ms cubic-bezier(.2,.9,.2,1), filter 520ms ease;
+      will-change: transform;
     }
 
     .doorImg{
@@ -97,169 +269,763 @@
       inset:0;
       width:100%;
       height:100%;
-      object-fit:cover;
-      transform:scale(1.02);
-      filter:saturate(1.05) contrast(1.03);
+      object-fit: cover;
+      transform: scale(1.03);
+      filter: saturate(1.08) contrast(1.05) brightness(1.02);
+      user-select:none;
+      -webkit-user-drag:none;
+      backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;
     }
 
-    .vignette{
+    .edgeGlow{
       position:absolute;
       inset:0;
-      background:
-        radial-gradient(70% 60% at 50% 30%, rgba(255,255,255,.10), transparent 60%),
-        radial-gradient(120% 100% at 50% 100%, rgba(0,0,0,.45), transparent 55%);
       pointer-events:none;
+      background:
+        linear-gradient(90deg, rgba(255,61,142,.18), transparent 20%),
+        radial-gradient(90% 120% at 5% 50%, rgba(255,208,107,.18), transparent 55%);
+      mix-blend-mode: screen;
+      opacity:.65;
+      transform: translate3d(0,0,2px);
     }
 
-    .knock{
+    .fog{
+      position:absolute;
+      inset:-20%;
+      background:
+        radial-gradient(600px 380px at 25% 40%, rgba(255,61,142,.10), transparent 62%),
+        radial-gradient(520px 420px at 80% 55%, rgba(255,208,107,.09), transparent 62%),
+        radial-gradient(520px 520px at 50% 70%, rgba(122,252,255,.06), transparent 60%);
+      filter: blur(18px);
+      opacity:.65;
+      animation: fog 9s ease-in-out infinite;
+      pointer-events:none;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes fog{
+      0%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
+      50%{ transform: translate3d(2%, 1%, 0) scale(1.06); }
+      100%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
+    }
+
+    /* knock overlay image */
+    .knockImg{
       position:absolute;
       left:50%;
       top:46%;
-      width:min(260px, 64%);
-      transform-origin:50% 55%;
-      transform:translate(-50%,-50%) rotate(-6deg);
-      filter:drop-shadow(0 18px 26px rgba(0,0,0,.45));
-      animation:wiggle 1.1s ease-in-out infinite;
+      width: min(270px, 68%);
+      transform-origin: 50% 55%;
+      transform: translate3d(-50%,-50%,4px) rotate(-6deg);
+      filter: drop-shadow(0 18px 26px rgba(0,0,0,.48));
+      animation: knockWiggle 1.05s ease-in-out infinite;
       pointer-events:none;
       user-select:none;
+      -webkit-user-drag:none;
+    }
+    @keyframes knockWiggle{
+      0%{ transform: translate3d(-50%,-50%,4px) rotate(-6deg) scale(1); }
+      25%{ transform: translate3d(-49%,-51%,4px) rotate(2deg) scale(1.01); }
+      50%{ transform: translate3d(-51%,-49%,4px) rotate(-2deg) scale(1); }
+      75%{ transform: translate3d(-49.5%,-50%,4px) rotate(3deg) scale(1.01); }
+      100%{ transform: translate3d(-50%,-50%,4px) rotate(-6deg) scale(1); }
     }
 
-    @keyframes wiggle{
-      0%{transform:translate(-50%,-50%) rotate(-6deg) scale(1)}
-      25%{transform:translate(-49%,-51%) rotate(2deg) scale(1.01)}
-      50%{transform:translate(-51%,-49%) rotate(-2deg) scale(1)}
-      75%{transform:translate(-49.5%,-50%) rotate(3deg) scale(1.01)}
-      100%{transform:translate(-50%,-50%) rotate(-6deg) scale(1)}
+    /* tap hint */
+    .hint{
+      position:absolute;
+      left:14px;
+      bottom:14px;
+      padding:10px 12px;
+      border-radius: 14px;
+      font-size:12px;
+      font-weight:900;
+      color: rgba(255,255,255,.88);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.28);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 16px 50px rgba(0,0,0,.25);
     }
 
-    .actions{
-      margin-top:14px;
+    /* ripple from knocks */
+    .ripple{
+      position:absolute;
+      left:50%;
+      top:52%;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,.45);
+      transform: translate3d(-50%,-50%,10px) scale(.2);
+      opacity: 0;
+      pointer-events:none;
+    }
+    .ripple.go{
+      animation: ripple 520ms ease-out forwards;
+    }
+    @keyframes ripple{
+      0%{ opacity:.85; transform: translate3d(-50%,-50%,10px) scale(.2); }
+      100%{ opacity:0; transform: translate3d(-50%,-50%,10px) scale(8); }
     }
 
-    button{
+    /* shake */
+    .shake{
+      animation: shake 460ms cubic-bezier(.2,.9,.2,1);
+    }
+    @keyframes shake{
+      0%{ transform: translate3d(0,0,0); }
+      20%{ transform: translate3d(-2px, 0, 0); }
+      40%{ transform: translate3d(2px, -1px, 0); }
+      60%{ transform: translate3d(-1px, 1px, 0); }
+      80%{ transform: translate3d(1px, 0, 0); }
+      100%{ transform: translate3d(0,0,0); }
+    }
+
+    /* door open states */
+    .openPeek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
+    .openMore .doorPanel{ transform: rotateY(-26deg) translate3d(-1.6%,0,0); }
+
+    /* bottom area */
+    .bottom{
+      padding: 12px 14px 16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .btn{
       width:100%;
-      padding:14px 18px;
-      border-radius:18px;
+      padding: 14px 16px;
+      border-radius: 18px;
       border:none;
-      font-size:15px;
-      font-weight:950;
-      color:#24051b;
-      background:linear-gradient(135deg, var(--pink), var(--gold));
-      -webkit-tap-highlight-color:transparent;
-      box-shadow:0 14px 30px rgba(255,77,136,.18);
+      cursor:pointer;
+      color:#1a0612;
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing:.2px;
+      background: linear-gradient(135deg, var(--pink), var(--gold));
+      box-shadow: 0 16px 38px rgba(255,61,142,.18);
+      position:relative;
+      overflow:hidden;
+      transform: translate3d(0,0,0);
     }
+    .btn:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: rotate(25deg);
+      opacity:.55;
+      animation: btnShine 1.8s ease-in-out infinite;
+    }
+    @keyframes btnShine{
+      0%{ transform: translateX(-35%) rotate(25deg); }
+      50%{ transform: translateX(35%) rotate(25deg); }
+      100%{ transform: translateX(-35%) rotate(25deg); }
+    }
+    .btn:active{ transform: translate3d(0,1px,0) scale(.99); }
 
     .note{
-      margin-top:10px;
-      font-size:12px;
       text-align:center;
-      color:var(--muted);
-      line-height:1.4;
+      font-size:12px;
+      color: var(--muted);
+      line-height: 1.45;
+      padding: 0 8px;
     }
 
+    /* reveal */
     .reveal{
-      padding:28px 18px 30px 18px;
+      padding: 26px 18px 30px 18px;
+      min-height: 360px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       text-align:center;
+      position:relative;
+      overflow:hidden;
       background:
-        radial-gradient(260px 180px at 50% 10%, rgba(255,204,102,.20), transparent 62%),
-        linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.08));
+        radial-gradient(300px 220px at 50% 12%, rgba(255,208,107,.22), transparent 62%),
+        radial-gradient(420px 260px at 10% 80%, rgba(255,61,142,.16), transparent 60%),
+        radial-gradient(420px 260px at 90% 75%, rgba(122,252,255,.12), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.14), rgba(0,0,0,.06));
+    }
+
+    .gift{
+      width: min(360px, 92%);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      box-shadow: 0 20px 80px rgba(0,0,0,.35);
+      padding: 18px 16px 18px 16px;
+      position:relative;
+      transform: translate3d(0,0,0);
+    }
+
+    .emoji{
+      font-size: 58px;
+      filter: drop-shadow(0 18px 26px rgba(0,0,0,.35));
+      animation: pop 900ms cubic-bezier(.2,.9,.2,1) both;
+    }
+    @keyframes pop{
+      0%{ transform: translate3d(0,16px,0) scale(.85); opacity:0; }
+      100%{ transform: translate3d(0,0,0) scale(1); opacity:1; }
     }
 
     .big{
-      font-size:22px;
-      font-weight:950;
-      letter-spacing:.2px;
-      margin-top:8px;
+      margin-top: 10px;
+      font-size: 22px;
+      font-weight: 1000;
+      letter-spacing: .2px;
+      line-height:1.15;
     }
 
     .sub{
-      margin-top:8px;
-      color:rgba(255,255,255,.78);
-      font-size:14px;
-      line-height:1.45;
+      margin-top: 10px;
+      font-size: 14px;
+      color: rgba(255,255,255,.80);
+      line-height: 1.45;
+    }
+
+    .type{
+      display:inline-block;
+      position:relative;
+      padding-right: 8px;
+    }
+    .caret{
+      display:inline-block;
+      width: 10px;
+      height: 18px;
+      margin-left: 4px;
+      border-radius: 4px;
+      background: rgba(255,255,255,.75);
+      vertical-align: -3px;
+      animation: blink 900ms step-end infinite;
+    }
+    @keyframes blink{ 50%{ opacity:0; } }
+
+    /* floating hearts layer */
+    .floaters{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:2;
+      overflow:hidden;
+    }
+    .floater{
+      position:absolute;
+      left: var(--x);
+      top: 110%;
+      font-size: var(--s);
+      opacity: .0;
+      transform: translate3d(0,0,0);
+      filter: drop-shadow(0 14px 18px rgba(0,0,0,.28));
+      animation: floatUp var(--d) linear infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes floatUp{
+      0%{ opacity: 0; transform: translate3d(0,0,0) rotate(0deg); }
+      10%{ opacity: .85; }
+      100%{ opacity: 0; transform: translate3d(var(--dx), -145vh, 0) rotate(var(--r)); }
+    }
+
+    /* confetti canvas */
+    canvas#confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:3;
+    }
+
+    /* transitions between steps */
+    .fadeIn{
+      animation: fadeIn 420ms ease both;
+    }
+    @keyframes fadeIn{
+      from{ opacity:0; transform: translate3d(0,8px,0) scale(.995); }
+      to{ opacity:1; transform: translate3d(0,0,0) scale(1); }
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .aurora, .stars, .fog, .knockImg, .floater, .btn:before { animation:none !important; }
+      .doorPanel{ transition:none !important; }
+      .fadeIn{ animation:none !important; }
     }
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <div class="header">
-      <h1 class="title">Knock knock</h1>
-      <div class="step" id="step">Step 1</div>
+  <div class="aurora"></div>
+  <div class="stars"></div>
+
+  <div class="floaters" id="floaters" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+    <div class="card" id="card">
+      <div class="top">
+        <div class="brand">
+          <div class="badge"></div>
+          <div style="min-width:0">
+            <h1>Knock knock</h1>
+            <div style="font-size:12px;color:rgba(255,255,255,.68);font-weight:800;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+              tap the door for extra drama
+            </div>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div class="dots" id="dots" aria-hidden="true">
+            <div class="dot on"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          <div class="pill" id="stepPill">Step 1</div>
+        </div>
+      </div>
+
+      <div class="stage" id="stage"></div>
+
+      <div class="bottom">
+        <button class="btn" id="btn"></button>
+        <div class="note" id="note"></div>
+      </div>
     </div>
-
-    <div class="stage" id="stage"></div>
-
-    <div class="actions">
-      <button id="btn"></button>
-    </div>
-
-    <div class="note" id="note"></div>
   </div>
 
   <script>
     const stage = document.getElementById("stage")
     const btn = document.getElementById("btn")
-    const stepEl = document.getElementById("step")
     const note = document.getElementById("note")
+    const stepPill = document.getElementById("stepPill")
+    const dots = document.getElementById("dots")
+    const card = document.getElementById("card")
 
     let step = 1
+    let autoKnockTimer = null
+    let audioReady = false
+    let ctx = null
+
+    const DOOR_SRC = "door.jpeg"
+    const KNOCK_SRC = "IMG_0143.png"
+
+    preload([DOOR_SRC, KNOCK_SRC])
+
     render()
 
-    btn.onclick = () => {
+    btn.addEventListener("click", () => {
+      advance()
+    }, { passive:true })
+
+    function advance(){
       if (step === 1) step = 2
       else if (step === 2) step = 3
       else if (step === 3) step = 4
       else step = 1
-      render()
+      render(true)
+    }
+
+    function setDots(){
+      const d = dots.querySelectorAll(".dot")
+      d.forEach((el, i) => el.classList.toggle("on", i === step - 1))
     }
 
     function doorScene(includeKnock){
       return `
-        <div class="scene">
-          <div class="doorWrap">
-            <img class="doorImg" src="door.jpeg" alt="door">
-            <div class="vignette"></div>
-            ${includeKnock ? `<img class="knock" src="IMG_0143.png" alt="knock knock">` : ``}
+        <div class="scene fadeIn">
+          <div class="doorArea" id="doorArea">
+            <div class="doorStage" id="doorStage">
+              <div class="persp" id="persp">
+                <div class="doorFrame">
+                  <div class="fog"></div>
+                  <div class="doorPanel" id="doorPanel">
+                    <img class="doorImg" src="${DOOR_SRC}" alt="door" />
+                    <div class="edgeGlow"></div>
+                  </div>
+                </div>
+
+                ${includeKnock ? `<img class="knockImg" src="${KNOCK_SRC}" alt="knock knock" />` : ``}
+                <div class="ripple" id="ripple"></div>
+              </div>
+
+              <div class="hint" id="hint">tap the door</div>
+            </div>
           </div>
         </div>
       `
     }
 
-    function render(){
-      stepEl.textContent = "Step " + step
+    function revealScene(){
+      return `
+        <div class="scene reveal fadeIn" id="reveal">
+          <div class="gift">
+            <div class="emoji">💐</div>
+            <div class="big"><span class="type" id="typeText"></span><span class="caret"></span></div>
+            <div class="sub">sending you love and good vibes<br/>tap anywhere for confetti</div>
+          </div>
+        </div>
+      `
+    }
+
+    function render(fromButton){
+      clearAutoKnock()
+
+      stepPill.textContent = "Step " + step
+      setDots()
 
       if(step === 1){
         stage.innerHTML = doorScene(true)
         btn.textContent = "Who’s there"
-        note.textContent = "tap the button"
+        note.textContent = "bonus points if you tap the door"
+        wireDoorInteractions({ autoKnock:true, peek:false, more:false, includeKnock:true })
         return
       }
 
       if(step === 2){
         stage.innerHTML = doorScene(false)
         btn.textContent = "Valen"
-        note.textContent = "who’s there"
+        note.textContent = "tap the door for a cheeky peek"
+        wireDoorInteractions({ autoKnock:false, peek:true, more:false, includeKnock:false })
         return
       }
 
       if(step === 3){
         stage.innerHTML = doorScene(false)
         btn.textContent = "Valen who"
-        note.textContent = "almost there"
+        note.textContent = "one more tap and it gets cute"
+        wireDoorInteractions({ autoKnock:false, peek:false, more:true, includeKnock:false })
         return
       }
 
-      stage.innerHTML = `
-        <div class="scene reveal">
-          <div style="font-size:56px">💐</div>
-          <div class="big">Happy Valentine’s Day</div>
-          <div class="sub">sending you love and good vibes</div>
-        </div>
-      `
+      stage.innerHTML = revealScene()
       btn.textContent = "Replay"
-      note.textContent = "share the link"
+      note.textContent = "share the link and enjoy the chaos"
+
+      typewriter(document.getElementById("typeText"), "Happy Valentine’s Day", 28)
+
+      startConfettiBurst(180)
+      spawnFloaters(14)
+
+      const reveal = document.getElementById("reveal")
+      reveal.addEventListener("click", () => {
+        startConfettiBurst(120)
+        spawnFloaters(10)
+      }, { passive:true })
+
+      if(fromButton) bumpCard()
     }
+
+    function wireDoorInteractions(opts){
+      const persp = document.getElementById("persp")
+      const doorPanel = document.getElementById("doorPanel")
+      const ripple = document.getElementById("ripple")
+      const hint = document.getElementById("hint")
+
+      if (opts.peek) persp.classList.add("openPeek")
+      if (opts.more) persp.classList.add("openMore")
+
+      const doKnock = () => {
+        hint.style.opacity = ".0"
+
+        ripple.classList.remove("go")
+        void ripple.offsetWidth
+        ripple.classList.add("go")
+
+        doorPanel.classList.remove("shake")
+        void doorPanel.offsetWidth
+        doorPanel.classList.add("shake")
+
+        bumpCard()
+        knockSound()
+        spawnFloaters(2)
+      }
+
+      const onTapDoor = () => {
+        doKnock()
+        if (step === 1) {
+          // keep it playful, do not auto advance on door tap
+        }
+      }
+
+      persp.addEventListener("click", onTapDoor, { passive:true })
+
+      // subtle parallax that works on iOS Safari
+      let raf = 0
+      let px = 0, py = 0
+      const onMove = (x, y, rect) => {
+        const nx = (x - (rect.left + rect.width/2)) / (rect.width/2)
+        const ny = (y - (rect.top + rect.height/2)) / (rect.height/2)
+        px = clamp(nx, -1, 1)
+        py = clamp(ny, -1, 1)
+        if (!raf){
+          raf = requestAnimationFrame(() => {
+            raf = 0
+            const rotY = px * 3
+            const rotX = -py * 2
+            persp.style.transform = `translate3d(0,0,0) rotateX(${rotX}deg) rotateY(${rotY}deg)`
+          })
+        }
+      }
+
+      const rect = () => persp.getBoundingClientRect()
+
+      persp.addEventListener("mousemove", (e) => onMove(e.clientX, e.clientY, rect()), { passive:true })
+
+      persp.addEventListener("touchmove", (e) => {
+        const t = e.touches && e.touches[0]
+        if (!t) return
+        onMove(t.clientX, t.clientY, rect())
+      }, { passive:true })
+
+      persp.addEventListener("mouseleave", () => {
+        persp.style.transform = "translate3d(0,0,0)"
+      }, { passive:true })
+
+      persp.addEventListener("touchend", () => {
+        persp.style.transform = "translate3d(0,0,0)"
+      }, { passive:true })
+
+      if (opts.autoKnock){
+        autoKnockTimer = setInterval(() => doKnock(), 2100)
+      }
+    }
+
+    function bumpCard(){
+      card.classList.remove("shake")
+      void card.offsetWidth
+      card.classList.add("shake")
+    }
+
+    function clearAutoKnock(){
+      if (autoKnockTimer){
+        clearInterval(autoKnockTimer)
+        autoKnockTimer = null
+      }
+    }
+
+    function clamp(v, a, b){ return Math.max(a, Math.min(b, v)) }
+
+    function preload(urls){
+      urls.forEach(src => {
+        const img = new Image()
+        img.src = src
+      })
+    }
+
+    // WebAudio knock that works on iOS after user gesture
+    function ensureAudio(){
+      if (audioReady) return
+      try{
+        ctx = new (window.AudioContext || window.webkitAudioContext)()
+        audioReady = true
+      }catch(e){
+        audioReady = false
+      }
+    }
+
+    function knockSound(){
+      ensureAudio()
+      if (!audioReady || !ctx) return
+
+      // iOS may suspend until user gesture
+      if (ctx.state === "suspended"){
+        ctx.resume().catch(() => {})
+      }
+
+      const now = ctx.currentTime
+
+      const makeHit = (t, freq, dur, gain) => {
+        const o = ctx.createOscillator()
+        const g = ctx.createGain()
+        const f = ctx.createBiquadFilter()
+
+        o.type = "triangle"
+        o.frequency.setValueAtTime(freq, t)
+
+        f.type = "lowpass"
+        f.frequency.setValueAtTime(980, t)
+        f.Q.setValueAtTime(0.8, t)
+
+        g.gain.setValueAtTime(0.0001, t)
+        g.gain.exponentialRampToValueAtTime(gain, t + 0.01)
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur)
+
+        o.connect(f)
+        f.connect(g)
+        g.connect(ctx.destination)
+
+        o.start(t)
+        o.stop(t + dur + 0.02)
+      }
+
+      makeHit(now + 0.00, 210, 0.09, 0.10)
+      makeHit(now + 0.07, 180, 0.11, 0.08)
+    }
+
+    function typewriter(el, text, speed){
+      if (!el) return
+      el.textContent = ""
+      let i = 0
+      const tick = () => {
+        i++
+        el.textContent = text.slice(0, i)
+        if (i < text.length) setTimeout(tick, speed)
+      }
+      tick()
+    }
+
+    // Floating hearts that feel alive
+    function spawnFloaters(count){
+      const box = document.getElementById("floaters")
+      if (!box) return
+
+      const icons = ["💗","💞","💖","💘","✨","💝"]
+      for (let i = 0; i < count; i++){
+        const el = document.createElement("div")
+        el.className = "floater"
+        el.textContent = icons[(Math.random() * icons.length) | 0]
+
+        const x = (Math.random() * 100).toFixed(2) + "vw"
+        const s = (14 + Math.random() * 18).toFixed(0) + "px"
+        const d = (7 + Math.random() * 6).toFixed(2) + "s"
+        const dx = ((Math.random() * 26) - 13).toFixed(2) + "vw"
+        const r = ((Math.random() * 160) - 80).toFixed(0) + "deg"
+
+        el.style.setProperty("--x", x)
+        el.style.setProperty("--s", s)
+        el.style.setProperty("--d", d)
+        el.style.setProperty("--dx", dx)
+        el.style.setProperty("--r", r)
+
+        box.appendChild(el)
+
+        // cleanup
+        setTimeout(() => {
+          try{ el.remove() }catch(e){}
+        }, 14000)
+      }
+    }
+
+    // Confetti canvas
+    const confetti = (() => {
+      const canvas = document.getElementById("confetti")
+      const c = canvas.getContext("2d")
+      let W = 0, H = 0
+      let pieces = []
+      let running = false
+
+      const resize = () => {
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1))
+        W = Math.floor(window.innerWidth)
+        H = Math.floor(window.innerHeight)
+        canvas.width = Math.floor(W * dpr)
+        canvas.height = Math.floor(H * dpr)
+        canvas.style.width = W + "px"
+        canvas.style.height = H + "px"
+        c.setTransform(dpr, 0, 0, dpr, 0, 0)
+      }
+
+      const add = (n) => {
+        const cx = W * 0.5
+        const cy = H * 0.35
+        for (let i = 0; i < n; i++){
+          const t = Math.random() * Math.PI * 2
+          const sp = 2 + Math.random() * 6
+          pieces.push({
+            x: cx + (Math.random() * 18 - 9),
+            y: cy + (Math.random() * 18 - 9),
+            vx: Math.cos(t) * sp,
+            vy: Math.sin(t) * sp - 1.5,
+            g: 0.12 + Math.random() * 0.10,
+            r: 2 + Math.random() * 4,
+            a: 1,
+            rot: Math.random() * Math.PI * 2,
+            vr: (Math.random() - 0.5) * 0.35,
+            kind: Math.random() < 0.55 ? "heart" : "spark"
+          })
+        }
+      }
+
+      const drawHeart = (x, y, s, rot) => {
+        c.save()
+        c.translate(x, y)
+        c.rotate(rot)
+        c.scale(s, s)
+        c.beginPath()
+        c.moveTo(0, 0.35)
+        c.bezierCurveTo(-0.5, -0.15, -0.55, -0.55, 0, -0.25)
+        c.bezierCurveTo(0.55, -0.55, 0.5, -0.15, 0, 0.35)
+        c.closePath()
+        c.fill()
+        c.restore()
+      }
+
+      const tick = () => {
+        if (!running) return
+        c.clearRect(0, 0, W, H)
+
+        for (let i = pieces.length - 1; i >= 0; i--){
+          const p = pieces[i]
+          p.vy += p.g
+          p.x += p.vx
+          p.y += p.vy
+          p.rot += p.vr
+          p.a *= 0.988
+
+          if (p.y > H + 40 || p.a < 0.03){
+            pieces.splice(i, 1)
+            continue
+          }
+
+          // color vibe
+          const grad = c.createLinearGradient(p.x - 10, p.y - 10, p.x + 10, p.y + 10)
+          grad.addColorStop(0, "rgba(255,61,142," + (0.85 * p.a) + ")")
+          grad.addColorStop(1, "rgba(255,208,107," + (0.85 * p.a) + ")")
+          c.fillStyle = grad
+
+          if (p.kind === "heart"){
+            drawHeart(p.x, p.y, p.r, p.rot)
+          } else {
+            c.globalAlpha = p.a
+            c.beginPath()
+            c.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+            c.fill()
+            c.globalAlpha = 1
+          }
+        }
+
+        if (pieces.length === 0){
+          running = false
+          return
+        }
+        requestAnimationFrame(tick)
+      }
+
+      window.addEventListener("resize", resize, { passive:true })
+      resize()
+
+      return {
+        burst(n){
+          add(n)
+          if (!running){
+            running = true
+            requestAnimationFrame(tick)
+          }
+        }
+      }
+    })()
+
+    function startConfettiBurst(n){
+      confetti.burst(n || 120)
+    }
+
+    // first gesture primes audio nicely on iOS
+    window.addEventListener("pointerdown", () => {
+      ensureAudio()
+      spawnFloaters(1)
+    }, { passive:true, once:true })
   </script>
 </body>
 </html>
