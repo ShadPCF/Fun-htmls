@@ -287,7 +287,6 @@
       100%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
     }
 
-    /* knock image with TRUE transparency (converted to data URL in JS) */
     .knockImg{
       position:absolute;
       left:50%;
@@ -325,6 +324,7 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       box-shadow: 0 16px 50px rgba(0,0,0,.25);
+      pointer-events:none;
     }
 
     .ripple{
@@ -357,6 +357,45 @@
 
     .openPeek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
     .openMore .doorPanel{ transform: rotateY(-26deg) translate3d(-1.6%,0,0); }
+
+    /* comic caption bubble */
+    .caption{
+      position:absolute;
+      top: 14px;
+      right: 14px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      font-weight: 1000;
+      font-size: 14px;
+      letter-spacing: .2px;
+      color: rgba(15,10,18,.96);
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: 0 18px 46px rgba(0,0,0,.30);
+      transform: translate3d(0,0,12px);
+      pointer-events:none;
+      user-select:none;
+    }
+    .caption:after{
+      content:"";
+      position:absolute;
+      right: 18px;
+      bottom: -8px;
+      width: 16px;
+      height: 16px;
+      background: rgba(255,255,255,.92);
+      transform: rotate(45deg);
+      border-right: 1px solid rgba(0,0,0,.08);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      border-bottom-right-radius: 4px;
+    }
+    .captionPop{
+      animation: captionPop 520ms cubic-bezier(.2,.9,.2,1) both;
+    }
+    @keyframes captionPop{
+      0%{ opacity:0; transform: translate3d(0,10px,12px) scale(.92); }
+      100%{ opacity:1; transform: translate3d(0,0,12px) scale(1); }
+    }
 
     .bottom{
       padding: 12px 14px 16px 14px;
@@ -540,7 +579,6 @@
             <div class="dot on"></div>
             <div class="dot"></div>
             <div class="dot"></div>
-            <div class="dot"></div>
           </div>
           <div class="pill" id="stepPill">Step 1</div>
         </div>
@@ -578,9 +616,7 @@
     btn.addEventListener("click", () => advance(), { passive:true })
 
     function advance(){
-      if (step === 1) step = 2
-      else if (step === 2) step = 3
-      else if (step === 3) step = 4
+      if (step < 3) step++
       else step = 1
       render(true)
     }
@@ -590,7 +626,11 @@
       d.forEach((el, i) => el.classList.toggle("on", i === step - 1))
     }
 
-    function doorScene(includeKnock){
+    function doorScene(includeKnock, captionText){
+      const cap = captionText
+        ? `<div class="caption captionPop">${captionText}</div>`
+        : ``
+
       return `
         <div class="scene fadeIn">
           <div class="doorArea">
@@ -604,6 +644,7 @@
                   </div>
                 </div>
 
+                ${cap}
                 ${includeKnock ? `<img class="knockImg" src="${KNOCK_SRC}" alt="knock knock" />` : ``}
                 <div class="ripple" id="ripple"></div>
               </div>
@@ -634,29 +675,21 @@
       setDots()
 
       if(step === 1){
-        stage.innerHTML = doorScene(true)
+        stage.innerHTML = doorScene(true, "")
         btn.textContent = "Who’s there"
         note.textContent = "bonus points if you tap the door"
         wireDoorInteractions({ autoKnock:true, peek:false, more:false })
 
         const k = stage.querySelector(".knockImg")
-        makeWhiteTransparent(k)  // ✅ turns the white into transparency
+        makeWhiteTransparent(k)
         return
       }
 
       if(step === 2){
-        stage.innerHTML = doorScene(false)
-        btn.textContent = "Valen"
+        stage.innerHTML = doorScene(false, "Valen")
+        btn.textContent = "Valen who"
         note.textContent = "tap the door for a cheeky peek"
         wireDoorInteractions({ autoKnock:false, peek:true, more:false })
-        return
-      }
-
-      if(step === 3){
-        stage.innerHTML = doorScene(false)
-        btn.textContent = "Valen who"
-        note.textContent = "one more tap and it gets cute"
-        wireDoorInteractions({ autoKnock:false, peek:false, more:true })
         return
       }
 
@@ -688,15 +721,19 @@
       if (opts.more) persp.classList.add("openMore")
 
       const doKnock = () => {
-        hint.style.opacity = ".0"
+        if (hint) hint.style.opacity = "0"
 
-        ripple.classList.remove("go")
-        void ripple.offsetWidth
-        ripple.classList.add("go")
+        if (ripple){
+          ripple.classList.remove("go")
+          void ripple.offsetWidth
+          ripple.classList.add("go")
+        }
 
-        doorPanel.classList.remove("shake")
-        void doorPanel.offsetWidth
-        doorPanel.classList.add("shake")
+        if (doorPanel){
+          doorPanel.classList.remove("shake")
+          void doorPanel.offsetWidth
+          doorPanel.classList.add("shake")
+        }
 
         bumpCard()
         knockSound()
@@ -705,7 +742,6 @@
 
       persp.addEventListener("click", () => doKnock(), { passive:true })
 
-      // parallax (works on iOS)
       let raf = 0
       let px = 0, py = 0
       const onMove = (x, y, rect) => {
@@ -768,7 +804,6 @@
       })
     }
 
-    // ✅ converts the knock image so the white becomes transparent
     function makeWhiteTransparent(imgEl){
       if (!imgEl || imgEl.dataset.transparentDone) return
       imgEl.dataset.transparentDone = "1"
@@ -796,24 +831,19 @@
             if (a === 0) continue
 
             const lum = 0.2126*r + 0.7152*gg + 0.0722*b
-
-            // 0 => white, 255 => black, we invert to alpha
             const newA = Math.max(0, Math.min(255, Math.round((255 - lum) * 3.0)))
             d[i+3] = newA
           }
 
           g.putImageData(img, 0, 0)
           imgEl.src = c.toDataURL("image/png")
-        }catch(e){
-          // if this fails, the image still shows
-        }
+        }catch(e){}
       }
 
       if (imgEl.complete) run()
       else imgEl.addEventListener("load", run, { once:true })
     }
 
-    // WebAudio knock (iOS friendly after first gesture)
     function ensureAudio(){
       if (audioReady) return
       try{
@@ -901,7 +931,6 @@
       }
     }
 
-    // confetti canvas
     const confetti = (() => {
       const canvas = document.getElementById("confetti")
       const c = canvas.getContext("2d")
@@ -1013,7 +1042,6 @@
       confetti.burst(n || 120)
     }
 
-    // prime iOS audio with a first gesture
     window.addEventListener("pointerdown", () => {
       ensureAudio()
     }, { passive:true, once:true })
