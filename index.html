@@ -18,6 +18,20 @@
       --safeL: env(safe-area-inset-left, 0px);
       --safeR: env(safe-area-inset-right, 0px);
 
+      --bg0:#05030a;
+      --bg1:#12081e;
+      --bg2:#2a0f3f;
+
+      --accent1:#ff3d8e;
+      --accent2:#ffd06b;
+
+      --text: rgba(255,255,255,.95);
+      --muted: rgba(255,255,255,.72);
+      --stroke: rgba(255,255,255,.16);
+
+      --cardA: rgba(255,255,255,.12);
+      --cardB: rgba(255,255,255,.05);
+
       --radius: 28px;
       --radius2: 22px;
 
@@ -30,48 +44,6 @@
 
       --fontUI: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
       --fontTitle: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
-    }
-
-    body.theme-luxe{
-      --bg0:#06040a;
-      --bg1:#12081e;
-      --bg2:#2b0f3f;
-      --accent1:#ff3d8e;
-      --accent2:#ffd06b;
-      --surfaceA: rgba(255,255,255,.12);
-      --surfaceB: rgba(255,255,255,.05);
-      --stroke: rgba(255,255,255,.16);
-      --text: rgba(255,255,255,.95);
-      --muted: rgba(255,255,255,.72);
-      --shadow: 0 26px 110px rgba(0,0,0,.65);
-    }
-
-    body.theme-night{
-      --bg0:#03060d;
-      --bg1:#071426;
-      --bg2:#102a4a;
-      --accent1:#7cf3ff;
-      --accent2:#b4ff8d;
-      --surfaceA: rgba(255,255,255,.10);
-      --surfaceB: rgba(255,255,255,.04);
-      --stroke: rgba(255,255,255,.14);
-      --text: rgba(255,255,255,.94);
-      --muted: rgba(255,255,255,.70);
-      --shadow: 0 30px 130px rgba(0,0,0,.72);
-    }
-
-    body.theme-comic{
-      --bg0:#0a0612;
-      --bg1:#130a24;
-      --bg2:#2a0f3a;
-      --accent1:#ff4de3;
-      --accent2:#6bffde;
-      --surfaceA: rgba(255,255,255,.10);
-      --surfaceB: rgba(255,255,255,.04);
-      --stroke: rgba(255,255,255,.16);
-      --text: rgba(255,255,255,.96);
-      --muted: rgba(255,255,255,.74);
-      --shadow: 0 26px 110px rgba(0,0,0,.68);
     }
 
     *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
@@ -109,6 +81,7 @@
       animation: auroraDrift 16s var(--easeInOut) infinite;
       transform: translate3d(0,0,0);
       will-change: transform;
+      pointer-events:none;
     }
     @keyframes auroraDrift{
       0%{ transform: translate3d(-1.5%, -1.2%, 0) scale(1.02) rotate(-1deg); }
@@ -128,6 +101,7 @@
         radial-gradient(1.2px 1.2px at 22% 76%, rgba(255,255,255,.18) 50%, transparent 52%),
         radial-gradient(1.6px 1.6px at 48% 64%, rgba(255,255,255,.14) 50%, transparent 52%);
       animation: twinkle 7s linear infinite;
+      pointer-events:none;
     }
     @keyframes twinkle{
       0%,100%{ opacity:.50; filter: blur(0px); }
@@ -154,71 +128,15 @@
       100%{ transform: translate3d(-1%, -1%, 0); }
     }
 
-    .floaters{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:2;
-      overflow:hidden;
-    }
-    .floater{
-      position:absolute;
-      left: var(--x);
-      top: 110%;
-      font-size: var(--s);
-      opacity: 0;
-      filter: drop-shadow(0 14px 18px rgba(0,0,0,.28));
-      animation: floatUp var(--d) linear infinite;
-      will-change: transform, opacity;
-    }
-    @keyframes floatUp{
-      0%{ opacity: 0; transform: translate3d(0,0,0) rotate(0deg); }
-      10%{ opacity: .85; }
-      100%{ opacity: 0; transform: translate3d(var(--dx), -145vh, 0) rotate(var(--r)); }
-    }
-
-    canvas#confetti{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:3;
-    }
-
-    .toast{
-      position:fixed;
-      left:50%;
-      bottom: calc(18px + var(--safeB));
-      transform: translate3d(-50%, 20px, 0);
-      opacity:0;
-      z-index: 10;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.26);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      color: rgba(255,255,255,.92);
-      font-weight: 900;
-      transition: opacity var(--dur2) var(--easeOut), transform var(--dur2) var(--easeOut);
-      pointer-events:none;
-      max-width: 90vw;
-      text-align:center;
-    }
-    .toast.show{
-      opacity:1;
-      transform: translate3d(-50%, 0, 0);
-    }
-
     .wrap{ width: min(560px, 94vw); }
 
     .card{
       border-radius: var(--radius);
       border:1px solid var(--stroke);
-      background: linear-gradient(180deg, var(--surfaceA), var(--surfaceB));
-      box-shadow: var(--shadow);
+      background: linear-gradient(180deg, var(--cardA), var(--cardB));
+      box-shadow: 0 26px 110px rgba(0,0,0,.65);
       overflow:hidden;
       position:relative;
-      transform: translate3d(0,0,0);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       outline: 1px solid rgba(255,255,255,.04);
@@ -319,23 +237,6 @@
       transform: scale(1.12);
     }
 
-    .themeToggle{ display:flex; gap:6px; margin-left: 6px; }
-    .chip{
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.20);
-      color: rgba(255,255,255,.88);
-      font-weight:900;
-      font-size:11px;
-      padding:7px 10px;
-      border-radius:999px;
-      cursor:pointer;
-      user-select:none;
-    }
-    .chip.on{
-      background: linear-gradient(135deg, rgba(255,61,142,.40), rgba(255,208,107,.22));
-      border-color: rgba(255,255,255,.18);
-    }
-
     .stage{ padding: 12px 14px 12px 14px; }
 
     .sceneShell{
@@ -345,8 +246,9 @@
       background: rgba(0,0,0,.55);
       box-shadow: 0 18px 70px rgba(0,0,0,.35);
       position:relative;
-      transform: translate3d(0,0,0);
       height: clamp(360px, 52vh, 460px);
+      transform: translate3d(0,0,0);
+      z-index: 1;
     }
 
     .view{
@@ -355,9 +257,7 @@
       opacity:0;
       transform: translate3d(0, 10px, 0) scale(.995);
       pointer-events:none;
-      transition:
-        opacity var(--dur3) var(--easeOut),
-        transform var(--dur3) var(--easeOut);
+      transition: opacity var(--dur3) var(--easeOut), transform var(--dur3) var(--easeOut);
       will-change: opacity, transform;
     }
     .view.active{
@@ -365,28 +265,6 @@
       transform: translate3d(0, 0, 0) scale(1);
       pointer-events:auto;
     }
-
-    .topBack{
-      position:absolute;
-      left: 10px;
-      top: 10px;
-      z-index: 6;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.22);
-      color: rgba(255,255,255,.92);
-      font-weight: 950;
-      cursor:pointer;
-      user-select:none;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    .topBack.hidden{ display:none; }
-    .topBack:active{ transform: translate3d(0,1px,0) scale(.99); }
 
     .doorArea{
       position:absolute;
@@ -522,6 +400,7 @@
       border-bottom-right-radius: 4px;
     }
 
+    /* knock image, plus occasional bottom drift */
     .knockImg{
       position:absolute;
       left:50%;
@@ -536,6 +415,7 @@
       -webkit-user-drag:none;
       background: transparent;
       will-change: transform;
+      z-index: 6;
     }
     @keyframes knockWiggle{
       0%{ transform: translate3d(-50%,-50%,6px) rotate(-6deg) scale(1); }
@@ -543,6 +423,16 @@
       50%{ transform: translate3d(-51%,-49%,6px) rotate(-2deg) scale(1); }
       75%{ transform: translate3d(-49.5%,-50%,6px) rotate(3deg) scale(1.01); }
       100%{ transform: translate3d(-50%,-50%,6px) rotate(-6deg) scale(1); }
+    }
+
+    .knockBottom{
+      animation:
+        knockWiggle 1.05s var(--easeInOut) infinite,
+        driftBottom 2.8s var(--easeInOut) infinite;
+    }
+    @keyframes driftBottom{
+      0%,100%{ top:46%; }
+      50%{ top:72%; }
     }
 
     .ripple{
@@ -556,6 +446,7 @@
       transform: translate3d(-50%,-50%,10px) scale(.2);
       opacity: 0;
       pointer-events:none;
+      z-index: 7;
     }
     .ripple.go{ animation: ripple var(--dur3) var(--easeOut) forwards; }
     @keyframes ripple{
@@ -572,9 +463,6 @@
       80%{ transform: translate3d(1px, 0, 0); }
       100%{ transform: translate3d(0,0,0); }
     }
-
-    .peek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
-    .wideOpen .doorPanel{ transform: rotateY(-28deg) translate3d(-2.2%,0,0); }
 
     .center{
       position:absolute;
@@ -601,6 +489,16 @@
       position:relative;
     }
 
+    .emoji{
+      font-size: 58px;
+      filter: drop-shadow(0 18px 26px rgba(0,0,0,.35));
+      animation: pop 900ms var(--easeOut) both;
+    }
+    @keyframes pop{
+      0%{ transform: translate3d(0,16px,0) scale(.85); opacity:0; }
+      100%{ transform: translate3d(0,0,0) scale(1); opacity:1; }
+    }
+
     .headline{
       font-family: var(--fontTitle);
       font-weight: 800;
@@ -618,26 +516,9 @@
     .sub{
       margin-top: 10px;
       font-size: 14px;
-      color: rgba(255,255,255,.80);
+      color: rgba(255,255,255,.82);
       line-height: 1.45;
       font-weight: 600;
-    }
-
-    .emoji{
-      font-size: 58px;
-      filter: drop-shadow(0 18px 26px rgba(0,0,0,.35));
-      animation: pop 900ms var(--easeOut) both;
-    }
-    @keyframes pop{
-      0%{ transform: translate3d(0,16px,0) scale(.85); opacity:0; }
-      100%{ transform: translate3d(0,0,0) scale(1); opacity:1; }
-    }
-
-    .stack{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-top: 14px;
     }
 
     .choiceBar{
@@ -648,8 +529,14 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      z-index: 7;
-      pointer-events:auto;
+      z-index: 8;
+    }
+
+    .stack{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top: 14px;
     }
 
     .btn{
@@ -667,6 +554,7 @@
       position:relative;
       overflow:hidden;
       transform: translate3d(0,0,0);
+      touch-action: manipulation;
     }
     .btn:before{
       content:"";
@@ -694,30 +582,9 @@
       font-weight: 950;
       letter-spacing: .2px;
       cursor:pointer;
+      touch-action: manipulation;
     }
     .btnGhost:active{ transform: translate3d(0,1px,0) scale(.99); }
-
-    .bottom{
-      padding: 12px 14px 16px 14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .btnRow{
-      display:flex;
-      gap:10px;
-    }
-    .btnRow .btnGhost{ width:40%; }
-    .btnRow .btn{ width:60%; }
-
-    .note{
-      text-align:center;
-      font-size:12px;
-      color: var(--muted);
-      line-height: 1.45;
-      padding: 0 8px;
-    }
 
     .media{
       margin-top: 12px;
@@ -756,27 +623,83 @@
     }
     .media.loaded .skeleton{ display:none; }
 
-    .packetButton{
-      width:100%;
-      border:none;
-      background:transparent;
-      padding:0;
-      cursor:pointer;
+    /* bottom bar, must always be tappable on iPhone Safari */
+    .bottom{
+      padding: 12px 14px 16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      position: relative;
+      z-index: 9999;
+    }
+    .btnRow{
+      display:flex;
+      gap:10px;
+      position: relative;
+      z-index: 10000;
+    }
+    #backBtn, #nextBtn{
+      position: relative;
+      z-index: 10001;
+      touch-action: manipulation;
+    }
+    .btnRow .btnGhost{ width:40%; }
+    .btnRow .btn{ width:60%; }
+
+    .note{
+      text-align:center;
+      font-size:12px;
+      color: var(--muted);
+      line-height: 1.45;
+      padding: 0 8px;
+    }
+
+    /* toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom: calc(18px + var(--safeB));
+      transform: translate3d(-50%, 20px, 0);
+      opacity:0;
+      z-index: 20000;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.26);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: rgba(255,255,255,.92);
+      font-weight: 900;
+      transition: opacity var(--dur2) var(--easeOut), transform var(--dur2) var(--easeOut);
+      pointer-events:none;
+      max-width: 90vw;
+      text-align:center;
+    }
+    .toast.show{
+      opacity:1;
+      transform: translate3d(-50%, 0, 0);
+    }
+
+    /* confetti canvas */
+    canvas#confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index: 15000;
     }
 
     @media (prefers-reduced-motion: reduce){
-      .bg-aurora, .bg-stars, .bg-grain, .fog, .knockImg, .floater, .btn:before, .skeleton { animation:none !important; }
-      .doorPanel, .view{ transition:none !important; }
+      .bg-aurora, .bg-stars, .bg-grain, .fog, .knockImg, .btn:before, .skeleton { animation:none !important; }
+      .view, .doorPanel{ transition:none !important; }
     }
   </style>
 </head>
 
-<body class="theme-luxe">
+<body>
   <div class="bg-aurora"></div>
   <div class="bg-stars"></div>
   <div class="bg-grain"></div>
 
-  <div class="floaters" id="floaters" aria-hidden="true"></div>
   <canvas id="confetti" aria-hidden="true"></canvas>
   <div class="toast" id="toast"></div>
 
@@ -790,25 +713,19 @@
             <div class="subtitle" id="subtitle">tap the door for extra drama</div>
           </div>
         </div>
-
         <div class="meta">
-          <div class="stepper" id="stepper" aria-hidden="true">
-            <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="stepper" aria-hidden="true">
+            <div class="dot on" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div><div class="dot" id="d4"></div>
+            <div class="dot" id="d5"></div><div class="dot" id="d6"></div><div class="dot" id="d7"></div><div class="dot" id="d8"></div>
           </div>
           <div class="pill" id="pill">Step 1</div>
-          <div class="themeToggle" title="theme">
-            <div class="chip on" id="tLuxe">Luxe</div>
-            <div class="chip" id="tNight">Night</div>
-            <div class="chip" id="tComic">Comic</div>
-          </div>
         </div>
       </div>
 
       <div class="stage">
         <div class="sceneShell" id="shell">
-          <div class="topBack hidden" id="topBack">← Back</div>
 
+          <!-- Step 1 -->
           <section class="view active" id="v1">
             <div class="doorArea">
               <div class="persp" id="persp1">
@@ -826,9 +743,10 @@
             </div>
           </section>
 
+          <!-- Step 2 -->
           <section class="view" id="v2">
             <div class="doorArea">
-              <div class="persp peek" id="persp2">
+              <div class="persp" id="persp2">
                 <div class="doorFrame">
                   <div class="fog"></div>
                   <div class="doorPanel" id="doorPanel2">
@@ -839,7 +757,7 @@
 
                 <div class="caption" id="valenCap">Valen</div>
                 <div class="ripple" id="ripple2"></div>
-                <div class="hint" id="hint2">pick the right one</div>
+                <div class="hint" id="hint2">pick Valen who</div>
 
                 <div class="choiceBar">
                   <button class="btnGhost" id="wrong1">Valen what</button>
@@ -850,20 +768,22 @@
             </div>
           </section>
 
+          <!-- Step 3 -->
           <section class="view" id="v3">
-            <div class="center" id="revealTap">
+            <div class="center" id="vdayTap">
               <div class="panel">
                 <div class="emoji">💐</div>
                 <div class="headline">Happy Valentine’s Day</div>
-                <div class="sub">sending you love and good vibes<br>tap anywhere for confetti</div>
+                <div class="sub">sending you love and good vibes<br>tap for confetti</div>
               </div>
             </div>
           </section>
 
+          <!-- Step 4 -->
           <section class="view" id="v4">
             <div class="center">
               <div class="panel">
-                <div class="headline" style="font-size:26px">Test your love</div>
+                <div class="headline" style="font-size:26px">Click to Test your love</div>
                 <div class="sub">pick one</div>
                 <div class="stack">
                   <button class="btnGhost" id="love1">I love shad</button>
@@ -874,11 +794,12 @@
             </div>
           </section>
 
+          <!-- Step 5 -->
           <section class="view" id="v5">
             <div class="center" id="resultTap">
               <div class="panel">
                 <div class="headline" id="resultTitle" style="font-size:26px">internet hug!</div>
-                <div class="sub">tap for confetti</div>
+                <div class="sub">tap for confetti<br>you can add your own image later</div>
                 <div class="media" id="resultMedia">
                   <div class="skeleton"></div>
                   <img id="resultImg" alt="result gif" loading="lazy" decoding="async">
@@ -887,26 +808,27 @@
             </div>
           </section>
 
+          <!-- Step 6 -->
           <section class="view" id="v6">
             <div class="center">
               <div class="panel">
                 <div class="headline" style="font-size:26px">LUCKY!</div>
                 <div class="sub">tap the red packet</div>
-                <button class="packetButton" id="packetBtn" aria-label="red packet">
-                  <div class="media" id="packetMedia">
-                    <div class="skeleton"></div>
-                    <img id="packetImg" alt="red packet gif" loading="lazy" decoding="async">
-                  </div>
-                </button>
+                <button class="btnGhost" id="packetBtn" style="margin-top:12px">🧧 Open red packet</button>
+                <div class="media" id="packetMedia" style="margin-top:12px">
+                  <div class="skeleton"></div>
+                  <img id="packetImg" alt="red packet gif" loading="lazy" decoding="async">
+                </div>
               </div>
             </div>
           </section>
 
+          <!-- Step 7 -->
           <section class="view" id="v7">
-            <div class="center">
+            <div class="center" id="letterTap">
               <div class="panel">
                 <div class="emoji" style="font-size:42px">💌</div>
-                <div class="headline" style="font-size:22px; margin-top:10px">for you</div>
+                <div class="headline" style="font-size:22px; margin-top:10px">I love you</div>
                 <div class="sub" style="text-align:left">
                   I love you so much, kindest soul to ever to come in my life. I miss you have a blast and come back to my arms quick<br><br>
                   Love Yours,<br>
@@ -917,12 +839,13 @@
             </div>
           </section>
 
+          <!-- Step 8 -->
           <section class="view" id="v8">
-            <div class="center">
+            <div class="center" id="finalTap">
               <div class="panel">
                 <div class="emoji">🧧</div>
                 <div class="headline" style="font-size:26px">Check your account for red packets!</div>
-                <div class="sub">happy early chinese new year</div>
+                <div class="sub">happy early chinese new year<br>tap for confetti</div>
               </div>
             </div>
           </section>
@@ -941,26 +864,33 @@
   </div>
 
   <script>
+    // local assets you provide in repo
     const DOOR_SRC = "door.jpeg"
     const KNOCK_SRC = "IMG_0143.png"
 
+    // direct tenor GIF endpoints (works better than embed.js)
     const GIF_HUG = "https://media1.tenor.com/m/zIacwDB2Mr0AAAAd/huhhh.gif"
     const GIF_KISS = "https://media1.tenor.com/m/5H7rmBUfr5AAAAAd/love-you.gif"
     const GIF_PACKET = "https://media1.tenor.com/m/T_DRG_1RTIUAAAAd/cny2020-chinese-new-year.gif"
 
-    const body = document.body
-    const pill = document.getElementById("pill")
-    const subtitle = document.getElementById("subtitle")
-    const dots = document.querySelectorAll("#stepper .dot")
+    // elements
+    const card = document.getElementById("card")
     const toast = document.getElementById("toast")
+
+    const subtitle = document.getElementById("subtitle")
+    const pill = document.getElementById("pill")
+    const note = document.getElementById("note")
 
     const backBtn = document.getElementById("backBtn")
     const nextBtn = document.getElementById("nextBtn")
-    const note = document.getElementById("note")
-    const topBack = document.getElementById("topBack")
 
-    const views = Array.from(document.querySelectorAll(".view"))
-    const card = document.getElementById("card")
+    const dots = [
+      document.getElementById("d1"), document.getElementById("d2"), document.getElementById("d3"), document.getElementById("d4"),
+      document.getElementById("d5"), document.getElementById("d6"), document.getElementById("d7"), document.getElementById("d8")
+    ]
+
+    const views = []
+    for (let i = 1; i <= 8; i++) views.push(document.getElementById("v" + i))
 
     const persp1 = document.getElementById("persp1")
     const doorPanel1 = document.getElementById("doorPanel1")
@@ -977,13 +907,15 @@
     const wrong2 = document.getElementById("wrong2")
     const rightValen = document.getElementById("rightValen")
 
-    const revealTap = document.getElementById("revealTap")
+    const vdayTap = document.getElementById("vdayTap")
+    const resultTap = document.getElementById("resultTap")
+    const letterTap = document.getElementById("letterTap")
+    const finalTap = document.getElementById("finalTap")
 
     const love1 = document.getElementById("love1")
     const love2 = document.getElementById("love2")
     const love3 = document.getElementById("love3")
 
-    const resultTap = document.getElementById("resultTap")
     const resultTitle = document.getElementById("resultTitle")
     const resultMedia = document.getElementById("resultMedia")
     const resultImg = document.getElementById("resultImg")
@@ -992,46 +924,55 @@
     const packetMedia = document.getElementById("packetMedia")
     const packetImg = document.getElementById("packetImg")
 
-    const tLuxe = document.getElementById("tLuxe")
-    const tNight = document.getElementById("tNight")
-    const tComic = document.getElementById("tComic")
-
+    // state
     let step = 1
     let historyStack = [1]
-    let lastLove = null
+    let lastLove = "hug"
     let autoKnockTimer = null
-    let knockTimes = []
 
+    // audio (optional, tiny synth)
     let audioReady = false
     let ctx = null
 
-    preload([DOOR_SRC, KNOCK_SRC, GIF_HUG, GIF_KISS, GIF_PACKET])
-    makeWhiteTransparent(knockImg)
-    stabilizeKnock(knockImg)
+    // confetti
+    const confetti = setupConfetti()
 
-    setupTheme()
+    // init
+    preload([DOOR_SRC, KNOCK_SRC, GIF_HUG, GIF_KISS, GIF_PACKET])
+    stabilizeKnock(knockImg)
+    makeWhiteTransparent(knockImg)
     setupDoor(persp1, doorPanel1, ripple1, hint1)
     setupDoor(persp2, doorPanel2, ripple2, hint2)
-    setupConfetti()
 
-    nextBtn.onclick = () => onNext()
-    backBtn.onclick = () => onBack()
-    topBack.onclick = () => onBack()
+    // important for iOS Safari
+    bindTap(nextBtn, () => onNext())
+    bindTap(backBtn, () => onBack())
 
-    revealTap.addEventListener("click", () => { sparkleSound(); confettiBurst(130); spawnFloaters(10) }, { passive:true })
-    resultTap.addEventListener("click", () => { sparkleSound(); confettiBurst(90); spawnFloaters(8) }, { passive:true })
+    bindTap(wrong1, () => wrongValen())
+    bindTap(wrong2, () => wrongValen())
+    bindTap(rightValen, () => { sparkleSound(); confetti.burst(110); popToast("nice"); setStep(3) })
 
-    wrong1.onclick = wrongValen
-    wrong2.onclick = wrongValen
-    rightValen.onclick = () => { sparkleSound(); confettiBurst(110); spawnFloaters(10); setStep(3) }
+    bindTap(love1, () => { lastLove = "hug"; setStep(5) })
+    bindTap(love2, () => { lastLove = "kisses"; setStep(5) })
+    bindTap(love3, () => setStep(6))
 
-    love1.onclick = () => { lastLove = "hug"; setStep(5) }
-    love2.onclick = () => { lastLove = "kisses"; setStep(5) }
-    love3.onclick = () => setStep(6)
+    bindTap(packetBtn, () => setStep(7))
 
-    packetBtn.onclick = () => setStep(7)
+    // tap for confetti
+    vdayTap.addEventListener("click", () => { sparkleSound(); confetti.burst(140) }, { passive:true })
+    resultTap.addEventListener("click", () => { sparkleSound(); confetti.burst(90) }, { passive:true })
+    letterTap.addEventListener("click", () => { sparkleSound(); confetti.burst(70) }, { passive:true })
+    finalTap.addEventListener("click", () => { sparkleSound(); confetti.burst(160) }, { passive:true })
 
-    window.addEventListener("pointerdown", () => { ensureAudio() }, { passive:true, once:true })
+    // prime audio on first interaction
+    window.addEventListener("pointerdown", () => ensureAudio(), { passive:true, once:true })
+
+    // occasionally drift knock image down to bottom
+    setInterval(() => {
+      if (step !== 1) return
+      if (Math.random() < 0.45) knockImg.classList.toggle("knockBottom", true)
+      setTimeout(() => knockImg.classList.toggle("knockBottom", false), 2200)
+    }, 2600)
 
     setStep(1, false)
 
@@ -1040,7 +981,7 @@
       if (step === 3) return setStep(4)
       if (step === 5) return setStep(4)
       if (step === 7) return setStep(8)
-      if (step === 8) return copyLink()
+      if (step === 8) return setStep(1)
     }
 
     function onBack(){
@@ -1057,50 +998,53 @@
       step = s
       if (push) pushHistory(s)
 
+      // update header
       pill.textContent = "Step " + step
-      dots.forEach((d, i) => d.classList.toggle("on", i === (step - 1)))
+      dots.forEach((d, i) => d && d.classList.toggle("on", i === (step - 1)))
 
-      const canBack = historyStack.length > 1
-      backBtn.style.display = canBack ? "" : "none"
-      topBack.classList.toggle("hidden", !canBack)
-
-      views.forEach(v => v.classList.remove("active"))
+      // show view
+      views.forEach(v => v && v.classList.remove("active"))
       const v = document.getElementById("v" + step)
       if (v) v.classList.add("active")
 
+      // back visibility
+      const canBack = historyStack.length > 1
+      backBtn.style.display = canBack ? "" : "none"
+
+      // stop any auto knock
       clearAutoKnock()
 
+      // per-step UI
       if (step === 1){
         subtitle.textContent = "tap the door for extra drama"
         nextBtn.style.display = ""
         nextBtn.textContent = "Who’s there"
         note.textContent = "tap the button"
         backBtn.style.display = "none"
-        topBack.classList.add("hidden")
         startAutoKnock()
         return
       }
 
       if (step === 2){
-        subtitle.textContent = "pick the right one"
+        subtitle.textContent = "pick Valen who"
         nextBtn.style.display = "none"
-        note.textContent = "choose Valen who"
-        hint2.textContent = "pick the right one"
+        note.textContent = "choose the correct option"
         hint2.style.opacity = "1"
         return
       }
 
       if (step === 3){
-        subtitle.textContent = "valentine reveal"
+        subtitle.textContent = "happy valentine’s day"
         nextBtn.style.display = ""
         nextBtn.textContent = "Click to Test your love"
         note.textContent = "tap the card for confetti"
-        confettiBurst(160); sparkleSound(); spawnFloaters(12)
+        sparkleSound()
+        confetti.burst(160)
         return
       }
 
       if (step === 4){
-        subtitle.textContent = "choose your answer"
+        subtitle.textContent = "test your love"
         nextBtn.style.display = "none"
         note.textContent = "pick one of the three buttons"
         return
@@ -1110,21 +1054,20 @@
         subtitle.textContent = "result"
         nextBtn.style.display = ""
         nextBtn.textContent = "Back to test"
-        note.textContent = "tap anywhere for confetti"
-
-        const kind = lastLove || "hug"
-        const title = kind === "hug" ? "internet hug!" : "Virtual Kisses"
-        const src = kind === "hug" ? GIF_HUG : GIF_KISS
-        resultTitle.textContent = title
-        loadMedia(resultMedia, resultImg, src)
+        note.textContent = "tap the card for confetti"
+        const isHug = lastLove === "hug"
+        resultTitle.textContent = isHug ? "internet hug!" : "Virtual Kisses"
+        loadMedia(resultMedia, resultImg, isHug ? GIF_HUG : GIF_KISS)
         return
       }
 
       if (step === 6){
         subtitle.textContent = "lucky path"
         nextBtn.style.display = "none"
-        note.textContent = "tap the packet"
+        note.textContent = "tap the red packet button"
         loadMedia(packetMedia, packetImg, GIF_PACKET)
+        sparkleSound()
+        confetti.burst(90)
         return
       }
 
@@ -1132,52 +1075,59 @@
         subtitle.textContent = "message"
         nextBtn.style.display = ""
         nextBtn.textContent = "Click the button"
-        note.textContent = "almost there"
-        confettiBurst(90); sparkleSound(); spawnFloaters(8)
+        note.textContent = "one more step"
+        sparkleSound()
+        confetti.burst(80)
         return
       }
 
       subtitle.textContent = "final"
       nextBtn.style.display = ""
-      nextBtn.textContent = "Copy link"
-      note.textContent = "tap to copy the link"
-      confettiBurst(170); sparkleSound(); spawnFloaters(14)
+      nextBtn.textContent = "Replay"
+      note.textContent = "tap the card for confetti"
+      sparkleSound()
+      confetti.burst(170)
     }
 
     function wrongValen(){
-      bumpCard()
-      hint2.textContent = "nah try again"
+      bump(card)
       knockSound()
-      confettiBurst(35)
-      popToast("wrong one")
+      confetti.burst(40)
+      popToast("try again")
+    }
+
+    function bindTap(el, fn){
+      if (!el) return
+      const handler = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        fn()
+      }
+      el.addEventListener("pointerup", handler, { passive:false })
+      el.addEventListener("touchend", handler, { passive:false })
+      el.addEventListener("click", handler, { passive:false })
     }
 
     function popToast(text){
       toast.textContent = text
       toast.classList.add("show")
       clearTimeout(toast.__t)
-      toast.__t = setTimeout(() => toast.classList.remove("show"), 1200)
+      toast.__t = setTimeout(() => toast.classList.remove("show"), 1100)
     }
 
-    function setupTheme(){
-      const set = (name) => {
-        body.classList.remove("theme-luxe","theme-night","theme-comic")
-        body.classList.add(name)
-        ;[tLuxe,tNight,tComic].forEach(x => x.classList.remove("on"))
-        if (name === "theme-luxe") tLuxe.classList.add("on")
-        if (name === "theme-night") tNight.classList.add("on")
-        if (name === "theme-comic") tComic.classList.add("on")
-      }
-      tLuxe.onclick = () => set("theme-luxe")
-      tNight.onclick = () => set("theme-night")
-      tComic.onclick = () => set("theme-comic")
+    function bump(el){
+      if (!el) return
+      el.classList.remove("shake")
+      void el.offsetWidth
+      el.classList.add("shake")
     }
 
     function setupDoor(persp, panel, ripple, hint){
       if (!persp) return
+
       const doKnock = () => {
         if (hint) hint.style.opacity = "0"
-        bumpCard()
+        bump(card)
         knockSound()
 
         if (ripple){
@@ -1185,35 +1135,22 @@
           void ripple.offsetWidth
           ripple.classList.add("go")
         }
-
         if (panel){
           panel.classList.remove("shake")
           void panel.offsetWidth
           panel.classList.add("shake")
         }
-
-        const now = Date.now()
-        knockTimes = knockTimes.filter(t => now - t < 900)
-        knockTimes.push(now)
-        if (knockTimes.length >= 3){
-          knockTimes = []
-          persp.classList.add("wideOpen")
-          sparkleSound()
-          confettiBurst(140)
-          spawnFloaters(12)
-          popToast("door opens")
-          setTimeout(() => persp.classList.remove("wideOpen"), 1200)
-        }
-
-        spawnFloaters(2)
       }
 
       persp.addEventListener("click", () => doKnock(), { passive:true })
 
+      // tiny parallax tilt
       let raf = 0
-      const onMove = (x, y, rect) => {
-        const nx = (x - (rect.left + rect.width/2)) / (rect.width/2)
-        const ny = (y - (rect.top + rect.height/2)) / (rect.height/2)
+      const rect = () => persp.getBoundingClientRect()
+      const onMove = (x, y) => {
+        const r = rect()
+        const nx = (x - (r.left + r.width/2)) / (r.width/2)
+        const ny = (y - (r.top + r.height/2)) / (r.height/2)
         if (!raf){
           raf = requestAnimationFrame(() => {
             raf = 0
@@ -1224,13 +1161,11 @@
         }
       }
 
-      const rect = () => persp.getBoundingClientRect()
-
-      persp.addEventListener("mousemove", (e) => onMove(e.clientX, e.clientY, rect()), { passive:true })
+      persp.addEventListener("mousemove", (e) => onMove(e.clientX, e.clientY), { passive:true })
       persp.addEventListener("touchmove", (e) => {
         const t = e.touches && e.touches[0]
         if (!t) return
-        onMove(t.clientX, t.clientY, rect())
+        onMove(t.clientX, t.clientY)
       }, { passive:true })
 
       const reset = () => { persp.style.transform = "translate3d(0,0,0)" }
@@ -1241,7 +1176,7 @@
     function startAutoKnock(){
       autoKnockTimer = setInterval(() => {
         if (step !== 1) return
-        bumpCard()
+        bump(card)
         knockSound()
         ripple1.classList.remove("go")
         void ripple1.offsetWidth
@@ -1249,7 +1184,6 @@
         doorPanel1.classList.remove("shake")
         void doorPanel1.offsetWidth
         doorPanel1.classList.add("shake")
-        spawnFloaters(2)
       }, 2200)
     }
 
@@ -1262,7 +1196,10 @@
 
     function stabilizeKnock(imgEl){
       if (!imgEl) return
-      const lock = () => { imgEl.style.left = "50%"; imgEl.style.top = "46%" }
+      const lock = () => {
+        imgEl.style.left = "50%"
+        imgEl.style.top = "46%"
+      }
       lock()
       window.addEventListener("resize", lock, { passive:true })
       window.addEventListener("orientationchange", lock, { passive:true })
@@ -1271,21 +1208,15 @@
       setTimeout(lock, 700)
     }
 
-    function bumpCard(){
-      card.classList.remove("shake")
-      void card.offsetWidth
-      card.classList.add("shake")
-    }
-
-    function clamp(v, a, b){ return Math.max(a, Math.min(b, v)) }
-
     function preload(urls){
       urls.forEach(src => { const img = new Image(); img.src = src })
     }
 
+    // best effort: converts white background to transparency for your knock image
     function makeWhiteTransparent(imgEl){
       if (!imgEl || imgEl.dataset.transparentDone) return
       imgEl.dataset.transparentDone = "1"
+
       const run = () => {
         try{
           const w = imgEl.naturalWidth
@@ -1309,6 +1240,7 @@
           imgEl.src = c.toDataURL("image/png")
         }catch(e){}
       }
+
       if (imgEl.complete) run()
       else imgEl.addEventListener("load", run, { once:true })
     }
@@ -1328,21 +1260,7 @@
       imgEl.src = src
     }
 
-    function copyLink(){
-      const url = location.href
-      if (navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(url).then(() => popToast("link copied")).catch(() => popToast("copy failed"))
-        return
-      }
-      const ta = document.createElement("textarea")
-      ta.value = url
-      ta.style.position = "fixed"
-      ta.style.left = "-9999px"
-      document.body.appendChild(ta)
-      ta.select()
-      try{ document.execCommand("copy"); popToast("link copied") }catch(e){ popToast("copy failed") }
-      ta.remove()
-    }
+    function clamp(v, a, b){ return Math.max(a, Math.min(b, v)) }
 
     function ensureAudio(){
       if (audioReady) return
@@ -1394,25 +1312,7 @@
       o.start(now); o.stop(now + 0.14)
     }
 
-    function spawnFloaters(count){
-      const box = document.getElementById("floaters")
-      if (!box) return
-      const icons = ["💗","💞","💖","💘","✨","💝"]
-      for (let i = 0; i < count; i++){
-        const el = document.createElement("div")
-        el.className = "floater"
-        el.textContent = icons[(Math.random() * icons.length) | 0]
-        el.style.setProperty("--x", (Math.random() * 100).toFixed(2) + "vw")
-        el.style.setProperty("--s", (14 + Math.random() * 18).toFixed(0) + "px")
-        el.style.setProperty("--d", (7 + Math.random() * 6).toFixed(2) + "s")
-        el.style.setProperty("--dx", ((Math.random() * 26) - 13).toFixed(2) + "vw")
-        el.style.setProperty("--r", ((Math.random() * 160) - 80).toFixed(0) + "deg")
-        box.appendChild(el)
-        setTimeout(() => { try{ el.remove() }catch(e){} }, 14000)
-      }
-    }
-
-    let confettiAPI = null
+    // simple confetti
     function setupConfetti(){
       const canvas = document.getElementById("confetti")
       const c = canvas.getContext("2d")
@@ -1511,7 +1411,7 @@
       window.addEventListener("resize", resize, { passive:true })
       resize()
 
-      confettiAPI = {
+      return {
         burst(n){
           add(n || 120)
           if (!running){
@@ -1520,10 +1420,6 @@
           }
         }
       }
-    }
-
-    function confettiBurst(n){
-      if (confettiAPI) confettiAPI.burst(n)
     }
   </script>
 </body>
