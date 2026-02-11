@@ -14,17 +14,11 @@
       --bg2:#2b0f3f;
 
       --pink:#ff3d8e;
-      --hot:#ff2e63;
       --gold:#ffd06b;
-      --ice:#7afcff;
-      --mint:#53ffb6;
 
       --text:rgba(255,255,255,.95);
       --muted:rgba(255,255,255,.72);
       --stroke:rgba(255,255,255,.16);
-
-      --card:rgba(255,255,255,.08);
-      --card2:rgba(255,255,255,.04);
 
       --shadow:0 26px 110px rgba(0,0,0,.65);
       --radius:28px;
@@ -53,11 +47,9 @@
       background:
         radial-gradient(1200px 800px at 10% 10%, rgba(255,61,142,.24), transparent 60%),
         radial-gradient(900px 620px at 90% 20%, rgba(255,208,107,.16), transparent 62%),
-        radial-gradient(800px 700px at 60% 90%, rgba(122,252,255,.10), transparent 60%),
         linear-gradient(160deg, var(--bg0), var(--bg1) 40%, var(--bg2));
     }
 
-    /* animated aurora */
     .aurora{
       position:fixed;
       inset:-20%;
@@ -67,8 +59,7 @@
       background:
         radial-gradient(600px 420px at 20% 30%, rgba(255,61,142,.35), transparent 60%),
         radial-gradient(520px 420px at 75% 35%, rgba(255,208,107,.22), transparent 62%),
-        radial-gradient(520px 460px at 55% 75%, rgba(83,255,182,.14), transparent 62%),
-        radial-gradient(520px 520px at 35% 80%, rgba(122,252,255,.12), transparent 60%);
+        radial-gradient(520px 460px at 55% 75%, rgba(255,255,255,.06), transparent 62%);
       animation: drift 14s ease-in-out infinite;
       transform: translate3d(0,0,0);
     }
@@ -78,7 +69,6 @@
       100%{ transform: translate3d(-1.5%, -1.2%, 0) scale(1.02) rotate(-1deg); }
     }
 
-    /* tiny stars */
     .stars{
       position:fixed;
       inset:0;
@@ -88,8 +78,7 @@
         radial-gradient(1.5px 1.5px at 65% 18%, rgba(255,255,255,.22) 50%, transparent 52%),
         radial-gradient(1.8px 1.8px at 82% 44%, rgba(255,255,255,.18) 50%, transparent 52%),
         radial-gradient(1.2px 1.2px at 22% 76%, rgba(255,255,255,.18) 50%, transparent 52%),
-        radial-gradient(1.6px 1.6px at 48% 64%, rgba(255,255,255,.14) 50%, transparent 52%),
-        radial-gradient(1.4px 1.4px at 92% 78%, rgba(255,255,255,.18) 50%, transparent 52%);
+        radial-gradient(1.6px 1.6px at 48% 64%, rgba(255,255,255,.14) 50%, transparent 52%);
       opacity:.7;
       animation: twinkle 7s linear infinite;
     }
@@ -98,9 +87,7 @@
       50%{ opacity:.85; filter: blur(.2px); }
     }
 
-    .wrap{
-      width: min(520px, 94vw);
-    }
+    .wrap{ width: min(520px, 94vw); }
 
     .card{
       border-radius: var(--radius);
@@ -181,11 +168,7 @@
       white-space:nowrap;
     }
 
-    .dots{
-      display:flex;
-      gap:6px;
-      padding-right:2px;
-    }
+    .dots{ display:flex; gap:6px; padding-right:2px; }
     .dot{
       width:7px; height:7px;
       border-radius:999px;
@@ -197,9 +180,7 @@
       box-shadow: 0 10px 18px rgba(255,61,142,.18);
     }
 
-    .stage{
-      padding: 12px 14px 12px 14px;
-    }
+    .stage{ padding: 12px 14px 12px 14px; }
 
     .scene{
       border-radius: 22px;
@@ -211,11 +192,9 @@
       transform: translate3d(0,0,0);
     }
 
-    /* door area */
     .doorArea{
       position:relative;
       width:100%;
-      /* fallback for older safari */
       padding-top: 75%;
       background: #000;
       overflow:hidden;
@@ -295,8 +274,7 @@
       inset:-20%;
       background:
         radial-gradient(600px 380px at 25% 40%, rgba(255,61,142,.10), transparent 62%),
-        radial-gradient(520px 420px at 80% 55%, rgba(255,208,107,.09), transparent 62%),
-        radial-gradient(520px 520px at 50% 70%, rgba(122,252,255,.06), transparent 60%);
+        radial-gradient(520px 420px at 80% 55%, rgba(255,208,107,.09), transparent 62%);
       filter: blur(18px);
       opacity:.65;
       animation: fog 9s ease-in-out infinite;
@@ -309,7 +287,7 @@
       100%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
     }
 
-    /* knock overlay image */
+    /* knock image with TRUE transparency (converted to data URL in JS) */
     .knockImg{
       position:absolute;
       left:50%;
@@ -322,6 +300,8 @@
       pointer-events:none;
       user-select:none;
       -webkit-user-drag:none;
+      background: transparent;
+      mix-blend-mode: normal;
     }
     @keyframes knockWiggle{
       0%{ transform: translate3d(-50%,-50%,4px) rotate(-6deg) scale(1); }
@@ -331,7 +311,6 @@
       100%{ transform: translate3d(-50%,-50%,4px) rotate(-6deg) scale(1); }
     }
 
-    /* tap hint */
     .hint{
       position:absolute;
       left:14px;
@@ -348,7 +327,6 @@
       box-shadow: 0 16px 50px rgba(0,0,0,.25);
     }
 
-    /* ripple from knocks */
     .ripple{
       position:absolute;
       left:50%;
@@ -361,18 +339,13 @@
       opacity: 0;
       pointer-events:none;
     }
-    .ripple.go{
-      animation: ripple 520ms ease-out forwards;
-    }
+    .ripple.go{ animation: ripple 520ms ease-out forwards; }
     @keyframes ripple{
       0%{ opacity:.85; transform: translate3d(-50%,-50%,10px) scale(.2); }
       100%{ opacity:0; transform: translate3d(-50%,-50%,10px) scale(8); }
     }
 
-    /* shake */
-    .shake{
-      animation: shake 460ms cubic-bezier(.2,.9,.2,1);
-    }
+    .shake{ animation: shake 460ms cubic-bezier(.2,.9,.2,1); }
     @keyframes shake{
       0%{ transform: translate3d(0,0,0); }
       20%{ transform: translate3d(-2px, 0, 0); }
@@ -382,11 +355,9 @@
       100%{ transform: translate3d(0,0,0); }
     }
 
-    /* door open states */
     .openPeek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
     .openMore .doorPanel{ transform: rotateY(-26deg) translate3d(-1.6%,0,0); }
 
-    /* bottom area */
     .bottom{
       padding: 12px 14px 16px 14px;
       display:flex;
@@ -434,7 +405,6 @@
       padding: 0 8px;
     }
 
-    /* reveal */
     .reveal{
       padding: 26px 18px 30px 18px;
       min-height: 360px;
@@ -447,7 +417,7 @@
       background:
         radial-gradient(300px 220px at 50% 12%, rgba(255,208,107,.22), transparent 62%),
         radial-gradient(420px 260px at 10% 80%, rgba(255,61,142,.16), transparent 60%),
-        radial-gradient(420px 260px at 90% 75%, rgba(122,252,255,.12), transparent 60%),
+        radial-gradient(420px 260px at 90% 75%, rgba(255,255,255,.06), transparent 60%),
         linear-gradient(180deg, rgba(0,0,0,.14), rgba(0,0,0,.06));
     }
 
@@ -487,11 +457,7 @@
       line-height: 1.45;
     }
 
-    .type{
-      display:inline-block;
-      position:relative;
-      padding-right: 8px;
-    }
+    .type{ display:inline-block; position:relative; padding-right: 8px; }
     .caret{
       display:inline-block;
       width: 10px;
@@ -504,7 +470,6 @@
     }
     @keyframes blink{ 50%{ opacity:0; } }
 
-    /* floating hearts layer */
     .floaters{
       position:fixed;
       inset:0;
@@ -529,7 +494,6 @@
       100%{ opacity: 0; transform: translate3d(var(--dx), -145vh, 0) rotate(var(--r)); }
     }
 
-    /* confetti canvas */
     canvas#confetti{
       position:fixed;
       inset:0;
@@ -537,16 +501,12 @@
       z-index:3;
     }
 
-    /* transitions between steps */
-    .fadeIn{
-      animation: fadeIn 420ms ease both;
-    }
+    .fadeIn{ animation: fadeIn 420ms ease both; }
     @keyframes fadeIn{
       from{ opacity:0; transform: translate3d(0,8px,0) scale(.995); }
       to{ opacity:1; transform: translate3d(0,0,0) scale(1); }
     }
 
-    /* reduced motion */
     @media (prefers-reduced-motion: reduce){
       .aurora, .stars, .fog, .knockImg, .floater, .btn:before { animation:none !important; }
       .doorPanel{ transition:none !important; }
@@ -615,9 +575,7 @@
 
     render()
 
-    btn.addEventListener("click", () => {
-      advance()
-    }, { passive:true })
+    btn.addEventListener("click", () => advance(), { passive:true })
 
     function advance(){
       if (step === 1) step = 2
@@ -635,7 +593,7 @@
     function doorScene(includeKnock){
       return `
         <div class="scene fadeIn">
-          <div class="doorArea" id="doorArea">
+          <div class="doorArea">
             <div class="doorStage" id="doorStage">
               <div class="persp" id="persp">
                 <div class="doorFrame">
@@ -679,7 +637,10 @@
         stage.innerHTML = doorScene(true)
         btn.textContent = "Who’s there"
         note.textContent = "bonus points if you tap the door"
-        wireDoorInteractions({ autoKnock:true, peek:false, more:false, includeKnock:true })
+        wireDoorInteractions({ autoKnock:true, peek:false, more:false })
+
+        const k = stage.querySelector(".knockImg")
+        makeWhiteTransparent(k)  // ✅ turns the white into transparency
         return
       }
 
@@ -687,7 +648,7 @@
         stage.innerHTML = doorScene(false)
         btn.textContent = "Valen"
         note.textContent = "tap the door for a cheeky peek"
-        wireDoorInteractions({ autoKnock:false, peek:true, more:false, includeKnock:false })
+        wireDoorInteractions({ autoKnock:false, peek:true, more:false })
         return
       }
 
@@ -695,7 +656,7 @@
         stage.innerHTML = doorScene(false)
         btn.textContent = "Valen who"
         note.textContent = "one more tap and it gets cute"
-        wireDoorInteractions({ autoKnock:false, peek:false, more:true, includeKnock:false })
+        wireDoorInteractions({ autoKnock:false, peek:false, more:true })
         return
       }
 
@@ -742,16 +703,9 @@
         spawnFloaters(2)
       }
 
-      const onTapDoor = () => {
-        doKnock()
-        if (step === 1) {
-          // keep it playful, do not auto advance on door tap
-        }
-      }
+      persp.addEventListener("click", () => doKnock(), { passive:true })
 
-      persp.addEventListener("click", onTapDoor, { passive:true })
-
-      // subtle parallax that works on iOS Safari
+      // parallax (works on iOS)
       let raf = 0
       let px = 0, py = 0
       const onMove = (x, y, rect) => {
@@ -814,7 +768,52 @@
       })
     }
 
-    // WebAudio knock that works on iOS after user gesture
+    // ✅ converts the knock image so the white becomes transparent
+    function makeWhiteTransparent(imgEl){
+      if (!imgEl || imgEl.dataset.transparentDone) return
+      imgEl.dataset.transparentDone = "1"
+
+      const run = () => {
+        try{
+          const w = imgEl.naturalWidth
+          const h = imgEl.naturalHeight
+          if (!w || !h) return
+
+          const c = document.createElement("canvas")
+          c.width = w
+          c.height = h
+          const g = c.getContext("2d", { willReadFrequently:true })
+          g.drawImage(imgEl, 0, 0)
+
+          const img = g.getImageData(0, 0, w, h)
+          const d = img.data
+
+          for (let i = 0; i < d.length; i += 4){
+            const r = d[i]
+            const gg = d[i+1]
+            const b = d[i+2]
+            const a = d[i+3]
+            if (a === 0) continue
+
+            const lum = 0.2126*r + 0.7152*gg + 0.0722*b
+
+            // 0 => white, 255 => black, we invert to alpha
+            const newA = Math.max(0, Math.min(255, Math.round((255 - lum) * 3.0)))
+            d[i+3] = newA
+          }
+
+          g.putImageData(img, 0, 0)
+          imgEl.src = c.toDataURL("image/png")
+        }catch(e){
+          // if this fails, the image still shows
+        }
+      }
+
+      if (imgEl.complete) run()
+      else imgEl.addEventListener("load", run, { once:true })
+    }
+
+    // WebAudio knock (iOS friendly after first gesture)
     function ensureAudio(){
       if (audioReady) return
       try{
@@ -828,8 +827,6 @@
     function knockSound(){
       ensureAudio()
       if (!audioReady || !ctx) return
-
-      // iOS may suspend until user gesture
       if (ctx.state === "suspended"){
         ctx.resume().catch(() => {})
       }
@@ -876,7 +873,6 @@
       tick()
     }
 
-    // Floating hearts that feel alive
     function spawnFloaters(count){
       const box = document.getElementById("floaters")
       if (!box) return
@@ -901,14 +897,11 @@
 
         box.appendChild(el)
 
-        // cleanup
-        setTimeout(() => {
-          try{ el.remove() }catch(e){}
-        }, 14000)
+        setTimeout(() => { try{ el.remove() }catch(e){} }, 14000)
       }
     }
 
-    // Confetti canvas
+    // confetti canvas
     const confetti = (() => {
       const canvas = document.getElementById("confetti")
       const c = canvas.getContext("2d")
@@ -979,7 +972,6 @@
             continue
           }
 
-          // color vibe
           const grad = c.createLinearGradient(p.x - 10, p.y - 10, p.x + 10, p.y + 10)
           grad.addColorStop(0, "rgba(255,61,142," + (0.85 * p.a) + ")")
           grad.addColorStop(1, "rgba(255,208,107," + (0.85 * p.a) + ")")
@@ -1021,10 +1013,9 @@
       confetti.burst(n || 120)
     }
 
-    // first gesture primes audio nicely on iOS
+    // prime iOS audio with a first gesture
     window.addEventListener("pointerdown", () => {
       ensureAudio()
-      spawnFloaters(1)
     }, { passive:true, once:true })
   </script>
 </body>
