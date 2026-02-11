@@ -318,7 +318,6 @@
       100%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
     }
 
-    /* knock knock image - pinned */
     .knockImg{
       position:absolute;
       left:50%;
@@ -389,7 +388,6 @@
 
     .openPeek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
 
-    /* centered comic caption */
     .caption{
       position:absolute;
       left:50%;
@@ -560,8 +558,7 @@
       margin-top: 14px;
     }
 
-    /* Tenor embeds: force nice layout inside card on Safari */
-    .tenorWrap{
+    .gifWrap{
       margin-top: 12px;
       border-radius: 18px;
       overflow:hidden;
@@ -569,11 +566,12 @@
       background: rgba(0,0,0,.18);
       box-shadow: 0 18px 60px rgba(0,0,0,.30);
     }
-    .tenorWrap .tenor-gif-embed{
-      margin:0 !important;
+    .gifWrap img{
+      display:block;
+      width:100%;
+      height:auto;
     }
 
-    /* red packet: click overlay */
     .packetClick{
       width:100%;
       border:none;
@@ -637,9 +635,6 @@
     </div>
   </div>
 
-  <!-- Load Tenor script ONCE -->
-  <script async src="https://tenor.com/embed.js"></script>
-
   <script>
     const stage = document.getElementById("stage")
     const bottom = document.getElementById("bottom")
@@ -647,30 +642,22 @@
     const dots = document.getElementById("dots")
     const card = document.getElementById("card")
 
-    // steps
-    // 1 knock scene (button: Who’s there)
-    // 2 valen caption (button: Valen who)
-    // 3 valentine reveal (button: Click to Test your love)
-    // 4 test screen (3 choices + back)
-    // 5 result simple (hug/kisses) + back
-    // 6 red packet screen (packet clickable + back)
-    // 7 letter screen (message + button to next + back)
-    // 8 final screen (check your account...) + back to test
     let step = 1
     let autoKnockTimer = null
     let audioReady = false
     let ctx = null
 
-    let lastResult = null // "hug" | "kisses"
+    let lastResult = null
+
     const DOOR_SRC = "door.jpeg"
     const KNOCK_SRC = "IMG_0143.png"
 
-    // Tenor post IDs you gave
-    const TENOR_HUG = "14737639179877233341"
-    const TENOR_KISS = "16464856326135066512"
-    const TENOR_PACKET = "16075056"
+    // direct media URLs (no tenor script needed)
+    const GIF_HUG = "https://media1.tenor.com/m/zIacwDB2Mr0AAAAd/huhhh.gif"
+    const GIF_KISS = "https://media1.tenor.com/m/5H7rmBUfr5AAAAAd/love-you.gif"
+    const GIF_PACKET = "https://media1.tenor.com/m/T_DRG_1RTIUAAAAd/cny2020-chinese-new-year.gif"
 
-    preload([DOOR_SRC, KNOCK_SRC])
+    preload([DOOR_SRC, KNOCK_SRC, GIF_HUG, GIF_KISS, GIF_PACKET])
     render()
 
     function setDots(){
@@ -733,33 +720,26 @@
       `
     }
 
-    function tenorEmbed(postId, aspectRatio){
-      // Tenor script will replace this div with an embed
-      // keep it wrapped so it looks good in safari
-      const ar = aspectRatio || "1"
+    function gifEmbed(url, alt){
       return `
-        <div class="tenorWrap">
-          <div class="tenor-gif-embed"
-               data-postid="${postId}"
-               data-share-method="host"
-               data-aspect-ratio="${ar}"
-               data-width="100%"></div>
+        <div class="gifWrap">
+          <img src="${url}" alt="${alt}" loading="lazy" decoding="async"
+               onerror="this.closest('.gifWrap').innerHTML='<div style=&quot;padding:14px;color:rgba(255,255,255,.8);font-weight:900;text-align:center&quot;>gif failed to load<br><a style=&quot;color:rgba(255,255,255,.92)&quot; href=&quot;${url}&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>open gif</a></div>'" />
         </div>
       `
     }
 
     function resultScene(kind){
       const title = kind === "hug" ? "internet hug!" : "Virtual Kisses"
-      const sub = "tap for confetti"
       const embed = kind === "hug"
-        ? tenorEmbed(TENOR_HUG, "1.14583")
-        : tenorEmbed(TENOR_KISS, "1")
+        ? gifEmbed(GIF_HUG, "hug")
+        : gifEmbed(GIF_KISS, "kiss")
 
       return `
         <div class="scene reveal fadeIn" id="resultTap">
           <div class="gift">
             <div class="big">${title}</div>
-            <div class="sub">${sub}</div>
+            <div class="sub">tap for confetti</div>
             ${embed}
           </div>
         </div>
@@ -774,7 +754,7 @@
             <div class="sub">tap the red packet</div>
 
             <button class="packetClick" id="packet" aria-label="red packet">
-              ${tenorEmbed(TENOR_PACKET, "1")}
+              ${gifEmbed(GIF_PACKET, "red packet")}
             </button>
           </div>
         </div>
@@ -871,8 +851,7 @@
         startConfettiBurst(160)
         spawnFloaters(12)
 
-        const reveal = document.getElementById("reveal")
-        reveal.addEventListener("click", () => {
+        document.getElementById("reveal").addEventListener("click", () => {
           startConfettiBurst(120)
           spawnFloaters(10)
         }, { passive:true })
@@ -894,9 +873,6 @@
         document.getElementById("b2").onclick = () => { lastResult = "kisses"; step = 5; render() }
         document.getElementById("b3").onclick = () => { step = 6; render() }
         document.getElementById("backBtn").onclick = () => { step = 3; render() }
-
-        // ensure Tenor script upgrades embeds when we land on this page later
-        refreshTenor()
         return
       }
 
@@ -905,7 +881,7 @@
         bottom.innerHTML = controlsHTML({
           primaryText: "Back to test",
           primaryId: "backToTest",
-          note: "tap the gif too",
+          note: "tap anywhere for confetti",
           back: true
         })
 
@@ -916,8 +892,6 @@
 
         document.getElementById("backToTest").onclick = () => { step = 4; render() }
         document.getElementById("backBtn").onclick = () => { step = 4; render() }
-
-        refreshTenor()
         return
       }
 
@@ -926,15 +900,13 @@
         bottom.innerHTML = controlsHTML({
           primaryText: "Back to test",
           primaryId: "backToTest",
-          note: "tap the packet gif",
+          note: "tap the packet",
           back: true
         })
 
         document.getElementById("packet").onclick = () => { step = 7; render() }
         document.getElementById("backToTest").onclick = () => { step = 4; render() }
         document.getElementById("backBtn").onclick = () => { step = 4; render() }
-
-        refreshTenor()
         return
       }
 
@@ -967,26 +939,6 @@
       document.getElementById("backBtn").onclick = () => { step = 4; render() }
     }
 
-    function refreshTenor(){
-      // Tenor’s embed script usually auto-scans, but when we swap DOM via innerHTML,
-      // Safari can miss it, so we poke it.
-      try{
-        if (window.Tenor && typeof window.Tenor.parse === "function"){
-          window.Tenor.parse()
-          return
-        }
-      }catch(e){}
-
-      // fallback: re-inject embed.js if Tenor object not present yet
-      if (!document.querySelector('script[data-tenor="1"]')){
-        const s = document.createElement("script")
-        s.src = "https://tenor.com/embed.js"
-        s.async = true
-        s.dataset.tenor = "1"
-        document.body.appendChild(s)
-      }
-    }
-
     function wireDoorInteractions(opts){
       const persp = document.getElementById("persp")
       const doorPanel = document.getElementById("doorPanel")
@@ -994,7 +946,6 @@
       const hint = document.getElementById("hint")
 
       if (!persp) return
-
       if (opts.peek) persp.classList.add("openPeek")
 
       const doKnock = () => {
@@ -1085,7 +1036,6 @@
       })
     }
 
-    // makes white background transparent for your local knock image
     function makeWhiteTransparent(imgEl){
       if (!imgEl || imgEl.dataset.transparentDone) return
       imgEl.dataset.transparentDone = "1"
@@ -1126,7 +1076,6 @@
       else imgEl.addEventListener("load", run, { once:true })
     }
 
-    // WebAudio knock
     function ensureAudio(){
       if (audioReady) return
       try{
@@ -1213,7 +1162,6 @@
       }
     }
 
-    // confetti canvas
     const confetti = (() => {
       const canvas = document.getElementById("confetti")
       const c = canvas.getContext("2d")
@@ -1325,7 +1273,6 @@
       confetti.burst(n || 120)
     }
 
-    // prime iOS audio
     window.addEventListener("pointerdown", () => { ensureAudio() }, { passive:true, once:true })
   </script>
 </body>
