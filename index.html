@@ -124,7 +124,7 @@
       border-radius: var(--radius);
       border:1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
-      box-shadow: 0 26px 110px rgba(0,0,0,.65);
+      box-shadow: var(--shadow);
       overflow:hidden;
       position:relative;
       transform: translate3d(0,0,0);
@@ -318,7 +318,7 @@
       100%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
     }
 
-    /* knock knock image - hard pinned, never drifts to bottom */
+    /* knock knock image - pinned */
     .knockImg{
       position:absolute;
       left:50%;
@@ -332,7 +332,6 @@
       user-select:none;
       -webkit-user-drag:none;
       background: transparent;
-      mix-blend-mode: normal;
       will-change: transform;
     }
     @keyframes knockWiggle{
@@ -389,7 +388,6 @@
     }
 
     .openPeek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
-    .openMore .doorPanel{ transform: rotateY(-26deg) translate3d(-1.6%,0,0); }
 
     /* centered comic caption */
     .caption{
@@ -507,7 +505,7 @@
     }
 
     .gift{
-      width: min(390px, 94%);
+      width: min(410px, 96%);
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,.14);
       background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
@@ -562,43 +560,27 @@
       margin-top: 14px;
     }
 
-    /* clickable red packet placeholder */
-    .packetWrap{
+    /* Tenor embeds: force nice layout inside card on Safari */
+    .tenorWrap{
       margin-top: 12px;
-      display:flex;
-      justify-content:center;
-    }
-    .packetBtn{
-      width: min(220px, 70%);
-      aspect-ratio: 3 / 4;
       border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.18);
-      background:
-        radial-gradient(260px 180px at 50% 10%, rgba(255,208,107,.22), transparent 62%),
-        linear-gradient(180deg, rgba(255,61,142,.85), rgba(210,20,70,.88));
-      box-shadow: 0 20px 70px rgba(0,0,0,.35);
-      position:relative;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      box-shadow: 0 18px 60px rgba(0,0,0,.30);
+    }
+    .tenorWrap .tenor-gif-embed{
+      margin:0 !important;
+    }
+
+    /* red packet: click overlay */
+    .packetClick{
+      width:100%;
+      border:none;
+      padding:0;
+      background:transparent;
       cursor:pointer;
-      transform: translate3d(0,0,0);
-    }
-    .packetBtn:active{ transform: translate3d(0,1px,0) scale(.99); }
-    .packetBtn:before{
-      content:"";
-      position:absolute;
-      inset:10%;
-      border-radius: 14px;
-      border: 1px dashed rgba(255,255,255,.24);
-      opacity:.65;
-    }
-    .packetLabel{
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform: translate(-50%,-50%);
-      font-weight:1000;
-      color: rgba(255,255,255,.92);
-      text-shadow: 0 10px 26px rgba(0,0,0,.35);
-      letter-spacing:.2px;
+      display:block;
     }
 
     .fadeIn{ animation: fadeIn 420ms ease both; }
@@ -644,16 +626,19 @@
             <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
+            <div class="dot"></div>
           </div>
           <div class="pill" id="stepPill">Step 1</div>
         </div>
       </div>
 
       <div class="stage" id="stage"></div>
-
       <div class="bottom" id="bottom"></div>
     </div>
   </div>
+
+  <!-- Load Tenor script ONCE -->
+  <script async src="https://tenor.com/embed.js"></script>
 
   <script>
     const stage = document.getElementById("stage")
@@ -680,8 +665,12 @@
     const DOOR_SRC = "door.jpeg"
     const KNOCK_SRC = "IMG_0143.png"
 
-    preload([DOOR_SRC, KNOCK_SRC])
+    // Tenor post IDs you gave
+    const TENOR_HUG = "14737639179877233341"
+    const TENOR_KISS = "16464856326135066512"
+    const TENOR_PACKET = "16075056"
 
+    preload([DOOR_SRC, KNOCK_SRC])
     render()
 
     function setDots(){
@@ -744,16 +733,34 @@
       `
     }
 
+    function tenorEmbed(postId, aspectRatio){
+      // Tenor script will replace this div with an embed
+      // keep it wrapped so it looks good in safari
+      const ar = aspectRatio || "1"
+      return `
+        <div class="tenorWrap">
+          <div class="tenor-gif-embed"
+               data-postid="${postId}"
+               data-share-method="host"
+               data-aspect-ratio="${ar}"
+               data-width="100%"></div>
+        </div>
+      `
+    }
+
     function resultScene(kind){
       const title = kind === "hug" ? "internet hug!" : "Virtual Kisses"
-      const sub = "image goes here later"
-      const emoji = kind === "hug" ? "🫂" : "😘"
+      const sub = "tap for confetti"
+      const embed = kind === "hug"
+        ? tenorEmbed(TENOR_HUG, "1.14583")
+        : tenorEmbed(TENOR_KISS, "1")
+
       return `
-        <div class="scene reveal fadeIn">
+        <div class="scene reveal fadeIn" id="resultTap">
           <div class="gift">
-            <div class="emoji">${emoji}</div>
             <div class="big">${title}</div>
             <div class="sub">${sub}</div>
+            ${embed}
           </div>
         </div>
       `
@@ -766,13 +773,9 @@
             <div class="big">LUCKY!</div>
             <div class="sub">tap the red packet</div>
 
-            <div class="packetWrap">
-              <button class="packetBtn" id="packet" aria-label="red packet">
-                <div class="packetLabel">红 包</div>
-              </button>
-            </div>
-
-            <div class="sub" style="margin-top:12px;opacity:.85">image goes here later</div>
+            <button class="packetClick" id="packet" aria-label="red packet">
+              ${tenorEmbed(TENOR_PACKET, "1")}
+            </button>
           </div>
         </div>
       `
@@ -811,14 +814,9 @@
     }
 
     function controlsHTML(opts){
-      // opts: { primaryText, primaryId, note, back: boolean, backTo: number }
-      const backBtn = opts.back
-        ? `<button class="btnGhost" id="backBtn">Back</button>`
-        : ``
-      const primary = opts.primaryText
-        ? `<button class="btn" id="${opts.primaryId || "primaryBtn"}">${opts.primaryText}</button>`
-        : ``
-      const note = opts.note ? `<div class="note">${opts.note}</div>` : `<div class="note"></div>`
+      const backBtn = opts.back ? `<button class="btnGhost" id="backBtn">Back</button>` : ``
+      const primary = opts.primaryText ? `<button class="btn" id="${opts.primaryId || "primaryBtn"}">${opts.primaryText}</button>` : ``
+      const note = `<div class="note">${opts.note || ""}</div>`
       return `${primary}${backBtn}${note}`
     }
 
@@ -827,7 +825,6 @@
       setDots()
       clearAutoKnock()
 
-      // Step 1: knock
       if (step === 1){
         stage.innerHTML = doorScene(true, "")
         bottom.innerHTML = controlsHTML({
@@ -836,7 +833,7 @@
           note: "bonus points if you tap the door"
         })
 
-        wireDoorInteractions({ autoKnock:true, peek:false, more:false })
+        wireDoorInteractions({ autoKnock:true, peek:false })
         const k = document.getElementById("knockImg")
         makeWhiteTransparent(k)
         stabilizeKnock(k)
@@ -845,7 +842,6 @@
         return
       }
 
-      // Step 2: Valen caption middle + button Valen who
       if (step === 2){
         stage.innerHTML = doorScene(false, "Valen")
         bottom.innerHTML = controlsHTML({
@@ -855,14 +851,13 @@
           back: true
         })
 
-        wireDoorInteractions({ autoKnock:false, peek:true, more:false })
+        wireDoorInteractions({ autoKnock:false, peek:true })
 
         document.getElementById("nextBtn").onclick = () => { step = 3; render() }
         document.getElementById("backBtn").onclick = () => { step = 1; render() }
         return
       }
 
-      // Step 3: Valentine message + button "Click to Test your love"
       if (step === 3){
         stage.innerHTML = revealScene()
         bottom.innerHTML = controlsHTML({
@@ -887,7 +882,6 @@
         return
       }
 
-      // Step 4: test screen (3 buttons)
       if (step === 4){
         stage.innerHTML = testScene()
         bottom.innerHTML = controlsHTML({
@@ -899,48 +893,51 @@
         document.getElementById("b1").onclick = () => { lastResult = "hug"; step = 5; render() }
         document.getElementById("b2").onclick = () => { lastResult = "kisses"; step = 5; render() }
         document.getElementById("b3").onclick = () => { step = 6; render() }
-
         document.getElementById("backBtn").onclick = () => { step = 3; render() }
+
+        // ensure Tenor script upgrades embeds when we land on this page later
+        refreshTenor()
         return
       }
 
-      // Step 5: simple result (hug/kisses) + back to test
       if (step === 5){
         stage.innerHTML = resultScene(lastResult || "hug")
         bottom.innerHTML = controlsHTML({
           primaryText: "Back to test",
           primaryId: "backToTest",
-          note: "tap for a little confetti",
+          note: "tap the gif too",
           back: true
         })
 
-        stage.querySelector(".scene").addEventListener("click", () => {
+        document.getElementById("resultTap").addEventListener("click", () => {
           startConfettiBurst(80)
           spawnFloaters(8)
         }, { passive:true })
 
         document.getElementById("backToTest").onclick = () => { step = 4; render() }
         document.getElementById("backBtn").onclick = () => { step = 4; render() }
+
+        refreshTenor()
         return
       }
 
-      // Step 6: red packet screen + back to test
       if (step === 6){
         stage.innerHTML = packetScene()
         bottom.innerHTML = controlsHTML({
           primaryText: "Back to test",
           primaryId: "backToTest",
-          note: "tap the packet",
+          note: "tap the packet gif",
           back: true
         })
 
         document.getElementById("packet").onclick = () => { step = 7; render() }
         document.getElementById("backToTest").onclick = () => { step = 4; render() }
         document.getElementById("backBtn").onclick = () => { step = 4; render() }
+
+        refreshTenor()
         return
       }
 
-      // Step 7: letter screen + button to final + back
       if (step === 7){
         stage.innerHTML = letterScene()
         bottom.innerHTML = controlsHTML({
@@ -955,7 +952,6 @@
         return
       }
 
-      // Step 8: final screen + back to test
       stage.innerHTML = finalScene()
       bottom.innerHTML = controlsHTML({
         primaryText: "Back to test",
@@ -971,6 +967,26 @@
       document.getElementById("backBtn").onclick = () => { step = 4; render() }
     }
 
+    function refreshTenor(){
+      // Tenor’s embed script usually auto-scans, but when we swap DOM via innerHTML,
+      // Safari can miss it, so we poke it.
+      try{
+        if (window.Tenor && typeof window.Tenor.parse === "function"){
+          window.Tenor.parse()
+          return
+        }
+      }catch(e){}
+
+      // fallback: re-inject embed.js if Tenor object not present yet
+      if (!document.querySelector('script[data-tenor="1"]')){
+        const s = document.createElement("script")
+        s.src = "https://tenor.com/embed.js"
+        s.async = true
+        s.dataset.tenor = "1"
+        document.body.appendChild(s)
+      }
+    }
+
     function wireDoorInteractions(opts){
       const persp = document.getElementById("persp")
       const doorPanel = document.getElementById("doorPanel")
@@ -980,7 +996,6 @@
       if (!persp) return
 
       if (opts.peek) persp.classList.add("openPeek")
-      if (opts.more) persp.classList.add("openMore")
 
       const doKnock = () => {
         if (hint) hint.style.opacity = "0"
@@ -1004,7 +1019,6 @@
 
       persp.addEventListener("click", () => doKnock(), { passive:true })
 
-      // parallax
       let raf = 0
       const onMove = (x, y, rect) => {
         const nx = (x - (rect.left + rect.width/2)) / (rect.width/2)
@@ -1035,7 +1049,6 @@
       }
     }
 
-    // keeps knockImg locked at correct position even on iOS reflow glitches
     function stabilizeKnock(imgEl){
       if (!imgEl) return
       const lock = () => {
@@ -1072,7 +1085,7 @@
       })
     }
 
-    // makes white background transparent (turns image into data url)
+    // makes white background transparent for your local knock image
     function makeWhiteTransparent(imgEl){
       if (!imgEl || imgEl.dataset.transparentDone) return
       imgEl.dataset.transparentDone = "1"
@@ -1196,7 +1209,6 @@
         el.style.setProperty("--r", r)
 
         box.appendChild(el)
-
         setTimeout(() => { try{ el.remove() }catch(e){} }, 14000)
       }
     }
