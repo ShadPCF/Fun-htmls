@@ -24,7 +24,6 @@
       --dur1: 160ms;
       --dur2: 260ms;
       --dur3: 420ms;
-      --dur4: 720ms;
 
       --easeOut: cubic-bezier(.16, 1, .3, 1);
       --easeInOut: cubic-bezier(.4, 0, .2, 1);
@@ -91,8 +90,8 @@
       font-family: var(--fontUI);
       color: var(--text);
       background:
-        radial-gradient(1200px 800px at 10% 10%, color-mix(in srgb, var(--accent1) 28%, transparent), transparent 60%),
-        radial-gradient(900px 620px at 90% 20%, color-mix(in srgb, var(--accent2) 18%, transparent), transparent 62%),
+        radial-gradient(1200px 800px at 10% 10%, rgba(255,61,142,.24), transparent 60%),
+        radial-gradient(900px 620px at 90% 20%, rgba(255,208,107,.16), transparent 62%),
         linear-gradient(160deg, var(--bg0), var(--bg1) 40%, var(--bg2));
       transform: translateZ(0);
     }
@@ -104,8 +103,8 @@
       opacity:.9;
       filter: blur(26px) saturate(1.12);
       background:
-        radial-gradient(620px 420px at 20% 30%, color-mix(in srgb, var(--accent1) 36%, transparent), transparent 60%),
-        radial-gradient(560px 420px at 75% 35%, color-mix(in srgb, var(--accent2) 26%, transparent), transparent 62%),
+        radial-gradient(620px 420px at 20% 30%, rgba(255,61,142,.35), transparent 60%),
+        radial-gradient(560px 420px at 75% 35%, rgba(255,208,107,.22), transparent 62%),
         radial-gradient(520px 460px at 55% 75%, rgba(255,255,255,.06), transparent 62%);
       animation: auroraDrift 16s var(--easeInOut) infinite;
       transform: translate3d(0,0,0);
@@ -185,6 +184,31 @@
       z-index:3;
     }
 
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom: calc(18px + var(--safeB));
+      transform: translate3d(-50%, 20px, 0);
+      opacity:0;
+      z-index: 10;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.26);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: rgba(255,255,255,.92);
+      font-weight: 900;
+      transition: opacity var(--dur2) var(--easeOut), transform var(--dur2) var(--easeOut);
+      pointer-events:none;
+      max-width: 90vw;
+      text-align:center;
+    }
+    .toast.show{
+      opacity:1;
+      transform: translate3d(-50%, 0, 0);
+    }
+
     .wrap{ width: min(560px, 94vw); }
 
     .card{
@@ -218,8 +242,8 @@
     .badge{
       width:34px; height:34px;
       border-radius:12px;
-      background: linear-gradient(135deg, color-mix(in srgb, var(--accent1) 90%, white 10%), color-mix(in srgb, var(--accent2) 85%, white 15%));
-      box-shadow: 0 12px 28px color-mix(in srgb, var(--accent1) 18%, transparent);
+      background: linear-gradient(135deg, rgba(255,61,142,.92), rgba(255,208,107,.90));
+      box-shadow: 0 12px 28px rgba(255,61,142,.18);
       position:relative;
       overflow:hidden;
       flex:0 0 auto;
@@ -290,16 +314,12 @@
       transition: transform var(--dur2) var(--easeOut), background var(--dur2) var(--easeOut);
     }
     .dot.on{
-      background: linear-gradient(135deg, color-mix(in srgb, var(--accent1) 92%, white 8%), color-mix(in srgb, var(--accent2) 92%, white 8%));
-      box-shadow: 0 10px 18px color-mix(in srgb, var(--accent1) 16%, transparent);
+      background: linear-gradient(135deg, rgba(255,61,142,.95), rgba(255,208,107,.92));
+      box-shadow: 0 10px 18px rgba(255,61,142,.18);
       transform: scale(1.12);
     }
 
-    .themeToggle{
-      display:flex;
-      gap:6px;
-      margin-left: 6px;
-    }
+    .themeToggle{ display:flex; gap:6px; margin-left: 6px; }
     .chip{
       border:1px solid rgba(255,255,255,.16);
       background: rgba(0,0,0,.20);
@@ -312,13 +332,11 @@
       user-select:none;
     }
     .chip.on{
-      background: linear-gradient(135deg, color-mix(in srgb, var(--accent1) 65%, black 35%), color-mix(in srgb, var(--accent2) 55%, black 45%));
+      background: linear-gradient(135deg, rgba(255,61,142,.40), rgba(255,208,107,.22));
       border-color: rgba(255,255,255,.18);
     }
 
-    .stage{
-      padding: 12px 14px 12px 14px;
-    }
+    .stage{ padding: 12px 14px 12px 14px; }
 
     .sceneShell{
       border-radius: var(--radius2);
@@ -348,79 +366,11 @@
       pointer-events:auto;
     }
 
-    .bottom{
-      padding: 12px 14px 16px 14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .btn{
-      width:100%;
-      padding: 14px 16px;
-      border-radius: 18px;
-      border:none;
-      cursor:pointer;
-      color:#12040c;
-      font-size: 15px;
-      font-weight: 950;
-      letter-spacing:.2px;
-      background: linear-gradient(135deg, color-mix(in srgb, var(--accent1) 100%, white 0%), color-mix(in srgb, var(--accent2) 100%, white 0%));
-      box-shadow: 0 16px 38px color-mix(in srgb, var(--accent1) 18%, transparent);
-      position:relative;
-      overflow:hidden;
-      transform: translate3d(0,0,0);
-    }
-    .btn:before{
-      content:"";
-      position:absolute;
-      inset:-40%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
-      transform: rotate(25deg);
-      opacity:.55;
-      animation: btnShine 1.9s var(--easeInOut) infinite;
-    }
-    @keyframes btnShine{
-      0%{ transform: translateX(-35%) rotate(25deg); }
-      50%{ transform: translateX(35%) rotate(25deg); }
-      100%{ transform: translateX(-35%) rotate(25deg); }
-    }
-    .btn:active{ transform: translate3d(0,1px,0) scale(.99); }
-
-    .btnGhost{
-      width:100%;
-      padding: 12px 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.18);
-      color: rgba(255,255,255,.92);
-      font-weight: 950;
-      letter-spacing: .2px;
-      cursor:pointer;
-      transform: translate3d(0,0,0);
-    }
-    .btnGhost:active{ transform: translate3d(0,1px,0) scale(.99); }
-
-    .btnRow{
-      display:flex;
-      gap:10px;
-    }
-    .btnRow .btnGhost{ width:40%; }
-    .btnRow .btn{ width:60%; }
-
-    .note{
-      text-align:center;
-      font-size:12px;
-      color: var(--muted);
-      line-height: 1.45;
-      padding: 0 8px;
-    }
-
     .topBack{
       position:absolute;
       left: 10px;
       top: 10px;
-      z-index: 5;
+      z-index: 6;
       display:flex;
       align-items:center;
       gap:8px;
@@ -434,10 +384,9 @@
       user-select:none;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      transform: translate3d(0,0,0);
     }
-    .topBack:active{ transform: translate3d(0,1px,0) scale(.99); }
     .topBack.hidden{ display:none; }
+    .topBack:active{ transform: translate3d(0,1px,0) scale(.99); }
 
     .doorArea{
       position:absolute;
@@ -448,8 +397,8 @@
       background:
         radial-gradient(80% 70% at 50% 30%, rgba(255,255,255,.10), transparent 60%),
         radial-gradient(120% 100% at 50% 100%, rgba(0,0,0,.52), transparent 55%),
-        radial-gradient(140% 120% at 10% 90%, color-mix(in srgb, var(--accent1) 14%, transparent), transparent 60%),
-        radial-gradient(120% 120% at 95% 10%, color-mix(in srgb, var(--accent2) 12%, transparent), transparent 62%);
+        radial-gradient(140% 120% at 10% 90%, rgba(255,61,142,.14), transparent 60%),
+        radial-gradient(120% 120% at 95% 10%, rgba(255,208,107,.12), transparent 62%);
     }
 
     .persp{
@@ -473,8 +422,8 @@
       position:absolute;
       inset:-20%;
       background:
-        radial-gradient(600px 380px at 25% 40%, color-mix(in srgb, var(--accent1) 10%, transparent), transparent 62%),
-        radial-gradient(520px 420px at 80% 55%, color-mix(in srgb, var(--accent2) 9%, transparent), transparent 62%);
+        radial-gradient(600px 380px at 25% 40%, rgba(255,61,142,.10), transparent 62%),
+        radial-gradient(520px 420px at 80% 55%, rgba(255,208,107,.09), transparent 62%);
       filter: blur(18px);
       opacity:.65;
       animation: fog 9s var(--easeInOut) infinite;
@@ -509,8 +458,6 @@
       filter: saturate(1.08) contrast(1.05) brightness(1.02);
       user-select:none;
       -webkit-user-drag:none;
-      backface-visibility:hidden;
-      -webkit-backface-visibility:hidden;
     }
 
     .edgeGlow{
@@ -518,8 +465,8 @@
       inset:0;
       pointer-events:none;
       background:
-        linear-gradient(90deg, color-mix(in srgb, var(--accent1) 18%, transparent), transparent 20%),
-        radial-gradient(90% 120% at 5% 50%, color-mix(in srgb, var(--accent2) 18%, transparent), transparent 55%);
+        linear-gradient(90deg, rgba(255,61,142,.18), transparent 20%),
+        radial-gradient(90% 120% at 5% 50%, rgba(255,208,107,.18), transparent 55%);
       mix-blend-mode: screen;
       opacity:.65;
       transform: translate3d(0,0,2px);
@@ -573,11 +520,6 @@
       border-right: 1px solid rgba(0,0,0,.08);
       border-bottom: 1px solid rgba(0,0,0,.08);
       border-bottom-right-radius: 4px;
-    }
-    .captionPop{ animation: captionPop var(--dur3) var(--easeOut) both; }
-    @keyframes captionPop{
-      0%{ opacity:0; transform: translate3d(-50%,-40%,12px) scale(.92); }
-      100%{ opacity:1; transform: translate3d(-50%,-50%,12px) scale(1); }
     }
 
     .knockImg{
@@ -634,20 +576,6 @@
     .peek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
     .wideOpen .doorPanel{ transform: rotateY(-28deg) translate3d(-2.2%,0,0); }
 
-    .goldLight{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      opacity:0;
-      transition: opacity var(--dur3) var(--easeOut);
-      background:
-        radial-gradient(60% 70% at 18% 50%, color-mix(in srgb, var(--accent2) 26%, transparent), transparent 65%),
-        linear-gradient(90deg, color-mix(in srgb, var(--accent2) 16%, transparent), transparent 40%);
-      mix-blend-mode: screen;
-      transform: translate3d(0,0,3px);
-    }
-    .wideOpen .goldLight{ opacity:.85; }
-
     .center{
       position:absolute;
       inset:0;
@@ -657,8 +585,8 @@
       text-align:center;
       padding: 24px 18px;
       background:
-        radial-gradient(300px 220px at 50% 12%, color-mix(in srgb, var(--accent2) 22%, transparent), transparent 62%),
-        radial-gradient(420px 260px at 10% 80%, color-mix(in srgb, var(--accent1) 16%, transparent), transparent 60%),
+        radial-gradient(300px 220px at 50% 12%, rgba(255,208,107,.22), transparent 62%),
+        radial-gradient(420px 260px at 10% 80%, rgba(255,61,142,.16), transparent 60%),
         radial-gradient(420px 260px at 90% 75%, rgba(255,255,255,.06), transparent 60%),
         linear-gradient(180deg, rgba(0,0,0,.14), rgba(0,0,0,.06));
     }
@@ -680,7 +608,7 @@
       font-size: 28px;
       line-height: 1.05;
       margin: 6px 0 0 0;
-      background: linear-gradient(135deg, rgba(255,255,255,.95), color-mix(in srgb, var(--accent2) 55%, white 45%));
+      background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(255,208,107,.88));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -712,18 +640,83 @@
       margin-top: 14px;
     }
 
-    .choiceGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 14px;
+    .choiceBar{
+      position:absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index: 7;
+      pointer-events:auto;
     }
 
-    .fieldHint{
-      font-size: 12px;
-      color: rgba(255,255,255,.78);
-      font-weight: 800;
-      margin-top: 10px;
+    .btn{
+      width:100%;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border:none;
+      cursor:pointer;
+      color:#12040c;
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing:.2px;
+      background: linear-gradient(135deg, rgba(255,61,142,.98), rgba(255,208,107,.98));
+      box-shadow: 0 16px 38px rgba(255,61,142,.18);
+      position:relative;
+      overflow:hidden;
+      transform: translate3d(0,0,0);
+    }
+    .btn:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: rotate(25deg);
+      opacity:.55;
+      animation: btnShine 1.9s var(--easeInOut) infinite;
+    }
+    @keyframes btnShine{
+      0%{ transform: translateX(-35%) rotate(25deg); }
+      50%{ transform: translateX(35%) rotate(25deg); }
+      100%{ transform: translateX(-35%) rotate(25deg); }
+    }
+    .btn:active{ transform: translate3d(0,1px,0) scale(.99); }
+
+    .btnGhost{
+      width:100%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.92);
+      font-weight: 950;
+      letter-spacing: .2px;
+      cursor:pointer;
+    }
+    .btnGhost:active{ transform: translate3d(0,1px,0) scale(.99); }
+
+    .bottom{
+      padding: 12px 14px 16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .btnRow{
+      display:flex;
+      gap:10px;
+    }
+    .btnRow .btnGhost{ width:40%; }
+    .btnRow .btn{ width:60%; }
+
+    .note{
+      text-align:center;
+      font-size:12px;
+      color: var(--muted);
+      line-height: 1.45;
+      padding: 0 8px;
     }
 
     .media{
@@ -745,7 +738,6 @@
       object-fit: cover;
       display:block;
       opacity:0;
-      transform: scale(1.01);
       transition: opacity var(--dur3) var(--easeOut);
     }
     .media.loaded img{ opacity:1; }
@@ -763,16 +755,6 @@
       100%{ background-position: -200% 0; }
     }
     .media.loaded .skeleton{ display:none; }
-    .mediaError{
-      padding: 14px;
-      text-align:center;
-      font-weight: 900;
-      color: rgba(255,255,255,.86);
-      line-height:1.3;
-    }
-    .mediaError a{
-      color: rgba(255,255,255,.92);
-    }
 
     .packetButton{
       width:100%;
@@ -780,31 +762,6 @@
       background:transparent;
       padding:0;
       cursor:pointer;
-    }
-
-    .toast{
-      position:fixed;
-      left:50%;
-      bottom: calc(18px + var(--safeB));
-      transform: translate3d(-50%, 20px, 0);
-      opacity:0;
-      z-index: 10;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.26);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      color: rgba(255,255,255,.92);
-      font-weight: 900;
-      transition: opacity var(--dur2) var(--easeOut), transform var(--dur2) var(--easeOut);
-      pointer-events:none;
-      max-width: 90vw;
-      text-align:center;
-    }
-    .toast.show{
-      opacity:1;
-      transform: translate3d(-50%, 0, 0);
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -852,58 +809,57 @@
         <div class="sceneShell" id="shell">
           <div class="topBack hidden" id="topBack">← Back</div>
 
-          <!-- View 1 Door with knock -->
           <section class="view active" id="v1">
             <div class="doorArea">
               <div class="persp" id="persp1">
                 <div class="doorFrame">
                   <div class="fog"></div>
                   <div class="doorPanel" id="doorPanel1">
-                    <img class="doorImg" src="door.jpeg" alt="door" />
+                    <img class="doorImg" src="door.jpeg" alt="door">
                     <div class="edgeGlow"></div>
                   </div>
-                  <div class="goldLight"></div>
                 </div>
-
-                <img class="knockImg" id="knockImg" src="IMG_0143.png" alt="knock knock" />
+                <img class="knockImg" id="knockImg" src="IMG_0143.png" alt="knock knock">
                 <div class="ripple" id="ripple1"></div>
                 <div class="hint" id="hint1">tap the door</div>
               </div>
             </div>
           </section>
 
-          <!-- View 2 Door with Valen caption and choices -->
           <section class="view" id="v2">
             <div class="doorArea">
               <div class="persp peek" id="persp2">
                 <div class="doorFrame">
                   <div class="fog"></div>
                   <div class="doorPanel" id="doorPanel2">
-                    <img class="doorImg" src="door.jpeg" alt="door" />
+                    <img class="doorImg" src="door.jpeg" alt="door">
                     <div class="edgeGlow"></div>
                   </div>
-                  <div class="goldLight"></div>
                 </div>
 
-                <div class="caption captionPop" id="valenCap">Valen</div>
+                <div class="caption" id="valenCap">Valen</div>
                 <div class="ripple" id="ripple2"></div>
                 <div class="hint" id="hint2">pick the right one</div>
+
+                <div class="choiceBar">
+                  <button class="btnGhost" id="wrong1">Valen what</button>
+                  <button class="btnGhost" id="wrong2">Valen where</button>
+                  <button class="btn" id="rightValen">Valen who</button>
+                </div>
               </div>
             </div>
           </section>
 
-          <!-- View 3 Valentine reveal -->
           <section class="view" id="v3">
             <div class="center" id="revealTap">
               <div class="panel">
                 <div class="emoji">💐</div>
-                <div class="headline" id="headline">Happy Valentine’s Day</div>
-                <div class="sub" id="sub3">sending you love and good vibes<br>tap anywhere for confetti</div>
+                <div class="headline">Happy Valentine’s Day</div>
+                <div class="sub">sending you love and good vibes<br>tap anywhere for confetti</div>
               </div>
             </div>
           </section>
 
-          <!-- View 4 Test your love -->
           <section class="view" id="v4">
             <div class="center">
               <div class="panel">
@@ -914,48 +870,38 @@
                   <button class="btnGhost" id="love2">I love shad heaps</button>
                   <button class="btn" id="love3">I love shad the most</button>
                 </div>
-                <div class="fieldHint">you can always go back</div>
               </div>
             </div>
           </section>
 
-          <!-- View 5 Result -->
           <section class="view" id="v5">
             <div class="center" id="resultTap">
               <div class="panel">
                 <div class="headline" id="resultTitle" style="font-size:26px">internet hug!</div>
-                <div class="sub" id="resultSub">tap for confetti</div>
-
-                <div class="media" id="resultMedia" style="aspect-ratio: 1 / 1">
+                <div class="sub">tap for confetti</div>
+                <div class="media" id="resultMedia">
                   <div class="skeleton"></div>
                   <img id="resultImg" alt="result gif" loading="lazy" decoding="async">
                 </div>
-
-                <div class="fieldHint">back to test any time</div>
               </div>
             </div>
           </section>
 
-          <!-- View 6 Lucky packet -->
           <section class="view" id="v6">
             <div class="center">
               <div class="panel">
                 <div class="headline" style="font-size:26px">LUCKY!</div>
                 <div class="sub">tap the red packet</div>
-
                 <button class="packetButton" id="packetBtn" aria-label="red packet">
-                  <div class="media" id="packetMedia" style="aspect-ratio: 1 / 1">
+                  <div class="media" id="packetMedia">
                     <div class="skeleton"></div>
                     <img id="packetImg" alt="red packet gif" loading="lazy" decoding="async">
                   </div>
                 </button>
-
-                <div class="fieldHint">this one is special</div>
               </div>
             </div>
           </section>
 
-          <!-- View 7 Letter -->
           <section class="view" id="v7">
             <div class="center">
               <div class="panel">
@@ -971,14 +917,12 @@
             </div>
           </section>
 
-          <!-- View 8 Final -->
           <section class="view" id="v8">
             <div class="center">
               <div class="panel">
                 <div class="emoji">🧧</div>
                 <div class="headline" style="font-size:26px">Check your account for red packets!</div>
                 <div class="sub">happy early chinese new year</div>
-                <div class="fieldHint">share it if you want</div>
               </div>
             </div>
           </section>
@@ -986,8 +930,8 @@
         </div>
       </div>
 
-      <div class="bottom" id="bottom">
-        <div class="btnRow" id="row">
+      <div class="bottom">
+        <div class="btnRow">
           <button class="btnGhost" id="backBtn" style="display:none">Back</button>
           <button class="btn" id="nextBtn">Who’s there</button>
         </div>
@@ -997,135 +941,99 @@
   </div>
 
   <script>
-    // assets
     const DOOR_SRC = "door.jpeg"
     const KNOCK_SRC = "IMG_0143.png"
 
-    // media urls
     const GIF_HUG = "https://media1.tenor.com/m/zIacwDB2Mr0AAAAd/huhhh.gif"
     const GIF_KISS = "https://media1.tenor.com/m/5H7rmBUfr5AAAAAd/love-you.gif"
     const GIF_PACKET = "https://media1.tenor.com/m/T_DRG_1RTIUAAAAd/cny2020-chinese-new-year.gif"
 
-    // dom
     const body = document.body
     const pill = document.getElementById("pill")
     const subtitle = document.getElementById("subtitle")
-    const stepper = document.getElementById("stepper")
-    const dots = stepper.querySelectorAll(".dot")
+    const dots = document.querySelectorAll("#stepper .dot")
+    const toast = document.getElementById("toast")
 
+    const backBtn = document.getElementById("backBtn")
+    const nextBtn = document.getElementById("nextBtn")
+    const note = document.getElementById("note")
     const topBack = document.getElementById("topBack")
 
     const views = Array.from(document.querySelectorAll(".view"))
-    const bottom = document.getElementById("bottom")
-    const nextBtn = document.getElementById("nextBtn")
-    const backBtn = document.getElementById("backBtn")
-    const note = document.getElementById("note")
-    const row = document.getElementById("row")
-
     const card = document.getElementById("card")
-    const toast = document.getElementById("toast")
 
-    // door view 1
     const persp1 = document.getElementById("persp1")
     const doorPanel1 = document.getElementById("doorPanel1")
     const ripple1 = document.getElementById("ripple1")
     const hint1 = document.getElementById("hint1")
     const knockImg = document.getElementById("knockImg")
 
-    // door view 2
     const persp2 = document.getElementById("persp2")
     const doorPanel2 = document.getElementById("doorPanel2")
     const ripple2 = document.getElementById("ripple2")
     const hint2 = document.getElementById("hint2")
 
-    // reveal tap
+    const wrong1 = document.getElementById("wrong1")
+    const wrong2 = document.getElementById("wrong2")
+    const rightValen = document.getElementById("rightValen")
+
     const revealTap = document.getElementById("revealTap")
 
-    // love buttons
     const love1 = document.getElementById("love1")
     const love2 = document.getElementById("love2")
     const love3 = document.getElementById("love3")
 
-    // result
     const resultTap = document.getElementById("resultTap")
     const resultTitle = document.getElementById("resultTitle")
-    const resultImg = document.getElementById("resultImg")
     const resultMedia = document.getElementById("resultMedia")
+    const resultImg = document.getElementById("resultImg")
 
-    // packet
     const packetBtn = document.getElementById("packetBtn")
-    const packetImg = document.getElementById("packetImg")
     const packetMedia = document.getElementById("packetMedia")
+    const packetImg = document.getElementById("packetImg")
 
-    // theme
     const tLuxe = document.getElementById("tLuxe")
     const tNight = document.getElementById("tNight")
     const tComic = document.getElementById("tComic")
 
-    // state
     let step = 1
     let historyStack = [1]
-    let lastLove = null // "hug" | "kisses"
+    let lastLove = null
     let autoKnockTimer = null
     let knockTimes = []
+
     let audioReady = false
     let ctx = null
 
-    // init
     preload([DOOR_SRC, KNOCK_SRC, GIF_HUG, GIF_KISS, GIF_PACKET])
     makeWhiteTransparent(knockImg)
     stabilizeKnock(knockImg)
+
     setupTheme()
-    setupDoors()
+    setupDoor(persp1, doorPanel1, ripple1, hint1)
+    setupDoor(persp2, doorPanel2, ripple2, hint2)
     setupConfetti()
-    setupUI()
+
+    nextBtn.onclick = () => onNext()
+    backBtn.onclick = () => onBack()
+    topBack.onclick = () => onBack()
+
+    revealTap.addEventListener("click", () => { sparkleSound(); confettiBurst(130); spawnFloaters(10) }, { passive:true })
+    resultTap.addEventListener("click", () => { sparkleSound(); confettiBurst(90); spawnFloaters(8) }, { passive:true })
+
+    wrong1.onclick = wrongValen
+    wrong2.onclick = wrongValen
+    rightValen.onclick = () => { sparkleSound(); confettiBurst(110); spawnFloaters(10); setStep(3) }
+
+    love1.onclick = () => { lastLove = "hug"; setStep(5) }
+    love2.onclick = () => { lastLove = "kisses"; setStep(5) }
+    love3.onclick = () => setStep(6)
+
+    packetBtn.onclick = () => setStep(7)
+
+    window.addEventListener("pointerdown", () => { ensureAudio() }, { passive:true, once:true })
+
     setStep(1, false)
-
-    function setupTheme(){
-      const set = (name) => {
-        body.classList.remove("theme-luxe","theme-night","theme-comic")
-        body.classList.add(name)
-
-        ;[tLuxe,tNight,tComic].forEach(x => x.classList.remove("on"))
-        if (name === "theme-luxe") tLuxe.classList.add("on")
-        if (name === "theme-night") tNight.classList.add("on")
-        if (name === "theme-comic") tComic.classList.add("on")
-
-        popToast("theme changed")
-      }
-
-      tLuxe.onclick = () => set("theme-luxe")
-      tNight.onclick = () => set("theme-night")
-      tComic.onclick = () => set("theme-comic")
-    }
-
-    function setupUI(){
-      nextBtn.onclick = () => onNext()
-      backBtn.onclick = () => onBack()
-      topBack.onclick = () => onBack()
-
-      revealTap.addEventListener("click", () => {
-        sparkleSound()
-        confettiBurst(130)
-        spawnFloaters(10)
-      }, { passive:true })
-
-      resultTap.addEventListener("click", () => {
-        sparkleSound()
-        confettiBurst(90)
-        spawnFloaters(8)
-      }, { passive:true })
-
-      // valen choices are handled inside step 2 via buttons in bottom
-      love1.onclick = () => { lastLove = "hug"; setStep(5) }
-      love2.onclick = () => { lastLove = "kisses"; setStep(5) }
-      love3.onclick = () => { setStep(6) }
-
-      packetBtn.onclick = () => setStep(7)
-
-      // prime audio on first user interaction for iOS
-      window.addEventListener("pointerdown", () => { ensureAudio() }, { passive:true, once:true })
-    }
 
     function onNext(){
       if (step === 1) return setStep(2)
@@ -1138,8 +1046,7 @@
     function onBack(){
       if (historyStack.length <= 1) return
       historyStack.pop()
-      const prev = historyStack[historyStack.length - 1]
-      setStep(prev, false)
+      setStep(historyStack[historyStack.length - 1], false)
     }
 
     function pushHistory(s){
@@ -1150,218 +1057,99 @@
       step = s
       if (push) pushHistory(s)
 
-      // stepper and pill
       pill.textContent = "Step " + step
       dots.forEach((d, i) => d.classList.toggle("on", i === (step - 1)))
 
-      // back visibility
       const canBack = historyStack.length > 1
       backBtn.style.display = canBack ? "" : "none"
       topBack.classList.toggle("hidden", !canBack)
 
-      // views
       views.forEach(v => v.classList.remove("active"))
       const v = document.getElementById("v" + step)
       if (v) v.classList.add("active")
 
-      // cleanup
       clearAutoKnock()
 
-      // per step config
       if (step === 1){
         subtitle.textContent = "tap the door for extra drama"
+        nextBtn.style.display = ""
         nextBtn.textContent = "Who’s there"
         note.textContent = "tap the button"
-        row.style.display = "flex"
         backBtn.style.display = "none"
         topBack.classList.add("hidden")
-
         startAutoKnock()
-        setDoorMode(persp1, doorPanel1, "normal")
         return
       }
 
       if (step === 2){
         subtitle.textContent = "pick the right one"
-        note.textContent = "only one is correct"
-        row.style.display = "flex"
-
-        // bottom becomes choice buttons for this step
-        nextBtn.textContent = "Valen who"
-        backBtn.style.display = historyStack.length > 1 ? "" : "none"
-        setDoorMode(persp2, doorPanel2, "peek")
-
-        // override next to validate selection vibe
-        nextBtn.onclick = () => {
-          // correct
-          sparkleSound()
-          confettiBurst(110)
-          spawnFloaters(10)
-          setStep(3)
-        }
-
-        // add 2 fake options by swapping row inner buttons without rebuilding the whole app
-        row.innerHTML = `
-          <button class="btnGhost" id="w1">Valen what</button>
-          <button class="btnGhost" id="w2">Valen where</button>
-          <button class="btn" id="right">Valen who</button>
-        `
-        const w1 = document.getElementById("w1")
-        const w2 = document.getElementById("w2")
-        const right = document.getElementById("right")
-
-        const wrong = () => {
-          bumpCard()
-          hint2.style.opacity = "1"
-          hint2.textContent = "nah try again"
-          knockSound()
-          shakeEl(persp2)
-          popToast("wrong one")
-        }
-
-        w1.onclick = wrong
-        w2.onclick = wrong
-        right.onclick = () => {
-          sparkleSound()
-          confettiBurst(110)
-          spawnFloaters(10)
-          setStep(3)
-        }
-
-        // top back needs to work
-        topBack.onclick = () => onBack()
-
+        nextBtn.style.display = "none"
+        note.textContent = "choose Valen who"
+        hint2.textContent = "pick the right one"
+        hint2.style.opacity = "1"
         return
       }
 
-      // restore row layout after step 2
-      row.innerHTML = `
-        <button class="btnGhost" id="backBtn">Back</button>
-        <button class="btn" id="nextBtn">Next</button>
-      `
-      // rebind dom refs after row swap
-      const backBtn2 = document.getElementById("backBtn")
-      const nextBtn2 = document.getElementById("nextBtn")
-      backBtn2.onclick = () => onBack()
-      nextBtn2.onclick = () => onNext()
-
-      // update global references used by other logic
-      // keep variables in sync
-      window.__backBtn = backBtn2
-      window.__nextBtn = nextBtn2
-
       if (step === 3){
         subtitle.textContent = "valentine reveal"
-        nextBtn2.textContent = "Click to Test your love"
+        nextBtn.style.display = ""
+        nextBtn.textContent = "Click to Test your love"
         note.textContent = "tap the card for confetti"
-        confettiBurst(160)
-        sparkleSound()
-        spawnFloaters(12)
+        confettiBurst(160); sparkleSound(); spawnFloaters(12)
         return
       }
 
       if (step === 4){
         subtitle.textContent = "choose your answer"
-        nextBtn2.style.display = "none"
-        backBtn2.style.display = historyStack.length > 1 ? "" : "none"
+        nextBtn.style.display = "none"
         note.textContent = "pick one of the three buttons"
-
-        // show only back in the row
-        row.style.display = "flex"
-        backBtn2.style.width = "100%"
         return
       }
 
       if (step === 5){
         subtitle.textContent = "result"
-        nextBtn2.style.display = ""
-        backBtn2.style.display = ""
-        nextBtn2.textContent = "Back to test"
+        nextBtn.style.display = ""
+        nextBtn.textContent = "Back to test"
         note.textContent = "tap anywhere for confetti"
 
         const kind = lastLove || "hug"
         const title = kind === "hug" ? "internet hug!" : "Virtual Kisses"
         const src = kind === "hug" ? GIF_HUG : GIF_KISS
-
         resultTitle.textContent = title
         loadMedia(resultMedia, resultImg, src)
-
-        // highlight selection on test view when back
-        if (kind === "hug"){
-          love1.style.borderColor = "rgba(255,255,255,.28)"
-          love2.style.borderColor = "rgba(255,255,255,.18)"
-        } else {
-          love2.style.borderColor = "rgba(255,255,255,.28)"
-          love1.style.borderColor = "rgba(255,255,255,.18)"
-        }
-
-        // next goes back to test
-        nextBtn2.onclick = () => setStep(4)
         return
       }
 
       if (step === 6){
         subtitle.textContent = "lucky path"
-        nextBtn2.style.display = "none"
-        backBtn2.style.display = ""
-        backBtn2.style.width = "100%"
-        note.textContent = "tap the packet gif"
-
+        nextBtn.style.display = "none"
+        note.textContent = "tap the packet"
         loadMedia(packetMedia, packetImg, GIF_PACKET)
         return
       }
 
       if (step === 7){
         subtitle.textContent = "message"
-        nextBtn2.style.display = ""
-        backBtn2.style.display = ""
-        nextBtn2.textContent = "Click the button"
+        nextBtn.style.display = ""
+        nextBtn.textContent = "Click the button"
         note.textContent = "almost there"
-        confettiBurst(90)
-        sparkleSound()
-        spawnFloaters(8)
-
-        nextBtn2.onclick = () => setStep(8)
+        confettiBurst(90); sparkleSound(); spawnFloaters(8)
         return
       }
 
-      if (step === 8){
-        subtitle.textContent = "final"
-        nextBtn2.style.display = ""
-        backBtn2.style.display = ""
-        nextBtn2.textContent = "Copy link"
-        note.textContent = "tap to copy the link"
-
-        confettiBurst(170)
-        sparkleSound()
-        spawnFloaters(14)
-
-        nextBtn2.onclick = () => copyLink()
-        return
-      }
+      subtitle.textContent = "final"
+      nextBtn.style.display = ""
+      nextBtn.textContent = "Copy link"
+      note.textContent = "tap to copy the link"
+      confettiBurst(170); sparkleSound(); spawnFloaters(14)
     }
 
-    function copyLink(){
-      const url = location.href
-      if (navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(url).then(() => popToast("link copied")).catch(() => popToast("copy failed"))
-        return
-      }
-
-      // fallback
-      const ta = document.createElement("textarea")
-      ta.value = url
-      ta.style.position = "fixed"
-      ta.style.left = "-9999px"
-      document.body.appendChild(ta)
-      ta.select()
-      try{
-        document.execCommand("copy")
-        popToast("link copied")
-      }catch(e){
-        popToast("copy failed")
-      }
-      ta.remove()
+    function wrongValen(){
+      bumpCard()
+      hint2.textContent = "nah try again"
+      knockSound()
+      confettiBurst(35)
+      popToast("wrong one")
     }
 
     function popToast(text){
@@ -1371,17 +1159,22 @@
       toast.__t = setTimeout(() => toast.classList.remove("show"), 1200)
     }
 
-    function setupDoors(){
-      // view 1
-      bindDoor(persp1, doorPanel1, ripple1, hint1, true)
-
-      // view 2
-      bindDoor(persp2, doorPanel2, ripple2, hint2, false)
+    function setupTheme(){
+      const set = (name) => {
+        body.classList.remove("theme-luxe","theme-night","theme-comic")
+        body.classList.add(name)
+        ;[tLuxe,tNight,tComic].forEach(x => x.classList.remove("on"))
+        if (name === "theme-luxe") tLuxe.classList.add("on")
+        if (name === "theme-night") tNight.classList.add("on")
+        if (name === "theme-comic") tComic.classList.add("on")
+      }
+      tLuxe.onclick = () => set("theme-luxe")
+      tNight.onclick = () => set("theme-night")
+      tComic.onclick = () => set("theme-comic")
     }
 
-    function bindDoor(persp, panel, ripple, hint, allowAuto){
+    function setupDoor(persp, panel, ripple, hint){
       if (!persp) return
-
       const doKnock = () => {
         if (hint) hint.style.opacity = "0"
         bumpCard()
@@ -1399,7 +1192,6 @@
           panel.classList.add("shake")
         }
 
-        // triple knock easter egg
         const now = Date.now()
         knockTimes = knockTimes.filter(t => now - t < 900)
         knockTimes.push(now)
@@ -1444,21 +1236,10 @@
       const reset = () => { persp.style.transform = "translate3d(0,0,0)" }
       persp.addEventListener("mouseleave", reset, { passive:true })
       persp.addEventListener("touchend", reset, { passive:true })
-
-      if (allowAuto){
-        // started per step
-      }
-    }
-
-    function setDoorMode(persp, panel, mode){
-      if (!persp) return
-      persp.classList.remove("peek","wideOpen")
-      if (mode === "peek") persp.classList.add("peek")
     }
 
     function startAutoKnock(){
       autoKnockTimer = setInterval(() => {
-        // only if still on step 1
         if (step !== 1) return
         bumpCard()
         knockSound()
@@ -1496,155 +1277,99 @@
       card.classList.add("shake")
     }
 
-    function shakeEl(el){
-      if (!el) return
-      el.classList.remove("shake")
-      void el.offsetWidth
-      el.classList.add("shake")
-    }
-
     function clamp(v, a, b){ return Math.max(a, Math.min(b, v)) }
 
     function preload(urls){
       urls.forEach(src => { const img = new Image(); img.src = src })
     }
 
-    // white background removal for knock image
     function makeWhiteTransparent(imgEl){
       if (!imgEl || imgEl.dataset.transparentDone) return
       imgEl.dataset.transparentDone = "1"
-
       const run = () => {
         try{
           const w = imgEl.naturalWidth
           const h = imgEl.naturalHeight
           if (!w || !h) return
-
           const c = document.createElement("canvas")
           c.width = w
           c.height = h
           const g = c.getContext("2d", { willReadFrequently:true })
           g.drawImage(imgEl, 0, 0)
-
           const img = g.getImageData(0, 0, w, h)
           const d = img.data
-
           for (let i = 0; i < d.length; i += 4){
-            const r = d[i]
-            const gg = d[i+1]
-            const b = d[i+2]
-            const a = d[i+3]
+            const r = d[i], gg = d[i+1], b = d[i+2], a = d[i+3]
             if (a === 0) continue
-
             const lum = 0.2126*r + 0.7152*gg + 0.0722*b
             const newA = Math.max(0, Math.min(255, Math.round((255 - lum) * 3.0)))
             d[i+3] = newA
           }
-
           g.putImageData(img, 0, 0)
           imgEl.src = c.toDataURL("image/png")
         }catch(e){}
       }
-
       if (imgEl.complete) run()
       else imgEl.addEventListener("load", run, { once:true })
     }
 
-    // media component loader
     function loadMedia(mediaEl, imgEl, src){
       if (!mediaEl || !imgEl) return
-
       mediaEl.classList.remove("loaded")
       imgEl.style.opacity = "0"
       imgEl.removeAttribute("src")
 
-      const onLoad = () => {
-        mediaEl.classList.add("loaded")
+      imgEl.onload = () => { mediaEl.classList.add("loaded") }
+      imgEl.onerror = () => {
+        mediaEl.innerHTML = `<div style="padding:14px;text-align:center;font-weight:900;color:rgba(255,255,255,.86)">
+          gif failed to load<br><a style="color:rgba(255,255,255,.92)" href="${src}" target="_blank" rel="noopener">open gif</a>
+        </div>`
       }
-
-      const onError = () => {
-        mediaEl.innerHTML = `
-          <div class="mediaError">
-            gif failed to load<br>
-            <a href="${src}" target="_blank" rel="noopener">open gif</a>
-          </div>
-        `
-      }
-
-      imgEl.onload = onLoad
-      imgEl.onerror = onError
       imgEl.src = src
     }
 
-    // floaters
-    function spawnFloaters(count){
-      const box = document.getElementById("floaters")
-      if (!box) return
-
-      const icons = ["💗","💞","💖","💘","✨","💝"]
-      for (let i = 0; i < count; i++){
-        const el = document.createElement("div")
-        el.className = "floater"
-        el.textContent = icons[(Math.random() * icons.length) | 0]
-
-        const x = (Math.random() * 100).toFixed(2) + "vw"
-        const s = (14 + Math.random() * 18).toFixed(0) + "px"
-        const d = (7 + Math.random() * 6).toFixed(2) + "s"
-        const dx = ((Math.random() * 26) - 13).toFixed(2) + "vw"
-        const r = ((Math.random() * 160) - 80).toFixed(0) + "deg"
-
-        el.style.setProperty("--x", x)
-        el.style.setProperty("--s", s)
-        el.style.setProperty("--d", d)
-        el.style.setProperty("--dx", dx)
-        el.style.setProperty("--r", r)
-
-        box.appendChild(el)
-        setTimeout(() => { try{ el.remove() }catch(e){} }, 14000)
+    function copyLink(){
+      const url = location.href
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(() => popToast("link copied")).catch(() => popToast("copy failed"))
+        return
       }
+      const ta = document.createElement("textarea")
+      ta.value = url
+      ta.style.position = "fixed"
+      ta.style.left = "-9999px"
+      document.body.appendChild(ta)
+      ta.select()
+      try{ document.execCommand("copy"); popToast("link copied") }catch(e){ popToast("copy failed") }
+      ta.remove()
     }
 
-    // sound
     function ensureAudio(){
       if (audioReady) return
-      try{
-        ctx = new (window.AudioContext || window.webkitAudioContext)()
-        audioReady = true
-      }catch(e){
-        audioReady = false
-      }
+      try{ ctx = new (window.AudioContext || window.webkitAudioContext)(); audioReady = true }
+      catch(e){ audioReady = false }
     }
 
     function knockSound(){
       ensureAudio()
       if (!audioReady || !ctx) return
       if (ctx.state === "suspended") ctx.resume().catch(() => {})
-
       const now = ctx.currentTime
       const hit = (t, freq, dur, gain) => {
         const o = ctx.createOscillator()
         const g = ctx.createGain()
         const f = ctx.createBiquadFilter()
-
         o.type = "triangle"
         o.frequency.setValueAtTime(freq, t)
-
         f.type = "lowpass"
         f.frequency.setValueAtTime(980, t)
         f.Q.setValueAtTime(0.8, t)
-
         g.gain.setValueAtTime(0.0001, t)
         g.gain.exponentialRampToValueAtTime(gain, t + 0.01)
         g.gain.exponentialRampToValueAtTime(0.0001, t + dur)
-
-        o.connect(f)
-        f.connect(g)
-        g.connect(ctx.destination)
-
-        o.start(t)
-        o.stop(t + dur + 0.03)
+        o.connect(f); f.connect(g); g.connect(ctx.destination)
+        o.start(t); o.stop(t + dur + 0.03)
       }
-
       hit(now + 0.00, 210, 0.09, 0.09)
       hit(now + 0.07, 180, 0.11, 0.07)
     }
@@ -1653,33 +1378,40 @@
       ensureAudio()
       if (!audioReady || !ctx) return
       if (ctx.state === "suspended") ctx.resume().catch(() => {})
-
       const now = ctx.currentTime
       const o = ctx.createOscillator()
       const g = ctx.createGain()
       const f = ctx.createBiquadFilter()
-
       o.type = "sine"
       o.frequency.setValueAtTime(740, now)
       o.frequency.exponentialRampToValueAtTime(1180, now + 0.08)
-
       f.type = "highpass"
       f.frequency.setValueAtTime(480, now)
-      f.Q.setValueAtTime(0.7, now)
-
       g.gain.setValueAtTime(0.0001, now)
       g.gain.exponentialRampToValueAtTime(0.06, now + 0.01)
       g.gain.exponentialRampToValueAtTime(0.0001, now + 0.12)
-
-      o.connect(f)
-      f.connect(g)
-      g.connect(ctx.destination)
-
-      o.start(now)
-      o.stop(now + 0.14)
+      o.connect(f); f.connect(g); g.connect(ctx.destination)
+      o.start(now); o.stop(now + 0.14)
     }
 
-    // confetti
+    function spawnFloaters(count){
+      const box = document.getElementById("floaters")
+      if (!box) return
+      const icons = ["💗","💞","💖","💘","✨","💝"]
+      for (let i = 0; i < count; i++){
+        const el = document.createElement("div")
+        el.className = "floater"
+        el.textContent = icons[(Math.random() * icons.length) | 0]
+        el.style.setProperty("--x", (Math.random() * 100).toFixed(2) + "vw")
+        el.style.setProperty("--s", (14 + Math.random() * 18).toFixed(0) + "px")
+        el.style.setProperty("--d", (7 + Math.random() * 6).toFixed(2) + "s")
+        el.style.setProperty("--dx", ((Math.random() * 26) - 13).toFixed(2) + "vw")
+        el.style.setProperty("--r", ((Math.random() * 160) - 80).toFixed(0) + "deg")
+        box.appendChild(el)
+        setTimeout(() => { try{ el.remove() }catch(e){} }, 14000)
+      }
+    }
+
     let confettiAPI = null
     function setupConfetti(){
       const canvas = document.getElementById("confetti")
@@ -1715,7 +1447,7 @@
             a: 1,
             rot: Math.random() * Math.PI * 2,
             vr: (Math.random() - 0.5) * 0.35,
-            kind: Math.random() < 0.55 ? "heart" : "spark"
+            heart: Math.random() < 0.55
           })
         }
       }
@@ -1759,9 +1491,8 @@
           grad.addColorStop(1, "rgba(255,208,107," + (0.72 * p.a) + ")")
           c.fillStyle = grad
 
-          if (p.kind === "heart"){
-            drawHeart(p.x, p.y, p.r, p.rot, p.a)
-          } else {
+          if (p.heart) drawHeart(p.x, p.y, p.r, p.rot, p.a)
+          else{
             c.globalAlpha = p.a
             c.beginPath()
             c.arc(p.x, p.y, p.r, 0, Math.PI * 2)
