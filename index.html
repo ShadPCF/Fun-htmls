@@ -226,7 +226,6 @@
       opacity:.92;
     }
 
-    /* subtle in-card corner sparkles */
     .cardSparks{
       position:absolute;
       inset:0;
@@ -270,7 +269,6 @@
       min-width:0;
     }
 
-    /* real icon badge */
     .badgeBtn{
       width:40px; height:40px;
       border-radius: 16px;
@@ -337,7 +335,6 @@
     .iconBtn:active{ transform: translate3d(0,1px,0) scale(.99); }
     .iconBtn svg{ width:18px; height:18px; opacity:.88; }
 
-    /* heart fill progress */
     .heartProg{
       display:flex;
       align-items:center;
@@ -441,6 +438,8 @@
       position:relative;
       cursor:pointer;
     }
+    .persp.static{ cursor: default; }
+
     .persp:focus-visible{
       outline: 2px solid rgba(255,208,107,.55);
       outline-offset: 6px;
@@ -469,7 +468,6 @@
       transform: translate3d(0,0,0);
     }
 
-    /* subtle vignette to guide focus */
     .doorWindow:before{
       content:"";
       position:absolute;
@@ -481,7 +479,6 @@
         linear-gradient(180deg, rgba(0,0,0,.10), transparent 40%, rgba(0,0,0,.20));
       opacity:.95;
       z-index:2;
-      mix-blend-mode: normal;
     }
 
     .doorWindow:after{
@@ -509,7 +506,6 @@
       z-index:1;
     }
 
-    /* clearer door image */
     .doorImg{
       position:absolute;
       inset:0;
@@ -537,7 +533,6 @@
       z-index:4;
     }
 
-    /* softer fog */
     .fog{
       position:absolute;
       inset:-20%;
@@ -557,7 +552,6 @@
       100%{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
     }
 
-    /* loader for door image */
     .imgLoad{
       position:absolute;
       inset:0;
@@ -582,7 +576,6 @@
     }
     .imgLoad.off{ display:none; }
 
-    /* knock smaller and slightly higher */
     .knockImg{
       position:absolute;
       left:50%;
@@ -606,24 +599,6 @@
       50%{ transform: translate3d(-51%,-49%,6px) rotate(-2deg) scale(1); }
       75%{ transform: translate3d(-49.5%,-50%,6px) rotate(3deg) scale(1.01); }
       100%{ transform: translate3d(-50%,-50%,6px) rotate(-6deg) scale(1); }
-    }
-
-    .hint{
-      position:absolute;
-      left:14px;
-      bottom:14px;
-      padding:10px 12px;
-      border-radius: 14px;
-      font-size:12px;
-      font-weight:800;
-      color: rgba(255,255,255,.86);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 18px 60px rgba(0,0,0,.20);
-      pointer-events:none;
-      z-index:8;
     }
 
     .ripple{
@@ -654,8 +629,6 @@
       80%{ transform: translate3d(1px, 0, 0); }
       100%{ transform: translate3d(0,0,0); }
     }
-
-    .openPeek .doorPanel{ transform: rotateY(-14deg) translate3d(-1.2%,0,0); filter: brightness(1.02) contrast(1.02); }
 
     .caption{
       position:absolute;
@@ -901,30 +874,6 @@
       to{ opacity:1; transform: translate3d(0,0,0) scale(1); }
     }
 
-    .toast{
-      position:absolute;
-      left:50%;
-      bottom: 14px;
-      transform: translateX(-50%);
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.26);
-      color: rgba(255,255,255,.88);
-      font-weight:700;
-      font-size:12px;
-      opacity:0;
-      pointer-events:none;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      transition: opacity 220ms var(--easeInOut), transform 220ms var(--easeInOut);
-      z-index:50;
-    }
-    .toast.on{
-      opacity:1;
-      transform: translateX(-50%) translateY(-2px);
-    }
-
     @media (prefers-reduced-motion: reduce){
       .aurora, .stars, .fog, .knockImg, .floater, .btn:before, .bloom, .spark, .imgLoad { animation:none !important; }
       .doorPanel{ transition:none !important; }
@@ -958,7 +907,6 @@
       <div class="top">
         <div class="brand">
           <button class="badgeBtn" id="badgeBtn" aria-label="Home">
-            <!-- tiny door icon -->
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M7.5 3.8h9A2.5 2.5 0 0 1 19 6.3v13.4a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 5 19.7V6.3A2.5 2.5 0 0 1 7.5 3.8Z" stroke="rgba(255,255,255,.86)" stroke-width="1.6"/>
               <path d="M14.9 12.1a.9.9 0 1 1-1.8 0 .9.9 0 0 1 1.8 0Z" fill="rgba(255,255,255,.86)"/>
@@ -993,8 +941,6 @@
 
       <div class="stage" id="stage"></div>
       <div class="bottom" id="bottom"></div>
-
-      <div class="toast" id="toast">Copied</div>
     </div>
   </div>
 
@@ -1008,7 +954,6 @@
     const heartTxt = document.getElementById("heartTxt")
 
     const audioBtn = document.getElementById("audioBtn")
-    const toast = document.getElementById("toast")
     const badgeBtn = document.getElementById("badgeBtn")
 
     let step = 1
@@ -1070,13 +1015,19 @@
       if (heartFill) heartFill.style.width = `${(current / TOTAL_STEPS) * 100}%`
     }
 
-    function doorScene(includeKnock, captionText){
+    function doorScene(includeKnock, captionText, clickable){
       const cap = captionText ? `<div class="caption captionPop">${captionText}</div>` : ``
+      const roleAttrs = clickable
+        ? `role="button" tabindex="0" aria-label="Tap the door to knock"`
+        : `role="img" aria-label="Door scene"`
+
+      const rippleHTML = clickable ? `<div class="ripple" id="ripple"></div>` : ``
+
       return `
         <div class="scene fadeIn">
           <div class="doorArea">
             <div class="doorStage">
-              <div class="persp" id="persp" role="button" tabindex="0" aria-label="Tap the door to knock">
+              <div class="persp ${clickable ? "" : "static"}" id="persp" ${roleAttrs}>
                 <div class="doorFrame">
                   <div class="doorWindow">
                     <div class="imgLoad" id="doorLoad">Loading</div>
@@ -1090,10 +1041,8 @@
 
                 ${cap}
                 ${includeKnock ? `<img class="knockImg" id="knockImg" src="${KNOCK_SRC}" alt="knock knock" />` : ``}
-                <div class="ripple" id="ripple"></div>
+                ${rippleHTML}
               </div>
-
-              <div class="hint" id="hint">tap the door</div>
             </div>
           </div>
         </div>
@@ -1206,7 +1155,7 @@
     function controlsHTML(opts){
       const backBtn = opts.back ? `<button class="btnGhost" id="backBtn">${opts.backText || "Back"}</button>` : ``
       const primary = opts.primaryText ? `<button class="btn" id="${opts.primaryId || "primaryBtn"}">${opts.primaryText}</button>` : ``
-      const note = `<div class="note">${opts.note || ""}</div>`
+      const note = opts.note ? `<div class="note">${opts.note}</div>` : `<div class="note"></div>`
       return `${primary}${backBtn}${note}`
     }
 
@@ -1216,14 +1165,14 @@
       clearAutoKnock()
 
       if (step === 1){
-        stage.innerHTML = doorScene(true, "")
+        stage.innerHTML = doorScene(true, "", true)
         bottom.innerHTML = controlsHTML({
           primaryText: "Continue",
           primaryId: "nextBtn",
           note: "Tap the door for extra drama"
         })
 
-        wireDoorInteractions({ autoKnock:true, peek:false })
+        wireDoorInteractions({ autoKnock:true })
         attachDoorLoaders()
 
         const k = document.getElementById("knockImg")
@@ -1235,15 +1184,14 @@
       }
 
       if (step === 2){
-        stage.innerHTML = doorScene(false, "Valen")
+        stage.innerHTML = doorScene(false, "Valen", false)
         bottom.innerHTML = controlsHTML({
-          primaryText: "Reveal",
+          primaryText: "Valen who",
           primaryId: "nextBtn",
-          note: "Tap the door for a cheeky peek",
+          note: "",
           back: true
         })
 
-        wireDoorInteractions({ autoKnock:false, peek:true })
         attachDoorLoaders()
 
         document.getElementById("nextBtn").onclick = () => { step = 3; render() }
@@ -1339,8 +1287,7 @@
 
       stage.innerHTML = finalScene()
       bottom.innerHTML = `
-        <button class="btn" id="shareBtn">Share link</button>
-        <button class="btnGhost" id="replayBtn">Replay from start</button>
+        <button class="btn" id="replayBtn">Replay from start</button>
         <button class="btnGhost" id="backToTest">Back to test</button>
         <div class="note">Done ✅</div>
       `
@@ -1350,7 +1297,6 @@
 
       document.getElementById("backToTest").onclick = () => { step = 4; render() }
       document.getElementById("replayBtn").onclick = () => { step = 1; render() }
-      document.getElementById("shareBtn").onclick = () => shareLink()
     }
 
     function attachDoorLoaders(){
@@ -1375,14 +1321,10 @@
       const persp = document.getElementById("persp")
       const doorPanel = document.getElementById("doorPanel")
       const ripple = document.getElementById("ripple")
-      const hint = document.getElementById("hint")
 
       if (!persp) return
-      if (opts.peek) persp.classList.add("openPeek")
 
       const doKnock = () => {
-        if (hint) hint.style.opacity = "0"
-
         if (ripple){
           ripple.classList.remove("go")
           void ripple.offsetWidth
@@ -1660,31 +1602,6 @@
 
         box.appendChild(el)
         setTimeout(() => { try{ el.remove() }catch(e){} }, 14000)
-      }
-    }
-
-    function showToast(msg){
-      if (!toast) return
-      toast.textContent = msg || "Copied"
-      toast.classList.add("on")
-      setTimeout(() => toast.classList.remove("on"), 1100)
-    }
-
-    async function shareLink(){
-      const url = location.href
-      try{
-        if (navigator.share) {
-          await navigator.share({ title: "Knock knock", url })
-          return
-        }
-      } catch(e){}
-
-      try{
-        await navigator.clipboard.writeText(url)
-        showToast("Link copied")
-      } catch(e){
-        showToast("Copy failed")
-        try{ prompt("Copy this link", url) }catch(_){}
       }
     }
 
