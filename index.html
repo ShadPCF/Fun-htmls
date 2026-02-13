@@ -695,7 +695,10 @@
     function doorScene(includeKnock, captionText, showHint){
       const cap = captionText ? `<div class="caption captionPop">${captionText}</div>` : ``
       const hint = showHint ? `<div class="hint" id="hint">tap door</div>` : ``
-      const cornerGif = `<img class="cornerGif" src="${GIF_INTRO}" alt="" aria-hidden="true" />` : ``
+     const cornerGif = (step === 1)
+  ? `<img class="cornerGif" src="${GIF_INTRO}" alt="" aria-hidden="true" />`
+  : ``
+
       return `
    
 
