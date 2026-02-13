@@ -642,7 +642,7 @@
             <div class="badge" aria-hidden="true"></div>
             <div style="min-width:0">
               <div class="h1">Knock knock</div>
-              <div class="subline" id="subline">tap the door for extra drama</div>
+              <div class="subline" id="subline">What could this be?</div>
             </div>
           </div>
           <div style="width:34px; height:34px" aria-hidden="true"></div>
@@ -749,8 +749,8 @@
             <div class="emoji">💐</div>
             <div class="big"><span class="type" id="typeText"></span><span class="caret"></span></div>
             <div class="sub">
-              you make my days softer, sweeter, and so much happier<br/>
-              i love you Ash
+              You make my days brighter, my heart lighter, and everything sweeter<br/>
+              I love you so much, Ash. Will you be my Valentine?
             </div>
           </div>
         </div>
@@ -763,7 +763,7 @@
           <div class="gift">
             <div class="emoji">💞</div>
             <div class="big">Test your love</div>
-            <div class="sub">pick one</div>
+            <div class="sub">Which one are you picking first?</div>
             <div class="stack">
               <button class="btnGhost" id="b1">I love you</button>
               <button class="btnGhost" id="b2">I love you heaps</button>
@@ -786,7 +786,7 @@
     }
 
     function resultScene(kind){
-      const title = kind === "hug" ? "internet hug" : "virtual kisses"
+      const title = kind === "hug" ? "Virtual Hug" : "Virtual Kisses"
       const embed = kind === "hug"
         ? gifEmbed(GIF_HUG, "hug")
         : gifEmbed(GIF_KISS, "kiss")
@@ -806,8 +806,8 @@
       return `
         <div class="scene reveal fadeIn">
           <div class="gift">
-            <div class="big">LUCKY</div>
-            <div class="sub">tap the red packet</div>
+            <div class="big">LUCKY!</div>
+            <div class="sub">Did you just get a Red Packet? Tap to see whats there</div>
 
             <div id="packetTap">
               ${gifEmbed(GIF_PACKET, "red packet")}
@@ -823,18 +823,17 @@
           <div class="gift">
             <div class="big" style="font-size:18px">💌</div>
             <div class="sub" style="text-align:left;margin-top:12px">
-              just a little reminder<br/>
-              i love you so so much<br/><br/>
-              you’re the kindest soul i’ve ever had in my life and i’m honestly counting down until you’re back in my arms<br/>
-              i miss you like crazy<br/>
-              have the best time my love and come back to me soon<br/><br/>
-              love yours<br/>
+              Just a little reminder.<br/>
+              I love you so so much.<br/><br/>
+              You’re the kindest soul I’ve ever had in my life and I’m honestly counting down until you’re back in my arms. I miss you like crazy.<br/>
+              Have the best time my love and come back to me soon.<br/><br/>
+              Love yours,<br/>
               Shad<br/><br/>
               <b>P.S happy early Chinese new year</b>
             </div>
 
             <div class="stack">
-              <button class="btn" id="toFinal">Final step</button>
+              <button class="btn" id="toFinal">Thats all From Me</button>
             </div>
           </div>
         </div>
@@ -846,8 +845,8 @@
         <div class="scene reveal fadeIn">
           <div class="gift">
             <div class="emoji">🧧</div>
-            <div class="big">Check your account for red packets</div>
-            <div class="sub">happy early Chinese new year</div>
+            <div class="big">Oops! Check your account for red packet gift.</div>
+            <div class="sub">Happy Early Chinese New Year</div>
           </div>
         </div>
       `
@@ -872,7 +871,7 @@
         bottom.innerHTML = controlsHTML({
           primaryText: "Who’s there",
           primaryId: "nextBtn",
-          note: "bonus points if you tap the door"
+          note: "Bonus points if you keep on tapping the door"
         })
 
         wireDoorInteractions({ autoKnock:true, peek:false })
@@ -885,10 +884,10 @@
       }
 
       if (step === 2){
-        setHeaderPrompt("who is it")
-        stage.innerHTML = doorScene(false, "Valen", false)
+        setHeaderPrompt("Who could that be?")
+        stage.innerHTML = doorScene(false, "Valen 💞", false)
         bottom.innerHTML = controlsHTML({
-          primaryText: "Valen who",
+          primaryText: "Valen who?",
           primaryId: "nextBtn",
           note: "",
           back: true
@@ -900,10 +899,10 @@
       }
 
       if (step === 3){
-        setHeaderPrompt("reveal")
+        setHeaderPrompt("Woah!")
         stage.innerHTML = revealScene()
         bottom.innerHTML = controlsHTML({
-          primaryText: "Next surprise",
+          primaryText: "Not done Yet",
           primaryId: "toTest",
           note: "",
           back: true
@@ -924,7 +923,7 @@
       }
 
       if (step === 4){
-        setHeaderPrompt("test your love")
+        setHeaderPrompt("Time to Test your Love!")
         stage.innerHTML = testScene()
         bottom.innerHTML = controlsHTML({
           primaryText: "",
@@ -960,7 +959,7 @@
       }
 
       if (step === 6){
-        setHeaderPrompt("lucky packet")
+        setHeaderPrompt("Ooooo is that a Red Packet")
         stage.innerHTML = packetScene()
         bottom.innerHTML = controlsHTML({
           primaryText: "Back to test",
@@ -979,7 +978,7 @@
       }
 
       if (step === 7){
-        setHeaderPrompt("a note for you")
+        setHeaderPrompt("Note from Shad")
         stage.innerHTML = letterScene()
         bottom.innerHTML = controlsHTML({
           primaryText: "Back",
@@ -992,7 +991,7 @@
         return
       }
 
-      setHeaderPrompt("done")
+      setHeaderPrompt("Thats all from me")
       stage.innerHTML = finalScene()
       bottom.innerHTML = controlsHTML({
         primaryText: "Back to test",
