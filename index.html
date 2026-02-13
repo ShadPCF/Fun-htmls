@@ -187,11 +187,12 @@
     }
 
     #dots{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  justify-content:center;
-}
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+    }
+
     .dot{
       width:10px;height:10px;
       position:relative;
@@ -214,20 +215,23 @@
       --heartFill: linear-gradient(135deg, rgba(255,61,142,.95), rgba(255,208,107,.92));
       filter: drop-shadow(0 10px 18px rgba(255,61,142,.20));
     }
-      .cornerGif{
-    position:absolute;
-    right: 12px;
-    bottom: 12px;
-    width: 92px;
-    height: auto;
-    z-index: 5;
-    pointer-events: none;
-    filter: drop-shadow(0 12px 18px rgba(0,0,0,.18));
-    opacity: .95;
-  }
-@media (max-width: 390px){
-  .cornerGif{ width: 82px; }
-}
+
+    /* intro gif pinned to screen (ONLY step 1 via JS) */
+    .cornerGif{
+      position: fixed;
+      left: calc(12px + env(safe-area-inset-left, 0px));
+      bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      width: 92px;
+      height: auto;
+      z-index: 999;
+      pointer-events: none;
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,.18));
+      opacity: .95;
+      display:none; /* start hidden, JS toggles */
+    }
+    @media (max-width: 390px){
+      .cornerGif{ width: 82px; }
+    }
 
     /* stage + bottom */
     .stage{
@@ -620,6 +624,15 @@
   <div class="floaters" id="floaters" aria-hidden="true"></div>
   <canvas id="confetti" aria-hidden="true"></canvas>
 
+  <!-- pinned to SCREEN (JS shows only in step 1) -->
+  <img
+    id="introGif"
+    class="cornerGif"
+    src="https://media.tenor.com/oEn5TYBCYFsAAAAj/dudu-knocking-door-door.gif"
+    alt=""
+    aria-hidden="true"
+  />
+
   <main class="shell" id="shell">
     <div class="wrap">
 
@@ -661,6 +674,7 @@
     const bottom = document.getElementById("bottom")
     const dots = document.getElementById("dots")
     const subline = document.getElementById("subline")
+    const introGif = document.getElementById("introGif")
 
     let step = 1
     let autoKnockTimer = null
@@ -692,26 +706,23 @@
       subline.textContent = text
     }
 
+    function setIntroGifVisibility(){
+      if (!introGif) return
+      introGif.style.display = (step === 1 ? "block" : "none")
+    }
+
     function doorScene(includeKnock, captionText, showHint){
       const cap = captionText ? `<div class="caption captionPop">${captionText}</div>` : ``
       const hint = showHint ? `<div class="hint" id="hint">tap door</div>` : ``
-     const cornerGif = (step === 1)
-  ? `<img class="cornerGif" src="${GIF_INTRO}" alt="" aria-hidden="true" />`
-  : ``
-
       return `
-   
-
         <div class="scene fadeIn">
           <div class="doorArea">
             <div class="doorStage">
               <div class="persp" id="persp" role="button" aria-label="Door">
                 <div class="doorFrame">
-                 <div class="doorWindow">
+                  <div class="doorWindow">
                     <div class="fog"></div>
-                      ${cornerGif}
-                        <div class="doorPanel" id="doorPanel">
-
+                    <div class="doorPanel" id="doorPanel">
                       <img class="doorImg" src="${DOOR_SRC}" alt="door" />
                       <div class="edgeGlow"></div>
                       <div class="vignette"></div>
@@ -852,6 +863,7 @@
     function render(){
       setCentering()
       setDots()
+      setIntroGifVisibility()
       clearAutoKnock()
 
       if (step === 1){
@@ -957,7 +969,6 @@
           back: true
         })
 
-        /* tap ONLY the gif area to open */
         const inner = document.querySelector("#packetTap .gifInner")
         if (inner) inner.style.cursor = "pointer"
         if (inner) inner.addEventListener("click", () => { step = 7; render() }, { passive:true })
