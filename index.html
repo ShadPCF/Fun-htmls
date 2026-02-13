@@ -214,6 +214,20 @@
       --heartFill: linear-gradient(135deg, rgba(255,61,142,.95), rgba(255,208,107,.92));
       filter: drop-shadow(0 10px 18px rgba(255,61,142,.20));
     }
+      .cornerGif{
+    position:absolute;
+    right: 12px;
+    bottom: 12px;
+    width: 92px;
+    height: auto;
+    z-index: 5;
+    pointer-events: none;
+    filter: drop-shadow(0 12px 18px rgba(0,0,0,.18));
+    opacity: .95;
+  }
+@media (max-width: 390px){
+  .cornerGif{ width: 82px; }
+}
 
     /* stage + bottom */
     .stage{
@@ -660,8 +674,9 @@
     const GIF_HUG = "https://media1.tenor.com/m/zIacwDB2Mr0AAAAd/huhhh.gif"
     const GIF_KISS = "https://media1.tenor.com/m/5H7rmBUfr5AAAAAd/love-you.gif"
     const GIF_PACKET = "https://media1.tenor.com/m/T_DRG_1RTIUAAAAd/cny2020-chinese-new-year.gif"
+    const GIF_INTRO = "https://media.tenor.com/oEn5TYBCYFsAAAAj/dudu-knocking-door-door.gif"
 
-    preload([DOOR_SRC, KNOCK_SRC, GIF_HUG, GIF_KISS, GIF_PACKET])
+    preload([DOOR_SRC, KNOCK_SRC, GIF_HUG, GIF_KISS, GIF_PACKET, GIF_INTRO])
     render()
 
     function setDots(){
@@ -680,15 +695,20 @@
     function doorScene(includeKnock, captionText, showHint){
       const cap = captionText ? `<div class="caption captionPop">${captionText}</div>` : ``
       const hint = showHint ? `<div class="hint" id="hint">tap door</div>` : ``
+      const cornerGif = `<img class="cornerGif" src="${GIF_INTRO}" alt="" aria-hidden="true" />` : ``
       return `
+   
+
         <div class="scene fadeIn">
           <div class="doorArea">
             <div class="doorStage">
               <div class="persp" id="persp" role="button" aria-label="Door">
                 <div class="doorFrame">
-                  <div class="doorWindow">
+                 <div class="doorWindow">
                     <div class="fog"></div>
-                    <div class="doorPanel" id="doorPanel">
+                      ${cornerGif}
+                        <div class="doorPanel" id="doorPanel">
+
                       <img class="doorImg" src="${DOOR_SRC}" alt="door" />
                       <div class="edgeGlow"></div>
                       <div class="vignette"></div>
