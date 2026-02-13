@@ -795,7 +795,7 @@
         <div class="scene reveal fadeIn" id="resultTap">
           <div class="gift">
             <div class="big">${title}</div>
-            <div class="sub">tap for confetti</div>
+            <div class="sub">Tap for Confetti</div>
             ${embed}
           </div>
         </div>
@@ -866,7 +866,7 @@
       clearAutoKnock()
 
       if (step === 1){
-        setHeaderPrompt("tap the door for extra drama")
+        setHeaderPrompt("Babe someone's at the door")
         stage.innerHTML = doorScene(true, "", true)
         bottom.innerHTML = controlsHTML({
           primaryText: "Who’s there",
@@ -991,7 +991,7 @@
         return
       }
 
-      setHeaderPrompt("Thats all from me")
+      setHeaderPrompt("Click here to End with Confetti")
       stage.innerHTML = finalScene()
       bottom.innerHTML = controlsHTML({
         primaryText: "Back to test",
